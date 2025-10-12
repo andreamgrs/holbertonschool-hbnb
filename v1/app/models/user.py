@@ -46,6 +46,14 @@ class User(BaseModel):
             self.reviews.append(review)
             review.user = self
 
+    def update(self, data):
+        """update user details"""
+        allowed_fields = ['first_name', 'last_name', 'email', 'is_admin']
+        for key, value in data.items():
+            if key in allowed_fields:
+                setattr(self, key, value)
+
+
     # --- Getters and Setters ---
     @property
     def first_name(self):

@@ -1,4 +1,5 @@
 from app.persistence.repository import InMemoryRepository
+from app.models.user import User
 
 class HBnBFacade:
     def __init__(self):
@@ -17,3 +18,13 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
+    
+    def get_all_users(self):
+        """Return a list of all users"""
+        return self.user_repo.get_all()  # InMemoryRepo has get_all function in persistence repo
+
+    def update_user(self, user_id, data):
+        """Update a user in the repos"""
+        updated_user = self.user_repo.update(user_id, data)  # InMemoryRepo has update function in persistence repo
+        return updated_user
+    
