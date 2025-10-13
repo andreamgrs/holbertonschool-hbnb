@@ -1,6 +1,7 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.place import Place
+from app.models.review import Review
 
 class HBnBFacade:
     def __init__(self):
@@ -32,28 +33,42 @@ class HBnBFacade:
 
 # Adding methods for review
     def create_review(self, review_data):
-    # Placeholder for logic to create a review, including validation for user_id, place_id, and rating
-        pass
+        """Create review"""
+        # Extract fields from input
+        review = Review(**review_data) #unpacking
+        
+        # Validates that rating is between 1 and 5
+        if review.rating < 1 or review.rating > 5:
+            raise ValueError("Rating must be between 1 and 5")
+        
+        # Validator of exitance for user_id 
+        if self.get_user(review.user) is None:
+            raise ValueError("User must exist")
+        
+        # Validator of exitance for place_id
+        if self.get_place(review.place) is None:
+            raise ValueError("Place must exist")
+        self.review_repo.add(review)
+
+        return review
 
     def get_review(self, review_id):
-        # Placeholder for logic to retrieve a review by ID
-        pass
+        """Get review by ID"""
+        return self.review_repo.get(review_id)
 
     def get_all_reviews(self):
-        # Placeholder for logic to retrieve all reviews
-        pass
+        """Get all the reviews"""
+        return self.review_repo.get_all() 
 
     def get_reviews_by_place(self, place_id):
-        # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        """Get review by place"""
+        place = self.place_repo.get(place_id)
+        if place is None:
+            raise ValueError("Place not found")
 
     def update_review(self, review_id, review_data):
-        # Placeholder for logic to update a review
-        pass
-
-    def delete_review(self, review_id):
-        # Placeholder for logic to delete a review
-        pass
+        updated_review = self.place_repo.update(review_id, review_data)
+        return updated_review
 
     # Methods for place
     def create_place(self, place_data):

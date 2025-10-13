@@ -1,7 +1,7 @@
 from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
-from app.models.review import Amenity
+from app.models.amenity import Amenity
 
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
@@ -26,6 +26,7 @@ def test_place_creation():
     assert place.reviews[0].text == "Great stay!"
     print("Place creation and relationship test passed!")
 
+test_place_creation()
 
 def test_amenity_creation():
     amenity = Amenity(name="Wi-Fi")

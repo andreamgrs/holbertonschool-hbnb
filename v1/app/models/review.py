@@ -1,9 +1,6 @@
 """This is the review class"""
 from . import BaseModel # Import the class BaseModel from the package inside models 
 
-class Place(BaseModel):
-    def __init__(self, name):
-        self.name = name
 
 class Review(BaseModel):
     """Class for review
@@ -13,29 +10,52 @@ class Review(BaseModel):
         """Initializes a Review instance.
         """
         super().__init__() # call init method from BaseModel 
-        self.validator_existance("place",place)
-        self.validator_existance("user",user)
-        self.validate_rating("rating", rating)
-        self.validator_text("text", text)
         self.text = text
         self.rating = rating
-        self.place = place 
-        self.user = user
-
-    # Validates that rating is between 1 and 5
-    def validate_rating(self, name, value):
-        """Validates that rating is between 1 and 5"""
-        if value < 1 or value > 5:
-            raise ValueError("{} must be between 1 and 5".format(name))
+        self.place_id = place.id 
+        self.user_id = user.id
     
-    # Validator of exitance for user and place ASK -> Already validates in USER CLASS
-    def validator_existance(self, name, value):
-        """Validates the existance of place/user"""
-        if value is None:
-            raise ValueError("{} must exist".format(name))
-        
-    # Validates that text is not an empty string
-    def validator_text(self, name, value):
-        """Validates text"""
+    # --- Getters and Setters ---
+    #Text
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, value):
+        # Validates that text is not an empty string
         if not value:
-            raise ValueError("Review {} is required.".format(name))
+            raise TypeError('Text must be a string and not an empty string')
+        self._text = value
+
+    #rating 
+    @property
+    def rating(self):
+        return self._rating
+
+    @rating.setter
+    def rating(self, value):
+        if value < 1 or value > 5:
+            raise ValueError("Rating must be between 1 and 5")
+        self._rating = value
+    #place  
+    @property
+    def place_id(self):
+        return self._place_id
+    
+    @place_id.setter
+    def place_id(self, value):
+        if not isinstance(value, str) or value.strip() == "":
+            raise TypeError('Place ID must be a non-empty string')
+        self._place_id = value
+    #user
+    @property
+    def user_id(self):
+        return self._user_id
+    
+    @user_id.setter
+    def user_id(self, value):
+        if not isinstance(value, str) or value.strip() == "":
+            raise TypeError('User ID must be a non-empty string')
+        self._user_id = value
+
