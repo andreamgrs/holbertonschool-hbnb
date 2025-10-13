@@ -6,14 +6,14 @@ class Review(BaseModel):
     """Class for review
     """
 
-    def __init__(self, text, rating, place, user):
+    def __init__(self, text, rating, place_id, user_id):
         """Initializes a Review instance.
         """
         super().__init__() # call init method from BaseModel 
         self.text = text
         self.rating = rating
-        self.place_id = place.id 
-        self.user_id = user.id
+        self.place_id = place_id 
+        self.user_id = user_id
     
     # --- Getters and Setters ---
     #Text

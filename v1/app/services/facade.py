@@ -42,11 +42,11 @@ class HBnBFacade:
             raise ValueError("Rating must be between 1 and 5")
         
         # Validator of exitance for user_id 
-        if self.get_user(review.user) is None:
+        if self.get_user(review.user_id) is None:
             raise ValueError("User must exist")
         
         # Validator of exitance for place_id
-        if self.get_place(review.place) is None:
+        if self.get_place(review.place_id) is None:
             raise ValueError("Place must exist")
         self.review_repo.add(review)
 

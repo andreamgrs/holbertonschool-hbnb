@@ -71,9 +71,7 @@ class ReviewResource(Resource):
         if 'rating' in update_review_json:
             review.rating = update_review_json['rating']
 
-        updated_user = facade.update_user(review_id, update_review_json) # facade updates the repo
-        if not updated_user:
-            return {'error': 'User not found'}, 404
+        facade.update_review(review_id, update_review_json) # facade updates the repo
         
         return {
             'message': "Review updated successfully"
