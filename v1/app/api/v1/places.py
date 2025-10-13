@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask import request
 
 api = Namespace('places', description='Place operations')
 
@@ -35,8 +36,13 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         place_data = api.payload #contains the JSON body the user sent
+        owner = facade.get_user(place_data["owner_id"])
+        if owner is None:
+            return  {'error': 'Owner not found'}, 404
+        place_data["owner"] = owner
+        del place_data["owner_id"]
         new_place = facade.create_place(place_data)
-        return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description,
+        return {'title': new_place.title, 'description': new_place.description,
                 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,
                 'owner': new_place.owner.id}, 201
     
@@ -50,11 +56,9 @@ class PlaceList(Resource):
             places_list.append({
                 'id': place.id,
                 'title': place.title,
-                'description': place.description,
                 'price': place.price,
                 'latitude': place.latitude,
-                'longitude': place.longitude,
-                'owner': place.owner.id})
+                'longitude': place.longitude})
         return places_list, 200
 
 @api.route('/<place_id>')
@@ -72,7 +76,12 @@ class PlaceResource(Resource):
                 'price': place.price,
                 'latitude': place.latitude,
                 'longitude': place.longitude,
-                'owner': place.owner.id}
+                'owner': {
+                    'id': place.owner.id,
+                    'first_name': place.owner.first_name,
+                    'last_name': place.owner.last_name,
+                    'email': place.owner.email
+                }}
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -87,7 +96,9 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
-        updated_place = facade.update_place(place_id, update_data)
+        for key, value in update_data.items():
+            place[key] = value
+        updated_place = facade.update_place(place_id, place)
         return {'id': updated_place.id,
                 'title': updated_place.title,
                 'description': updated_place.description,
