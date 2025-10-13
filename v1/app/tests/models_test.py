@@ -1,7 +1,7 @@
 from app.models.user import User
-from app.models.place import Place
-from app.models.review import Review
-from app.models.review import Amenity
+# from app.models.place import Place
+# from app.models.review import Review
+# from app.models.review import Amenity
 
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
