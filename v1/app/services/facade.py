@@ -72,7 +72,7 @@ class HBnBFacade:
 
     # Methods for place
     def create_place(self, place_data):
-        place = User(**place_data)
+        place = Place(**place_data)
         self.place_repo.add(place)
         return place
 

@@ -1,7 +1,11 @@
 from flask import Flask
 from flask_restx import Api
 from app.api.v1.users import api as users_ns
+<<<<<<< HEAD
 from app.api.v1.reviews import api as reviews_ns
+=======
+from app.api.v1.places import api as places_ns
+>>>>>>> 4906102d5275ceadd05c12a031cb03b7ea84c9da
 
 def create_app():
     app = Flask(__name__)
@@ -9,6 +13,7 @@ def create_app():
 
     # register the users namespace, allowing the route defined in api/v1/users to be accessible through /api/v1/users
     api.add_namespace(users_ns, path='/api/v1/users')
+    api.add_namespace(places_ns, path='/api/v1/places')
 
     #adding new review with the route
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
