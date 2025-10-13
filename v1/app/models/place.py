@@ -91,6 +91,8 @@ class Place(BaseModel):
     def price(self, value):
         if not isinstance(value, float):
             raise TypeError('Price must be a float')
+        if value < 0:
+            raise ValueError("Price must be a non-negative value")
         self._price = value
         
     @property
@@ -114,10 +116,10 @@ class Place(BaseModel):
     def longitude (self, value):
         if not isinstance(value, float):
             raise TypeError('Longitude must be a float')
-        if value > -90.0 and value < 90.0:
+        if value > -180.0 and value < 180.0:
             self._longitude  = value
         else:
-            raise ValueError('Longitude must be between -90.0 and 90.0')
+            raise ValueError('Longitude must be between -180.0 and 180.0')
 
     @property
     def owner(self):

@@ -1,6 +1,6 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
-from app.models.user import User
+from app.models.place import Place
 
 class HBnBFacade:
     def __init__(self):
@@ -55,3 +55,22 @@ class HBnBFacade:
         # Placeholder for logic to delete a review
         pass
 
+    # Methods for place
+    def create_place(self, place_data):
+        place = User(**place_data)
+        self.place_repo.add(place)
+        return place
+
+    def get_place(self, place_id):
+        # Retrieve a place by ID, including associated owner and amenities
+        return self.place_repo.get_by_attribute('id', place_id)
+
+
+    def get_all_places(self):
+        # Retrieve all places
+        return self.place_repo.get_all() 
+
+    def update_place(self, place_id, place_data):
+        # Update a place
+        updated_place = self.place_repo.update(place_id, place_data)
+        return updated_place
