@@ -104,14 +104,20 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
-        for key, value in update_data.items():
-            place[key] = value
-        updated_place = facade.update_place(place_id, place)
-        return {'id': updated_place.id,
-                'title': updated_place.title,
-                'description': updated_place.description,
-                'price': updated_place.price,
-                'latitude': updated_place.latitude,
-                'longitude': updated_place.longitude,
-                'owner': updated_place.owner.id}
+        
+        # Update fields if provided
+        if 'title' in update_data:
+            place.title = update_data['title']
+        if 'description' in update_data:
+            place.description = update_data['description']
+        if 'price' in update_data:
+            place.price = update_data['price']
+        # cannot update location or owner?
+        #if 'latitude' in update_data:
+           # place.latitude = update_data['latitude']
+        #if 'longitude' in update_data:
+            #place.longitude = update_data['longitude']
+
+        updated_place = facade.update_place(place_id, update_data)
+        return {"message": "Place updated successfully"}, 200
     

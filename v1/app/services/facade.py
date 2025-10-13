@@ -78,8 +78,7 @@ class HBnBFacade:
 
     def get_place(self, place_id):
         # Retrieve a place by ID, including associated owner and amenities
-        return self.place_repo.get_by_attribute('id', place_id)
-
+        return self.place_repo.get(place_id)
 
     def get_all_places(self):
         # Retrieve all places

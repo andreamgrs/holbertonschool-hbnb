@@ -71,8 +71,8 @@ class Place(BaseModel):
         return self._description
     
     @description.setter
-    def last_name(self, value):
-        if not isinstance(value, str) or not value.isalpha():
+    def description(self, value):
+        if not isinstance(value, str):
             raise TypeError('description must be a string')
  
         # airbnb descuptions are limited to 500 characters
