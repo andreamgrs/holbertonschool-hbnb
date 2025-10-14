@@ -17,7 +17,7 @@ class Place(BaseModel):
         self._latitude = latitude
         self._longitude = longitude
         self._owner = owner
-        self._reviews = []
+        self.reviews = []
         self._amenities = []
 
     # --- Methods ---
@@ -27,9 +27,9 @@ class Place(BaseModel):
         if not isinstance(review, Review):
             raise TypeError('Review not an instance of the Review class')
         # check if review already exists
-        if review in self._reviews:
+        if review in self.reviews:
             raise ValueError('Review already exists')
-        self._reviews.append(review)
+        self.reviews.append(review)
 
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
