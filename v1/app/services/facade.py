@@ -10,8 +10,8 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-    def create_user(self, user_data):
-        user = User(**user_data)
+    def create_user(self, user_data): # create a User object using data received from the API.
+        user = User(**user_data) # User(**user_data) is equivalent to User(id='u001', name='Alice', email='alice@example.com').
         self.user_repo.add(user)
         return user
 
