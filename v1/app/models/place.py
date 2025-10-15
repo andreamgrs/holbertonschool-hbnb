@@ -11,14 +11,14 @@ class Place(BaseModel):
 
     def __init__(self, title, description, price, latitude,  longitude, owner):
         super().__init__()
-        self._title = title
-        self._description = description
-        self._price = price
-        self._latitude = latitude
-        self._longitude = longitude
-        self._owner = owner
+        self.title = title
+        self.description = description
+        self.price = price
+        self.latitude = latitude
+        self.longitude = longitude
+        self.owner = owner
         self.reviews = []
-        self._amenities = []
+        self.amenities = []
 
     # --- Methods ---
     def add_review(self, review):
