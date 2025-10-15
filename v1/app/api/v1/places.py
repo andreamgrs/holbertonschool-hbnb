@@ -90,6 +90,7 @@ class PlaceResource(Resource):
                     'last_name': place.owner.last_name,
                     'email': place.owner.email
                 }}
+        # need to add amenities to the return dict once the class is implemented
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
