@@ -1,61 +1,74 @@
+#!/usr/bin/python3
+"""
+unit tests for the user api
+"""
 import unittest
 from app import create_app
-from app.models.user import User
-from app.models.place import Place
-from app.models.review import Review
+from app.services.facade import HBnBFacade
 
-class TestUserClass(unittest.TestCase):
+
+class TestUserEndpoints(unittest.TestCase):
 
     def setUp(self):
-        # Standard user
-        self.jane = User("Jane", "Doe", "jane.doe@example.com")
-        # Admin user
-        self.admin_jane = User("Jane", "Doe", "jane.doe@example.com")
-        self.admin_jane.is_admin = True
-        # Sample Place for testing
-        self.place = Place("Cafe", "A nice cafe", 10.0, 10.0, 20.0, self.admin_jane)
-        # Sample Review for testing
-        self.review = Review("Great!", 5, "place_1", "user_1")
+        """run before each test: create a test app, client, and fresh facade"""
+        self.app = create_app() #create new Flask app for testing
+        self.facade = HBnBFacade()
+        # clear users manually
+        for user in self.facade.get_all_users():
+            self.facade.user_repo.delete(user.id) #clear everything before start test
 
-    # --- User creation ---
-    def test_user_creation_valid(self):
-        self.assertEqual(self.jane.first_name, "Jane")
-        self.assertEqual(self.jane.last_name, "Doe")
-        self.assertEqual(self.jane.email, "jane.doe@example.com")
-        self.assertFalse(self.jane.is_admin)
-        self.assertEqual(self.jane.places, [])
-        self.assertEqual(self.jane.reviews, [])
+        # use only alphabetic first/last names as per User class 
+        self.valid_user_data = {
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "jane@example.com"
+        }
 
-    # --- Email validation ---
-    def test_user_email_validation(self):
-        self.assertEqual(self.jane.email, "jane.doe@example.com")
-        with self.assertRaises(ValueError):
-            self.jane.email = "invalid-email"
+        self.invalid_user_data = {
+            "first_name": "",
+            "last_name": "123",
+            "email": "invalid-email"
+        }
 
-    # --- Update method ---
-    def test_user_update_fields(self):
-        self.jane.update({
-            "first_name": "Janet",
-            "last_name": "Smith",
-            "email": "janet.smith@example.com",
-            "is_admin": True
-        })
-        self.assertEqual(self.jane.first_name, "Janet")
-        self.assertEqual(self.jane.last_name, "Smith")
-        self.assertEqual(self.jane.email, "janet.smith@example.com")
-        self.assertTrue(self.jane.is_admin)
+    def tearDown(self):
+        """run after each test: clean all users after each test"""
+        for user in self.facade.get_all_users():
+            self.facade.user_repo.delete(user.id)
 
-    def test_user_update_invalid_field(self):
-        self.jane.update({"unknown_field": "value"})
-        self.assertFalse(hasattr(self.jane, "unknown_field"))
+    # --- POST /users/ ---
+    def test_create_user_success(self):
+        """create a valid user"""
+        user = self.facade.create_user(self.valid_user_data)
+        self.assertEqual(user.first_name, "Jane")
+        self.assertEqual(user.last_name, "Doe")
+        self.assertEqual(user.email, "jane@example.com")
+        self.assertIsNotNone(user.id)
+
+    def test_create_user_invalid_data(self):
+        """creating user with invalid data raises error"""
+        with self.assertRaises((TypeError, ValueError)): # tell unittest this should throw an error and if it doesn't, fail the test
+            self.facade.create_user(self.invalid_user_data)
+
+    def test_get_user_by_email(self):
+        """get a user by email"""
+        user = self.facade.create_user(self.valid_user_data)
+        retrieved = self.facade.get_user_by_email("jane@example.com")
+        self.assertEqual(retrieved.id, user.id)
+
+    def test_get_user_by_id(self):
+        """get a user by id"""
+        user = self.facade.create_user(self.valid_user_data)
+        retrieved = self.facade.get_user(user.id)
+        self.assertEqual(retrieved.email, "jane@example.com")
+
+    def test_update_user(self):
+        """update user details"""
+        user = self.facade.create_user(self.valid_user_data)
+        updated_data = {"first_name": "John", "last_name": "Smith", "email": "john@example.com"}
+        updated_user = self.facade.update_user(user.id, updated_data)
+        self.assertEqual(updated_user.first_name, "John")
+        self.assertEqual(updated_user.email, "john@example.com")
 
 
-    # --- is_admin setter ---
-    def test_is_admin_setter(self):
-        self.jane.is_admin = True
-        self.assertTrue(self.jane.is_admin)
-        with self.assertRaises(ValueError):
-            self.jane.is_admin = "yes"
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
