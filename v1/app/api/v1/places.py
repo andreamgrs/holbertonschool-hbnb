@@ -33,24 +33,25 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
+    'amenities': fields.List(fields.String, required=False, description="List of amenities ID's")
 })
 
 @api.route('/')
 class PlaceList(Resource):
-    @api.expect(place_model)
+    @api.expect(place_model, validate=True)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
         place_data = api.payload #contains the JSON body the user sent
+        # Do we do validation here? e.g. check title is not an empty string, check lat and lon, check price
         owner = facade.get_user(place_data["owner_id"])
-        if owner is None:
-            return  {'error': 'Owner not found'}, 404
+        #if owner is None:
+         #   return  {'error': 'Owner not found'}, 404
         place_data["owner"] = owner
         del place_data["owner_id"]
         new_place = facade.create_place(place_data)
-        return {'title': new_place.title, 'description': new_place.description,
+        return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description,
                 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,
                 'owner': new_place.owner.id}, 201
     
