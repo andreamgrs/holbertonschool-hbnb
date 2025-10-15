@@ -99,7 +99,7 @@ class Place(BaseModel):
     def latitude (self):
         return self._latitude 
 
-    @latitude .setter
+    @latitude.setter
     def latitude (self, value):
         if not isinstance(value, float):
             raise TypeError('Latitude must be a float')
