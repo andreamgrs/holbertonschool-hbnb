@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Repository(ABC):
+class Repository(ABC): # repo defines that all these methods are required when you create a subclass but repo does not implement the logic
     @abstractmethod
     def add(self, obj):
         pass
@@ -26,7 +26,7 @@ class Repository(ABC):
         pass
 
 
-class InMemoryRepository(Repository):
+class InMemoryRepository(Repository): # use for testing
     def __init__(self):
         self._storage = {}
 
