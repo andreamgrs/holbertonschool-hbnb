@@ -85,7 +85,7 @@ class TestUserEndpoints(unittest.TestCase):
         create_response = self.client.post('/api/v1/users/', json=(self.new_user_data))
         self.assertEqual(create_response.status_code, 201)
 
-        # extract ID of the created user
+        # get ID of the created user
         user_id = create_response.get_json()['id']
 
         # get the created user
