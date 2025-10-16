@@ -83,9 +83,29 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.get('/api/v1/users/')
         self.assertEqual(response.status_code, 200)
 
+    def test_get_single_user_endpoint(self):
+        """Get a single user via /api/v1/users/<user_id>"""
+        # create a user
+        create_response = self.client.post('/api/v1/users/', json=self.valid_user_data)
+        self.assertEqual(create_response.status_code, 201)
+    
+        # extract ID of the created user
+        user_id = create_response.get_json()['id']
 
-    def test_get_user_endpoint(self):
-        """get user by id via /api/v1/users/<id>"""
+        # get the created user
+        response = self.client.get(f'/api/v1/users/{user_id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data['id'], user_id)
+        self.assertEqual(data['first_name'], self.valid_user_data['first_name'])
+        self.assertEqual(data['last_name'], self.valid_user_data['last_name'])
+        self.assertEqual(data['email'], self.valid_user_data['email'])
+
+        # get a user that does not exist
+        response_not_found = self.client.get('/api/v1/users/non-existent-id')
+        self.assertEqual(response_not_found.status_code, 404)
+        self.assertIn('error', response_not_found.get_json())
+        self.assertEqual(response_not_found.get_json()['error'], 'User not found')
 
       
 
