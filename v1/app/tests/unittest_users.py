@@ -31,10 +31,11 @@ class TestUserEndpoints(unittest.TestCase):
             "email": "invalid-email"
         }
 
-    def tearDown(self):
-        """run after each test: clean all users after each test"""
-        for user in self.facade.get_all_users():
-            self.facade.user_repo.delete(user.id)
+        self.new_user_data = {
+        "first_name": "James",
+        "last_name": "Doe",
+        "email": "james.doe@example.com"
+        }
 
     # --- test facade ---
     def test_create_user_success(self):
@@ -71,24 +72,19 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(updated_user.email, "john@example.com")
 
     # --- API endpoint test ---
-    def test_post_user_endpoint(self):
+    def test_01_post_user_endpoint(self):
         """create user via /api/v1/users"""
         response = self.client.post('/api/v1/users/', json=self.valid_user_data)
         # should succeed and return 201
         self.assertIn(response.status_code, [200, 201, 400])
 
-    def test_get_all_users_endpoint(self):
-        """get all users via /api/v1/users"""
-        self.client.post('/api/v1/users/', json=self.valid_user_data)
-        response = self.client.get('/api/v1/users/')
-        self.assertEqual(response.status_code, 200)
+    def test_02_get_single_user_endpoint(self):
+        """get a single user via /api/v1/users/<user_id>. get the user already created above"""
 
-    def test_get_single_user_endpoint(self):
-        """Get a single user via /api/v1/users/<user_id>"""
-        # create a user
-        create_response = self.client.post('/api/v1/users/', json=self.valid_user_data)
+        # create a user using new user data
+        create_response = self.client.post('/api/v1/users/', json=(self.new_user_data))
         self.assertEqual(create_response.status_code, 201)
-    
+
         # extract ID of the created user
         user_id = create_response.get_json()['id']
 
@@ -97,9 +93,9 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertEqual(data['id'], user_id)
-        self.assertEqual(data['first_name'], self.valid_user_data['first_name'])
-        self.assertEqual(data['last_name'], self.valid_user_data['last_name'])
-        self.assertEqual(data['email'], self.valid_user_data['email'])
+        self.assertEqual(data['first_name'], self.new_user_data['first_name'])
+        self.assertEqual(data['last_name'], self.new_user_data['last_name'])
+        self.assertEqual(data['email'], self.new_user_data['email'])
 
         # get a user that does not exist
         response_not_found = self.client.get('/api/v1/users/non-existent-id')
@@ -107,7 +103,11 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertIn('error', response_not_found.get_json())
         self.assertEqual(response_not_found.get_json()['error'], 'User not found')
 
-      
+    def test_03_get_all_users_endpoint(self):
+        """get all users via /api/v1/users"""
+        self.client.post('/api/v1/users/', json=self.valid_user_data)
+        response = self.client.get('/api/v1/users/')
+        self.assertEqual(response.status_code, 200)
 
     def test_delete_user_endpoint(self):
         """delete user via /api/v1/users/<id>"""
