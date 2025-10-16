@@ -3,6 +3,9 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
+#import logging
+#logger = logging.getLogger(__name__)
+
 
 class HBnBFacade:
     def __init__(self):
@@ -35,23 +38,34 @@ class HBnBFacade:
 # Adding methods for review
     def create_review(self, review_data):
         """Create review"""
-        # Extract fields from input
-        review = Review(**review_data) #unpacking
+        try:
+            # Extract fields from input
+            review = Review(**review_data) #unpacking
+            
+            # Validates that rating is between 1 and 5
+            if review.rating < 1 or review.rating > 5:
+                raise ValueError("Rating must be between 1 and 5")
+            
+            # Validator of exitance for user_id 
+            if self.get_user(review.user_id) is None:
+                raise ValueError("User must exist")
+            
+            # Validator of exitance for place_id
+            if self.get_place(review.place_id) is None:
+                raise ValueError("Place must exist")
+            self.review_repo.add(review)
+            return review, 201
         
-        # Validates that rating is between 1 and 5
-        if review.rating < 1 or review.rating > 5:
-            raise ValueError("Rating must be between 1 and 5")
-        
-        # Validator of exitance for user_id 
-        if self.get_user(review.user_id) is None:
-            raise ValueError("User must exist")
-        
-        # Validator of exitance for place_id
-        if self.get_place(review.place_id) is None:
-            raise ValueError("Place must exist")
-        self.review_repo.add(review)
+        except (ValueError,TypeError) as e:
+        # Handle known error
+            #logger.warning(f"Review creation failed: {e}") #helps to debug, this we developers look it
 
-        return review
+            #let know the user something went wrong, this the user look it with json.loads
+            error_message = str(e)
+            if error_message == "User must exist" or error_message == "Place must exist":
+                return {"status": "error", "message": error_message}, 404
+            return {"status": "error", "message": error_message}, 400
+
 
     def get_review(self, review_id):
         """Get review by ID"""

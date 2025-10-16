@@ -77,7 +77,9 @@ class TestUserEndpoints(unittest.TestCase):
             "user_id": owner_id,
             "place_id": place_id
         })
-        self.assertEqual(review_empty_text_response.status_code, 500)  
+        self.assertEqual(review_empty_text_response.status_code, 400) #400 if input data invalid
+        error_text_data = json.loads(review_empty_text_response.data)
+        print("Status Code:", review_empty_text_response.status_code,"Error:", error_text_data.get("message")) 
 
         #Check the owner_id does not exist
         review_bad_owner_id_response = self.client.post('/api/v1/reviews/', json={
@@ -86,7 +88,9 @@ class TestUserEndpoints(unittest.TestCase):
             "user_id": "jbcjdcj-jbc",
             "place_id": place_id
         })
-        self.assertEqual(review_bad_owner_id_response.status_code, 500)     
+        self.assertEqual(review_bad_owner_id_response.status_code, 404) #404 if does not exist
+        error_owner_data = json.loads(review_bad_owner_id_response.data)
+        print("Status Code:", review_bad_owner_id_response.status_code, "Error:", error_owner_data.get("message"))    
 
         #Check the place_id does not exist
         review_bad_place_id_response = self.client.post('/api/v1/reviews/', json={
@@ -95,4 +99,8 @@ class TestUserEndpoints(unittest.TestCase):
             "user_id": owner_id,
             "place_id": "jbcjdcj-jbc"
         })
-        self.assertEqual(review_bad_place_id_response.status_code, 500)         
+        self.assertEqual(review_bad_place_id_response.status_code, 404) #404 if does not exist
+        error_place_data = json.loads(review_bad_place_id_response.data)
+        print("Status Code:", review_bad_place_id_response.status_code, "Error:", error_place_data.get("message"))
+
+

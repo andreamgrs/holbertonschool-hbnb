@@ -24,7 +24,11 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
 
         # Get the data from the user in json and convert it into a python dict 
         review_data = api.payload
-        new_review = facade.create_review(review_data) #in method create store data in the repo, make sure user exist 
+        #We send the data into facade
+        new_review, status = facade.create_review(review_data) #in method create store data in the repo, make sure user exist 
+        #check the return type, when an error occurs, facade returns a dict not an object
+        if isinstance(new_review, dict) and new_review.get("status") == "error": 
+            return new_review, status
         return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating, 'user_id': new_review.user_id, 'place_id': new_review.place_id}, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
@@ -77,12 +81,6 @@ class ReviewResource(Resource):
             'message': "Review updated successfully"
         }, 200
 
-    #@api.response(200, 'Review deleted successfully')
-    #@api.response(404, 'Review not found')
-    #def delete(self, review_id):
-       # """Delete a review"""
-        # Placeholder for the logic to delete a review
-       # pass
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
