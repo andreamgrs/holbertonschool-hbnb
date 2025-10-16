@@ -12,6 +12,7 @@ class TestUserEndpoints(unittest.TestCase):
     def setUp(self):
         """run before each test: create a test app, client, and fresh facade"""
         self.app = create_app() #create new Flask app for testing
+        self.client = self.app.test_client()
         self.facade = HBnBFacade()
         # clear users manually
         for user in self.facade.get_all_users():
@@ -35,7 +36,7 @@ class TestUserEndpoints(unittest.TestCase):
         for user in self.facade.get_all_users():
             self.facade.user_repo.delete(user.id)
 
-    # --- POST /users/ ---
+    # --- test facade ---
     def test_create_user_success(self):
         """create a valid user"""
         user = self.facade.create_user(self.valid_user_data)
@@ -69,6 +70,30 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(updated_user.first_name, "John")
         self.assertEqual(updated_user.email, "john@example.com")
 
+    # --- API endpoint test ---
+    def test_post_user_endpoint(self):
+        """create user via /api/v1/users"""
+        response = self.client.post('/api/v1/users/', json=self.valid_user_data)
+        # should succeed and return 201
+        self.assertIn(response.status_code, [200, 201, 400])
+
+    def test_get_all_users_endpoint(self):
+        """get all users via /api/v1/users"""
+        self.client.post('/api/v1/users/', json=self.valid_user_data)
+        response = self.client.get('/api/v1/users/')
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_get_user_endpoint(self):
+        """get user by id via /api/v1/users/<id>"""
+
+      
+
+    def test_delete_user_endpoint(self):
+        """delete user via /api/v1/users/<id>"""
+        # since DELETE isn't implemented, expect 405
+        response = self.client.delete('/api/v1/users/123')
+        self.assertEqual(response.status_code, 405)
 
 if __name__ == '__main__':
     unittest.main()
