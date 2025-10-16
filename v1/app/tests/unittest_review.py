@@ -103,4 +103,16 @@ class TestUserEndpoints(unittest.TestCase):
         error_place_data = json.loads(review_bad_place_id_response.data)
         print("Status Code:", review_bad_place_id_response.status_code, "Error:", error_place_data.get("message"))
 
+        #Check the place_id is empty string
+        review_empty_place_response = self.client.post('/api/v1/reviews/', json={
+            "text": "Good space",
+            "rating": 5,
+            "user_id": owner_id,
+            "place_id": ""
+        })
+        self.assertEqual(review_empty_place_response.status_code, 400) #400 if input data invalid
+        error_empty_place_data = json.loads(review_empty_place_response.data)
+        print("Status Code:", review_empty_place_response.status_code, "Error:", error_empty_place_data.get("message"))
+
+
 
