@@ -45,7 +45,7 @@ class TestUserEndpoints(unittest.TestCase):
         print("ID of the place: {}".format(place_id))
 
 
-        # Now, create the review
+        # Create a review
         review_response = self.client.post('/api/v1/reviews/', json={
             "text": "Great place to stay!",
             "rating": 5,
@@ -58,3 +58,41 @@ class TestUserEndpoints(unittest.TestCase):
         review_id = review_data['id']
         print("ID of review: {}".format(review_id))
 
+        # Update a review
+        update_review_response = self.client.put(f'/api/v1/reviews/{review_id}', json={
+            "text": "Not bad",
+            "rating": 5
+        })
+        self.assertEqual(update_review_response.status_code, 200)
+
+        # Verify that data was updated
+        updated_data = json.loads(update_review_response.data)
+        self.assertEqual(updated_data['message'], "Review updated successfully")
+
+
+        #Check the text is not empty 
+        review_empty_text_response = self.client.post('/api/v1/reviews/', json={
+            "text": "",
+            "rating": 5,
+            "user_id": owner_id,
+            "place_id": place_id
+        })
+        self.assertEqual(review_empty_text_response.status_code, 500)  
+
+        #Check the owner_id does not exist
+        review_bad_owner_id_response = self.client.post('/api/v1/reviews/', json={
+            "text": "Good space",
+            "rating": 5,
+            "user_id": "jbcjdcj-jbc",
+            "place_id": place_id
+        })
+        self.assertEqual(review_bad_owner_id_response.status_code, 500)     
+
+        #Check the place_id does not exist
+        review_bad_place_id_response = self.client.post('/api/v1/reviews/', json={
+            "text": "Good space",
+            "rating": 5,
+            "user_id": owner_id,
+            "place_id": "jbcjdcj-jbc"
+        })
+        self.assertEqual(review_bad_place_id_response.status_code, 500)         
