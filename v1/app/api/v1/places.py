@@ -43,17 +43,24 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        place_data = api.payload #contains the JSON body the user sent
-        # Do we do validation here? e.g. check title is not an empty string, check lat and lon, check price
-        owner = facade.get_user(place_data["owner_id"])
-        #if owner is None:
-         #   return  {'error': 'Owner not found'}, 404
-        place_data["owner"] = owner
+        payload_data = api.payload #contains the JSON body the user sent
+        # Perform basic input validation - move this
+        if not payload_data['title'] \
+        or payload_data['latitude'] < -90 or payload_data['latitude'] > 90 \
+        or payload_data['longitude'] < -180 or payload_data['longitude'] > 180 \
+        or payload_data['price'] < 0:
+            return 'Invalid input data', 400
+        owner = facade.get_user(payload_data["owner_id"])
+        if owner is None:
+           return  {'error': 'Owner not found'}, 404
+        # Convert payload data to place data
+        place_data = payload_data
         del place_data["owner_id"]
+        place_data["owner"] = owner
         new_place = facade.create_place(place_data)
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description,
                 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,
-                'owner': new_place.owner.id}, 201
+                'owner_id': new_place.owner.id}, 201
     
 
     @api.response(200, 'List of places retrieved successfully')
@@ -114,11 +121,6 @@ class PlaceResource(Resource):
             place.description = update_data['description']
         if 'price' in update_data:
             place.price = update_data['price']
-        # cannot update location or owner?
-        #if 'latitude' in update_data:
-           # place.latitude = update_data['latitude']
-        #if 'longitude' in update_data:
-            #place.longitude = update_data['longitude']
 
         updated_place = facade.update_place(place_id, update_data)
         return {"message": "Place updated successfully"}, 200
