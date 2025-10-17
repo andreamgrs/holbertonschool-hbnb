@@ -55,26 +55,14 @@ class Place(BaseModel):
 
     @title.setter
     def title(self, value):
-        if not isinstance(value, str):
-            raise TypeError('title must be a string')
-       
-        # airbnb titles are limited to 50 characters
-        is_valid_title = 0 < len(value)<= 50
+        self._title = value        
 
-        if is_valid_title:
-            self._title = value
-        else:
-            raise ValueError('title has max length of 50 chars')
-        
     @property
     def description(self):
         return self._description
     
     @description.setter
     def description(self, value):
-        if not isinstance(value, str):
-            raise TypeError('description must be a string')
- 
         # airbnb descuptions are limited to 500 characters
         is_valid_description = 0 < len(value) <= 500
 
@@ -89,10 +77,6 @@ class Place(BaseModel):
     
     @price.setter
     def price(self, value):
-        if not isinstance(value, float):
-            raise TypeError('Price must be a float')
-        if value < 0:
-            raise ValueError("Price must be a non-negative value")
         self._price = value
         
     @property
@@ -101,12 +85,7 @@ class Place(BaseModel):
 
     @latitude.setter
     def latitude (self, value):
-        if not isinstance(value, float):
-            raise TypeError('Latitude must be a float')
-        if value > -90.0 and value < 90.0:
-            self._latitude  = value
-        else:
-            raise ValueError('Latitude must be between -90.0 and 90.0')
+        self._latitude  = value
 
     @property
     def longitude (self):
@@ -114,13 +93,8 @@ class Place(BaseModel):
 
     @longitude.setter
     def longitude (self, value):
-        if not isinstance(value, float):
-            raise TypeError('Longitude must be a float')
-        if value > -180.0 and value < 180.0:
-            self._longitude  = value
-        else:
-            raise ValueError('Longitude must be between -180.0 and 180.0')
-
+        self._longitude  = value
+       
     @property
     def owner(self):
         return self._owner

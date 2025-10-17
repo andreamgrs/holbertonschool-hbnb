@@ -86,7 +86,36 @@ class HBnBFacade:
 
     # Methods for place
     def create_place(self, place_data):
-        place = Place(**place_data)
+        try:
+            ''' Check input data is valid '''
+            if len(place_data['title']) < 0:
+                raise ValueError("title must not be empty")
+            if len(place_data['title']) > 50:
+                raise ValueError("title must be less than 50 characters") 
+            # Check price is valid
+            if place_data['price'] < 0:
+                raise ValueError('price must be greater than 0')
+            if place_data['latitude'] < -90 or place_data['latitude'] > 90:
+                raise ValueError("latitude must be between -90 and 90")
+            if place_data['longitude'] < -180 or place_data['longitude'] > 180:
+                raise ValueError("longitude must be between -180 and 180")
+            
+            ''' Create user from owner id '''
+            owner = self.get_user(place_data['owner_id'])
+            if owner is None:
+                raise ValueError("Owner not found")
+
+        except (ValueError,TypeError) as e:
+            pass
+
+        place = Place(
+                title=place_data.get('title'),
+                description=place_data.get('description', ''),
+                price=place_data.get('price'),
+                latitude=place_data.get('latitude'),
+                longitude=place_data.get('longitude'),
+                owner=owner  # Pass the actual User object
+                )
         self.place_repo.add(place)
         return place
 
@@ -100,5 +129,12 @@ class HBnBFacade:
 
     def update_place(self, place_id, place_data):
         # Update a place
+        if len(place_data['title']) < 0:
+            raise ValueError("title must not be empty")
+        if len(place_data['title']) > 50:
+            raise ValueError("title must be less than 50 characters") 
+        # Check price is valid
+        if place_data['price'] < 0:
+            raise ValueError('price must be greater than 0')
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
