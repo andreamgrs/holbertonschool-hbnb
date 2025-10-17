@@ -45,6 +45,28 @@ class TestHBnBFacade(unittest.TestCase):
         self.assertEqual(place.longitude, -122.4194)
         self.assertEqual(place.owner.id, owner.id)
 
+    def test_create_place(self):
+        """Test creating a place with invalid data"""
+        # Create place data with invalid title
+        place_data = {
+            'title': '',
+            'description': 'A nice place',
+            'price': 100.0,
+            'latitude': 37.7749,
+            'longitude': -122.4194,
+            'owner_id': '',
+        }
+        # Check that create place raises a value error
+        self.assertRaises(ValueError, self.facade.create_place, place_data)
+
+        # Change title to valid and make price invalid
+        place_data['title'] = 'Cozy Apartment'
+        place_data['price'] = -50.0
+        self.assertRaises(ValueError, self.facade.create_place, place_data)
+
+        # Change price to valid and make latitude invalid
+        
+
     def test_get_all_places(self):
         # Create an owner and two places
         owner = self.facade.create_user({
