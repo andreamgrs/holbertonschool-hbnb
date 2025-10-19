@@ -16,10 +16,34 @@ class HBnBFacade:
 
 # Methods for users
 
-    def create_user(self, user_data): # create a User object using data received from the API.
-        user = User(**user_data) # User(**user_data) is equivalent to User(id='u001', name='Alice', email='alice@example.com').
-        self.user_repo.add(user)
-        return user
+    def create_user(self, user_data):
+        try:
+        # check for duplicate email first
+            if self.user_repo.get_by_attribute('email', user_data['email']):
+                return {'error': 'Email already registered', 'status': 409}
+
+        # then create the user — model validates first_name, last_name, email
+            user = User(**user_data)
+            self.user_repo.add(user)
+
+            return {
+                'user': {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+                },
+                'status': 201
+            }
+
+        except (TypeError, ValueError, AttributeError) as err:
+        # class model raised invalid input error and is captured here (first name, last name, or email)
+            return {'error': str(err), 'status': 400}
+
+        except Exception as err:
+        # catch any unexpected issues
+            return {'error': 'Internal server error', 'status': 500}
+
 
     def _is_valid_uuid(self, value):
         try:

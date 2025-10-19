@@ -12,23 +12,26 @@ user_model = api.model('User', {
 })
 
 @api.route('/')
-class UserList(Resource): #inherit from Flask Resource class. This class ensure we don't have to manually call methods for each route. 
+class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
-    @api.response(400, 'Email already registered')
-    @api.response(400, 'Invalid input data') #Flask checks input JSON to ensure it follows this format.
-
-    def post(self): #instead of having to announce methods POST manually, we put get in the function name
+    @api.response(400, 'Invalid input data')
+    @api.response(409, 'Email already registered')
+    @api.response(500, 'Internal server error')
+    def post(self):
         """Register a new user"""
-        user_data = api.payload #contains the JSON body the user sent
+        user_data = api.payload  # JSON body sent by client
 
-        # Simulate email uniqueness check (to be replaced by real validation with persistence)
-        existing_user = facade.get_user_by_email(user_data['email'])
-        if existing_user:
-            return {'error': 'Email already registered'}, 400
+        # facade handle validation and creation
+        result = facade.create_user(user_data)
 
-        new_user = facade.create_user(user_data)
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
+        # if the facade returned a user object successfully
+        if 'user' in result:
+            return result['user'], result['status']
+
+        # otherwise, return the error message and status code
+        return {'error': result['error']}, result['status']
+
     
     def get(self):
         """Retrieve all users"""
