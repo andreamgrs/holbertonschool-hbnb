@@ -1,3 +1,9 @@
+"""
+1. start your server with python3 run.py
+2. Create an user POST http://localhost:5000/api/v1/users/ 
+3. Create a place POST http://localhost:5000/api/v1/places/ 
+"""
+
 import json
 import unittest
 from app import create_app
@@ -5,8 +11,8 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
 
-
-class TestUserEndpoints(unittest.TestCase):
+# testing models 
+class TestReviewEndpoints(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app()

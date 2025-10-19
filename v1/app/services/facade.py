@@ -95,13 +95,15 @@ class HBnBFacade:
         return self.review_repo.get_all() 
 
     def get_reviews_by_place(self, place_id):
-        """Get review by place"""
-        place = self.place_repo.get(place_id)
-        if place is None:
-            raise ValueError("Place not found")
+        """Get reviews by place_id"""
+        reviews = self.review_repo.get_by_attribute("place_id", place_id)
+        if not reviews:
+            raise ValueError("No reviews found for this place")
+        return reviews
+
 
     def update_review(self, review_id, review_data):
-        updated_review = self.place_repo.update(review_id, review_data)
+        updated_review = self.review_repo.update(review_id, review_data)
         return updated_review
 
     # Methods for place
