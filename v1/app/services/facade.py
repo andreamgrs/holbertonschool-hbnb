@@ -14,6 +14,8 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
+# Methods for users
+
     def create_user(self, user_data): # create a User object using data received from the API.
         user = User(**user_data) # User(**user_data) is equivalent to User(id='u001', name='Alice', email='alice@example.com').
         self.user_repo.add(user)
@@ -54,7 +56,7 @@ class HBnBFacade:
         return updated_user
     
 
-# Adding methods for review
+# Methods for review
     def create_review(self, review_data):
         """Create review"""
         try:
@@ -104,7 +106,7 @@ class HBnBFacade:
         updated_review = self.place_repo.update(review_id, review_data)
         return updated_review
 
-    # Methods for place
+# Methods for place
     def create_place(self, place_data):
         ''' Check input data is valid '''
         if len(place_data['title']) < 0:
@@ -156,3 +158,21 @@ class HBnBFacade:
             raise ValueError('price must be greater than 0')
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
+    
+# Methods for amenities
+
+    def create_amenity(self, amenity_data):
+    # Placeholder for logic to create an amenity
+        pass
+
+    def get_amenity(self, amenity_id):
+    # Placeholder for logic to retrieve an amenity by ID
+        pass
+
+    def get_all_amenities(self):
+    # Placeholder for logic to retrieve all amenities
+        pass
+
+    def update_amenity(self, amenity_id, amenity_data):
+    # Placeholder for logic to update an amenity
+        pass
