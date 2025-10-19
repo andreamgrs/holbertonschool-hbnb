@@ -51,9 +51,16 @@ class UserResource(Resource):
     def get(self, user_id): 
         """Get user details by ID"""
         user = facade.get_user(user_id)
-        if not user:
-            return {'error': 'User not found'}, 404
-        return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
+
+        if isinstance(user, dict) and 'status' in user:
+            return {'error': user['error']}, user['status']
+
+        return {
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+        }, 200  
 
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')

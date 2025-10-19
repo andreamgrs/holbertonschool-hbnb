@@ -44,20 +44,7 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         payload_data = api.payload #contains the JSON body the user sent
-        # Perform basic input validation - move this
-        if not payload_data['title'] \
-        or payload_data['latitude'] < -90 or payload_data['latitude'] > 90 \
-        or payload_data['longitude'] < -180 or payload_data['longitude'] > 180 \
-        or payload_data['price'] < 0:
-            return 'Invalid input data', 400
-        owner = facade.get_user(payload_data["owner_id"])
-        if owner is None:
-           return  {'error': 'Owner not found'}, 404
-        # Convert payload data to place data
-        place_data = payload_data
-        del place_data["owner_id"]
-        place_data["owner"] = owner
-        new_place = facade.create_place(place_data)
+        new_place = facade.create_place(payload_data)
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description,
                 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,
                 'owner_id': new_place.owner.id}, 201
