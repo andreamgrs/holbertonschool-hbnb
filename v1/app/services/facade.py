@@ -2,6 +2,7 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
+import uuid
 #import logging
 #logger = logging.getLogger(__name__)
 
@@ -18,8 +19,27 @@ class HBnBFacade:
         self.user_repo.add(user)
         return user
 
+    def _is_valid_uuid(self, value):
+        try:
+            uuid.UUID(value, version=4)
+            return True
+        except (ValueError, TypeError):
+            return False
+
     def get_user(self, user_id):
-        return self.user_repo.get(user_id)
+            if not self._is_valid_uuid(user_id):
+                return {'error': 'Invalid input', 'status': 400}
+
+            user = self.user_repo.get(user_id)
+            if not user:
+                return {'error': 'User not found', 'status': 404}
+
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)

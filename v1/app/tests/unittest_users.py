@@ -109,7 +109,7 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.get('/api/v1/users/')
         self.assertEqual(response.status_code, 200)
 
-    def test_delete_user_endpoint(self):
+    def test_04_delete_user_endpoint(self):
         """delete user via /api/v1/users/<id>"""
         # since DELETE isn't implemented, expect 405
         response = self.client.delete('/api/v1/users/123')
