@@ -60,13 +60,8 @@ class HBnBFacade:
             if not user:
                 return {'error': 'User not found', 'status': 404}
 
-            return {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email
-            }
-
+            return user
+    
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
     
