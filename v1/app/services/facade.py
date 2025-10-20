@@ -57,6 +57,30 @@ class HBnBFacade:
         updated_user = self.user_repo.update(user_id, data)  # InMemoryRepo has update function in persistence repo
         return updated_user
     
+    # OR WE CAN DO THIS
+    # def update_user(self, user_id, user_data):
+    # """Update a user using setters to enforce validation"""
+    # # Check for valid UUID
+    # if not self._is_valid_uuid(user_id):
+    #     raise ValueError("User id not valid")
+
+    # # Get existing user
+    # user = self.get_user(user_id)
+    # if not user:
+    #     raise TypeError("User not found")
+
+    # # Update fields via setters
+    # if 'first_name' in user_data:
+    #     user.first_name = user_data['first_name']
+    # if 'last_name' in user_data:
+    #     user.last_name = user_data['last_name']
+    # if 'email' in user_data:
+    #     user.email = user_data['email']  # setter validates format / uniqueness if implemented
+
+    # # Save updated user back to repo
+    # self.user_repo.update(user_id, user)
+    # return user
+    
 
 # Methods for review
     def create_review(self, review_data):
