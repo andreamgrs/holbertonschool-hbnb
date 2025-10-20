@@ -141,9 +141,15 @@ class HBnBFacade:
 # Methods for amenities
 
     def create_amenity(self, amenity_data):
+        # check that amenity client trying to create doesn't already exist
+        if self.amenity_repo.get(amenity_data.get('id')):
+            raise ValueError('Amenity already exists')
+
+        # call facade to create amenity
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
-        return amenity
+
+        return amenity # return amenity obj
 
     def get_all_amenities(self):
         return self.amenity_repo.get_all()
