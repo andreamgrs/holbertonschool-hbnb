@@ -19,7 +19,6 @@ class HBnBFacade:
     def create_user(self, user_data):
         # check for duplicate email first
         if self.user_repo.get_by_attribute('email', user_data['email']):
-            raise AttributeError
             raise ValueError('Email already registered')
 
         # then create the user — model validates first_name, last_name, email
