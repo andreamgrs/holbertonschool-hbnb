@@ -61,7 +61,6 @@ class HBnBFacade:
 # Methods for review
     def create_review(self, review_data):
         """Create review"""
-    
         # Extract fields from input
         review = Review(**review_data) #unpacking
             
