@@ -22,15 +22,25 @@ class UserList(Resource):
         """Register a new user"""
         user_data = api.payload  # JSON body sent by client
 
-        # facade handle validation and creation
-        result = facade.create_user(user_data)
+        try:
+            # call facade
+            user = facade.create_user(user_data)
 
-        # if the facade returned a user object successfully
-        if 'user' in result:
-            return result['user'], result['status']
+            # return user as dict if successful
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }, 201
 
-        # otherwise, return the error message and status code
-        return {'error': result['error']}, result['status']
+        except ValueError as err:
+            # e.g., duplicate email, invalid fields
+            return {'error': str(err)}, 400
+
+        except Exception as err:
+            # unexpected issues
+            return {'error': 'Internal server error'}, 500
 
     
     def get(self):

@@ -17,32 +17,16 @@ class HBnBFacade:
 # Methods for users
 
     def create_user(self, user_data):
-        try:
         # check for duplicate email first
-            if self.user_repo.get_by_attribute('email', user_data['email']):
-                return {'error': 'Email already registered', 'status': 409}
+        if self.user_repo.get_by_attribute('email', user_data['email']):
+            raise ValueError('Email already registered')
 
         # then create the user — model validates first_name, last_name, email
-            user = User(**user_data)
-            self.user_repo.add(user)
+        user = User(**user_data)
+        self.user_repo.add(user)
 
-            return {
-                'user': {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email
-                },
-                'status': 201
-            }
+        return user  # always return User object
 
-        except (TypeError, ValueError, AttributeError) as err:
-        # class model raised invalid input error and is captured here (first name, last name, or email)
-            return {'error': str(err), 'status': 400}
-
-        except Exception as err:
-        # catch any unexpected issues
-            return {'error': 'Internal server error', 'status': 500}
 
 
     def _is_valid_uuid(self, value):
