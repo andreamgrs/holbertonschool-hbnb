@@ -28,7 +28,6 @@ class HBnBFacade:
         return user  # always return User object
 
 
-
     def _is_valid_uuid(self, value):
         try:
             uuid.UUID(value, version=4)
