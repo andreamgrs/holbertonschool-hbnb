@@ -55,6 +55,10 @@ class Place(BaseModel):
 
     @title.setter
     def title(self, value):
+        if len(value) <= 0:
+            raise ValueError("title must not be empty")
+        if len(value) > 50:
+            raise ValueError("title must be less than 50 characters") 
         self._title = value        
 
     @property
@@ -64,12 +68,10 @@ class Place(BaseModel):
     @description.setter
     def description(self, value):
         # airbnb descuptions are limited to 500 characters
-        is_valid_description = 0 < len(value) <= 500
+        if len(value) > 500:
+            raise ValueError("description must be less than 500 characters")
+        self._description = value
 
-        if is_valid_description:
-            self._description = value
-        else:
-            raise ValueError('description has max length of 500 chars')
         
     @property
     def price(self):
@@ -77,6 +79,8 @@ class Place(BaseModel):
     
     @price.setter
     def price(self, value):
+        if value < 0:
+            raise ValueError('price must be greater than 0')
         self._price = value
         
     @property
@@ -85,6 +89,8 @@ class Place(BaseModel):
 
     @latitude.setter
     def latitude (self, value):
+        if value < -90 or value > 90:
+            raise ValueError("latitude must be between -90 and 90")
         self._latitude  = value
 
     @property
@@ -93,6 +99,8 @@ class Place(BaseModel):
 
     @longitude.setter
     def longitude (self, value):
+        if value < -180 or value > 180:
+            raise ValueError("longitude must be between -180 and 180")
         self._longitude  = value
        
     @property

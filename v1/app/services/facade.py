@@ -135,15 +135,6 @@ class HBnBFacade:
         return self.place_repo.get_all() 
 
     def update_place(self, place_id, place_data):
-        # Update a place
-        if len(place_data['title']) < 0:
-            raise ValueError("title must not be empty")
-        if len(place_data['title']) > 50:
-            raise ValueError("title must be less than 50 characters") 
-        if len(place_data['description']) > 500:
-            raise ValueError("description must be less than 500 characters")
-        if place_data['price'] < 0:
-            raise ValueError('price must be greater than 0')
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
     
