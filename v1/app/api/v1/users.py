@@ -109,3 +109,24 @@ class UserResource(Resource):
             'last_name': updated_user.last_name,
             'email': updated_user.email
         }, 200
+    
+
+# OR WE CAN DO THIS
+# @api.expect(user_model)
+# @api.response(200, 'User updated successfully')
+# @api.response(404, 'User not found')
+# @api.response(400, 'Invalid input data')
+# def put(self, user_id):
+#     """Update a user's information"""
+#     update_data = request.get_json()
+#     if not update_data:
+#         return {'error': 'Invalid input data'}, 400
+
+#     try:
+#         updated_user = facade.update_user(user_id, update_data)
+#     except ValueError:
+#         return {'error': 'Invalid input data'}, 400
+#     except TypeError:
+#         return {'error': 'User not found'}, 404
+
+#     return {"message": "User updated successfully"}, 200
