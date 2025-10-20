@@ -155,7 +155,14 @@ class HBnBFacade:
         return self.amenity_repo.get_all()
 
     def get_amenity(self, amenity_id):
-        return self.amenity_repo.get(amenity_id)
+        if not self._is_valid_uuid(amenity_id):
+            raise ValueError('Amenity id not valid')
+
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            raise TypeError('Amenity not found')
+
+        return amenity
 
     def update_amenity(self, amenity_id, update_data):
         return self.amenity_repo.update(amenity_id, update_data)
