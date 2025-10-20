@@ -19,6 +19,7 @@ class HBnBFacade:
     def create_user(self, user_data):
         # check for duplicate email first
         if self.user_repo.get_by_attribute('email', user_data['email']):
+            raise AttributeError
             raise ValueError('Email already registered')
 
         # then create the user — model validates first_name, last_name, email
@@ -26,8 +27,6 @@ class HBnBFacade:
         self.user_repo.add(user)
 
         return user  # always return User object
-
-
 
     def _is_valid_uuid(self, value):
         try:
@@ -38,11 +37,11 @@ class HBnBFacade:
 
     def get_user(self, user_id):
             if not self._is_valid_uuid(user_id):
-                return {'error': 'Invalid input', 'status': 400}
+                raise ValueError("User id not valid")
 
             user = self.user_repo.get(user_id)
             if not user:
-                return {'error': 'User not found', 'status': 404}
+                raise TypeError("User not found")
 
             return user
     
@@ -113,33 +112,17 @@ class HBnBFacade:
 
 # Methods for place
     def create_place(self, place_data):
-        ''' Check input data is valid '''
-        if len(place_data['title']) < 0:
-            raise ValueError("title must not be empty")
-        if len(place_data['title']) > 50:
-            raise ValueError("title must be less than 50 characters") 
-        if len(place_data['description']) > 500:
-            raise ValueError("description must be less than 500 characters")
-        if place_data['price'] < 0:
-            raise ValueError('price must be greater than 0')
-        if place_data['latitude'] < -90 or place_data['latitude'] > 90:
-            raise ValueError("latitude must be between -90 and 90")
-        if place_data['longitude'] < -180 or place_data['longitude'] > 180:
-            raise ValueError("longitude must be between -180 and 180")
-        
-        ''' Create user from owner id '''
         owner = self.get_user(place_data['owner_id'])
-        if owner is None:
-            raise ValueError("Owner not found")
-
+        
         place = Place(
-                title=place_data.get('title'),
-                description=place_data.get('description', ''),
-                price=place_data.get('price'),
-                latitude=place_data.get('latitude'),
-                longitude=place_data.get('longitude'),
-                owner=owner  # Pass the actual User object
-                )
+                    title=place_data.get('title'),
+                    description=place_data.get('description', ''),
+                    price=place_data.get('price'),
+                    latitude=place_data.get('latitude'),
+                    longitude=place_data.get('longitude'),
+                    owner=owner  # Pass the actual User object
+                    )
+        
         self.place_repo.add(place)
         return place
 
