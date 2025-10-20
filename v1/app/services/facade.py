@@ -78,33 +78,19 @@ class HBnBFacade:
 # Methods for review
     def create_review(self, review_data):
         """Create review"""
-        try:
-            # Extract fields from input
-            review = Review(**review_data) #unpacking
+    
+        # Extract fields from input
+        review = Review(**review_data) #unpacking
             
-            # Validates that rating is between 1 and 5
-            if review.rating < 1 or review.rating > 5:
-                raise ValueError("Rating must be between 1 and 5")
+        # Validator of exitance for user_id 
+        if self.get_user(review.user_id) is None:
+            raise ValueError("User must exist")
             
-            # Validator of exitance for user_id 
-            if self.get_user(review.user_id) is None:
-                raise ValueError("User must exist")
-            
-            # Validator of exitance for place_id
-            if self.get_place(review.place_id) is None:
-                raise ValueError("Place must exist")
-            self.review_repo.add(review)
-            return review, 201
-        
-        except (ValueError,TypeError) as e:
-        # Handle known error
-            #logger.warning(f"Review creation failed: {e}") #helps to debug, this we developers look it
-
-            #let know the user something went wrong, this the user look it with json.loads
-            error_message = str(e)
-            if error_message == "User must exist" or error_message == "Place must exist":
-                return {"status": "error", "message": error_message}, 404
-            return {"status": "error", "message": error_message}, 400
+        # Validator of exitance for place_id
+        if self.get_place(review.place_id) is None:
+            raise ValueError("Place must exist")
+        self.review_repo.add(review)
+        return review
 
 
     def get_review(self, review_id):
@@ -117,11 +103,16 @@ class HBnBFacade:
 
     def get_reviews_by_place(self, place_id):
         """Get reviews by place_id"""
-        reviews = self.review_repo.get_by_attribute("place_id", place_id)
-        if not reviews:
-            raise ValueError("No reviews found for this place")
-        return reviews
+        #get all the reviews
+        reviews = self.review_repo.get_all()
+        reviews_by_place_id = []
 
+        for review in reviews:
+            if review.place_id == place_id:
+                reviews_by_place_id.append(review)
+        if not reviews_by_place_id:
+            raise ValueError("No reviews found for this place")
+        return reviews_by_place_id
 
     def update_review(self, review_id, review_data):
         updated_review = self.review_repo.update(review_id, review_data)

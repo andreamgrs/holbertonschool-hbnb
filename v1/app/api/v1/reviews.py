@@ -3,6 +3,8 @@ from flask_restx import Namespace, Resource, fields
 from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
+api = Namespace('places', description='Place operations')
+
 
 
 # Define the review model for input validation and documentation
@@ -21,14 +23,17 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
     def post(self):
         """Register a new review"""
         # Placeholder for the logic to register a new review
-
+        try:
         # Get the data from the user in json and convert it into a python dict 
-        review_data = api.payload
-        #We send the data into facade
-        new_review, status = facade.create_review(review_data) #in method create store data in the repo, make sure user exist 
-        #check the return type, when an error occurs, facade returns a dict not an object
-        if isinstance(new_review, dict) and new_review.get("status") == "error": 
-            return new_review, status
+            review_data = api.payload
+            #We send the data into facade
+            new_review = facade.create_review(review_data) #in method create store data in the repo, make sure user exist
+        except (ValueError,TypeError) as e:
+                error_message = str(e)
+                if error_message == "User must exist" or error_message == "Place must exist":
+                    return {"error": error_message}, 404
+                else:
+                    return {"error": error_message}, 400
         return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating, 'user_id': new_review.user_id, 'place_id': new_review.place_id}, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
@@ -88,14 +93,16 @@ class PlaceReviewList(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get all reviews for a specific place"""
-        reviews = facade.get_reviews_by_place(place_id)
-
+        try:
+            reviews = facade.get_reviews_by_place(place_id)
+        except ValueError:
+            return {'error': "No reviews found for this place"}, 404
+        
         reviews_list = []
         for review in reviews:
             reviews_list.append({
                 'id': review.id,
                 'text': review.text,
-                'rating': review.rating,
+                'rating': review.rating
             })
-
         return reviews_list, 200
