@@ -58,19 +58,25 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
-    def get(self, user_id): 
+    @api.response(400, 'Invalid request')
+    def get(self, user_id):
         """Get user details by ID"""
-        user = facade.get_user(user_id)
+        try:
+            user = facade.get_user(user_id)
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }, 200
 
-        if isinstance(user, dict) and 'status' in user:
-            return {'error': user['error']}, user['status']
-
-        return {
-            'id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email
-        }, 200  
+        except ValueError:
+            # raised for invalid UUID
+            return {'error': 'User id not valid'}, 400
+        except TypeError:
+            # raised when user not found
+            return {'error': 'User not found'}, 404
+    
 
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
