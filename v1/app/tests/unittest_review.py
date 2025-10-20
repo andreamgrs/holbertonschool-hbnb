@@ -2,6 +2,11 @@
 1. start your server with python3 run.py
 2. Create an user POST http://localhost:5000/api/v1/users/ 
 3. Create a place POST http://localhost:5000/api/v1/places/ 
+4. Create a review POST http://localhost:5000/api/v1/reviews/
+5. GET review GET http://localhost:5000/api/v1/reviews/
+6. Update review PUT http://localhost:5000api/v1/reviews/<review_id>
+7. Get review again to see update GET http://localhost:5000/api/v1/reviews/
+
 """
 
 import json

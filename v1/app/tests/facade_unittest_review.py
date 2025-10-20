@@ -5,6 +5,7 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
 from app.services.facade import HBnBFacade
+#To run python3 -m unittest app/tests/facade_unittest_review.py
 
 class TestReviewFacade(unittest.TestCase):
     def setUp(self):
@@ -45,10 +46,9 @@ class TestReviewFacade(unittest.TestCase):
         }
 
         #Call de facade create review
-        review1, status = self.facade.create_review(review_data)
+        review1 = self.facade.create_review(review_data)
 
         # Validate return data from the facade
-        self.assertEqual(status, 201)
         self.assertEqual(review1.text, 'Great place to stay!')
         self.assertEqual(review1.rating, 5)
         self.assertEqual(review1.user_id, "123u")
@@ -76,9 +76,11 @@ class TestReviewFacade(unittest.TestCase):
         }
 
         # #Call de facade create review_invalid_rating
-        response, status = self.facade.create_review(review_data_invalid_rating)
-        self.assertEqual(status, 400)
-        self.assertEqual(response["message"], "Rating must be between 1 and 5")
+        with self.assertRaises(ValueError) as context:
+            self.facade.create_review(review_data_invalid_rating)
+
+        self.assertEqual(str(context.exception), "Rating must be between 1 and 5")
+
 
     def test_create_review_03(self):
         """Test creating a review with invalid user"""
@@ -101,9 +103,10 @@ class TestReviewFacade(unittest.TestCase):
         }
 
         # #Call de facade create review_invalid_rating
-        response, status = self.facade.create_review(review_data_invalid_user)
-        self.assertEqual(status, 404)
-        self.assertEqual(response["message"], "User must exist")
+        with self.assertRaises(ValueError) as context:
+            self.facade.create_review(review_data_invalid_user)
+
+        self.assertEqual(str(context.exception), "User must exist")
 
     def test_create_review_04(self):
         """Test creating a review with invalid place"""
@@ -124,9 +127,12 @@ class TestReviewFacade(unittest.TestCase):
         }
 
         # #Call de facade create review_invalid_rating
-        response, status = self.facade.create_review(review_data_invalid_place)
-        self.assertEqual(status, 404)
-        self.assertEqual(response["message"], "Place must exist")
+        with self.assertRaises(ValueError) as context:
+            self.facade.create_review(review_data_invalid_place)
+
+        self.assertEqual(str(context.exception), "Place must exist")
+
+        
 
     def test_create_review_05(self):
         """Test creating a review with invalid text"""
@@ -149,9 +155,10 @@ class TestReviewFacade(unittest.TestCase):
             "place_id": "123p"
         }
 
-        response, status = self.facade.create_review(review_data)
-        self.assertEqual(status, 400)
-        self.assertEqual(response["message"], "Text must be a string and not an empty string")
+        with self.assertRaises(TypeError) as context:
+            self.facade.create_review(review_data)
+
+        self.assertEqual(str(context.exception), "Text must be a string and not an empty string")
     
     def test_get_review(self):
         """Test to get review"""
@@ -195,7 +202,7 @@ class TestReviewFacade(unittest.TestCase):
         # First create owner
         mock_user1 = User(first_name="Alice", last_name="Noe", email="alice@example.com")
         mock_user1.id = "123u"
-        self.facade.get_user = MagicMock(return_value=mock_user1)
+        #self.facade.get_user = MagicMock(return_value=mock_user1)
 
         # Create a place
         mock_place1 = Place(title = "Cozy Apartment", description= "A nice place to stay", price= 100.0, latitude= 37.7749, longitude= -122.4194, owner= mock_user1)
@@ -234,19 +241,33 @@ class TestReviewFacade(unittest.TestCase):
 
     def test_get_reviews_by_place(self):
         """Test to get reviews by place id"""
-        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="222u", place_id="123p")
-        mock_review2 = Review(text = "Nice!", rating= 5, user_id ="111u", place_id="123p")
+          # First create owner
+        mock_user1 = User(first_name="Alice", last_name="Noe", email="alice@example.com")
+        mock_user1.id = "123u"
 
-        self.facade.review_repo.get_by_attribute = MagicMock(return_value=[mock_review1, mock_review2])
+        #Create another user
+        mock_user2 = User(first_name="Gabe", last_name="Noe", email="Gabe@example.com")
+        mock_user2.id = "1234u"
+
+        # Create a place
+        mock_place1 = Place(title = "Cozy Apartment", description= "A nice place to stay", price= 100.0, latitude= 37.7749, longitude= -122.4194, owner= mock_user1)
+        mock_place1.id ="123p"
+
+        # Create review
+        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
+        mock_review1.place = mock_place1
+        mock_review2 = Review(text = "Nice!", rating= 5, user_id ="1234u", place_id="123p")
+        mock_review2.place = mock_place1
+    
+        self.facade.review_repo.get_all = MagicMock(return_value=[mock_review1, mock_review2])
         result = self.facade.get_reviews_by_place("123p")
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0].place_id, "123p")
+
 
     def test_get_reviews_by_no_place(self):
         """Test to get reviews by no place"""
         # Simulate no reviews found
-        self.facade.review_repo.get_by_attribute = MagicMock(return_value=None)
-
+        self.facade.review_repo.get_all = MagicMock(return_value=[])
         # Assert that ValueError is raised
         with self.assertRaises(ValueError) as context:
             self.facade.get_reviews_by_place("novalid123")

@@ -115,3 +115,6 @@ class PlaceResource(Resource):
         updated_place = facade.update_place(place_id, update_data)
         return {"message": "Place updated successfully"}, 200
     
+
+    
+    
