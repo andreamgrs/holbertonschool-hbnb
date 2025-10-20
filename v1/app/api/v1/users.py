@@ -17,14 +17,20 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Invalid input data')
     @api.response(409, 'Email already registered')
-    @api.response(500, 'Internal server error')
     def post(self):
         """Register a new user"""
         user_data = api.payload  # JSON body sent by client
 
         try:
+
+            # Simulate email uniqueness check (to be replaced by real validation with persistence)
+            existing_user = facade.get_user_by_email(user_data['email'])
+            if existing_user:
+                return {'error': 'Email already registered'}, 409
+            
             # call facade
             user = facade.create_user(user_data)
+
 
             # return user as dict if successful
             return {
@@ -34,13 +40,8 @@ class UserList(Resource):
                 'email': user.email
             }, 201
 
-        except ValueError as err:
-            # e.g., duplicate email, invalid fields
-            return {'error': str(err)}, 400
-
-        except Exception as err:
-            # unexpected issues
-            return {'error': 'Internal server error'}, 500
+        except Exception:
+            return {"error": "Invalid input data"}, 400
 
     
     def get(self):
