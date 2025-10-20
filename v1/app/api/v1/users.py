@@ -21,13 +21,7 @@ class UserList(Resource):
         """Register a new user"""
         user_data = api.payload  # JSON body sent by client
 
-        try:
-
-            # Simulate email uniqueness check (to be replaced by real validation with persistence)
-            existing_user = facade.get_user_by_email(user_data['email'])
-            if existing_user:
-                return {'error': 'Email already registered'}, 409
-            
+        try:           
             # call facade
             user = facade.create_user(user_data)
 
@@ -40,7 +34,9 @@ class UserList(Resource):
                 'email': user.email
             }, 201
 
-        except Exception:
+        except ValueError as error:
+            if str(error) == 'Email already registered':
+                return {'error': 'Email already registered'}, 409
             return {"error": "Invalid input data"}, 400
 
     
