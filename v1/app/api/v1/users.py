@@ -17,20 +17,27 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Invalid input data')
     @api.response(409, 'Email already registered')
-    @api.response(500, 'Internal server error')
     def post(self):
         """Register a new user"""
         user_data = api.payload  # JSON body sent by client
 
-        # facade handle validation and creation
-        result = facade.create_user(user_data)
+        try:           
+            # call facade
+            user = facade.create_user(user_data)
 
-        # if the facade returned a user object successfully
-        if 'user' in result:
-            return result['user'], result['status']
 
-        # otherwise, return the error message and status code
-        return {'error': result['error']}, result['status']
+            # return user as dict if successful
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }, 201
+
+        except ValueError as error:
+            if str(error) == 'Email already registered':
+                return {'error': 'Email already registered'}, 409
+            return {"error": "Invalid input data"}, 400
 
     
     def get(self):
@@ -51,19 +58,25 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
-    def get(self, user_id): 
+    @api.response(400, 'Invalid request')
+    def get(self, user_id):
         """Get user details by ID"""
-        user = facade.get_user(user_id)
+        try:
+            user = facade.get_user(user_id)
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }, 200
 
-        if isinstance(user, dict) and 'status' in user:
-            return {'error': user['error']}, user['status']
-
-        return {
-            'id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email
-        }, 200  
+        except ValueError:
+            # raised for invalid UUID
+            return {'error': 'User id not valid'}, 400
+        except TypeError:
+            # raised when user not found
+            return {'error': 'User not found'}, 404
+    
 
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')

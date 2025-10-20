@@ -7,6 +7,7 @@ python3 -m unittest app/tests/facade_test_places.py
 import unittest
 from unittest.mock import ANY
 from app.services.facade import HBnBFacade
+import json
 
 
 class TestHBnBFacade(unittest.TestCase):
@@ -14,7 +15,7 @@ class TestHBnBFacade(unittest.TestCase):
     def setUp(self):
         """Set up fresh facade instance for each test"""
         self.facade = HBnBFacade()
-    
+ 
     def test_create_place(self):
         """Test creating a place"""
         # First create an owner
@@ -23,7 +24,7 @@ class TestHBnBFacade(unittest.TestCase):
             'last_name': 'Smith',
             'email': 'alice@example.com'
         })
-
+        
         # Create valid place data
         place_data = {
             'title': 'Cozy Apartment',
@@ -31,12 +32,11 @@ class TestHBnBFacade(unittest.TestCase):
             'price': 100.0,
             'latitude': 37.7749,
             'longitude': -122.4194,
-            'owner_id': owner.id,
+            'owner_id': owner.id
         }
 
         # Call facade to create place
         place = self.facade.create_place(place_data)
-
         # Validate return data from the facade
         self.assertEqual(place.title, 'Cozy Apartment')
         self.assertEqual(place.description, 'A nice place')
@@ -45,8 +45,14 @@ class TestHBnBFacade(unittest.TestCase):
         self.assertEqual(place.longitude, -122.4194)
         self.assertEqual(place.owner.id, owner.id)
 
-    def test_create_place(self):
+
+    def test_create_place_invalid(self):
         """Test creating a place with invalid data"""
+        owner = self.facade.create_user({
+            'first_name': 'Alice',
+            'last_name': 'Smith',
+            'email': 'alice@example.com'
+        })
         # Create place data with invalid title
         place_data = {
             'title': '',
@@ -54,7 +60,7 @@ class TestHBnBFacade(unittest.TestCase):
             'price': 100.0,
             'latitude': 37.7749,
             'longitude': -122.4194,
-            'owner_id': '',
+            'owner_id': owner.id,
         }
         # Check that create place raises a value error
         self.assertRaises(ValueError, self.facade.create_place, place_data)
@@ -63,9 +69,6 @@ class TestHBnBFacade(unittest.TestCase):
         place_data['title'] = 'Cozy Apartment'
         place_data['price'] = -50.0
         self.assertRaises(ValueError, self.facade.create_place, place_data)
-
-        # Change price to valid and make latitude invalid
-        
 
     def test_get_all_places(self):
         # Create an owner and two places
