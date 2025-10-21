@@ -100,17 +100,8 @@ class PlaceResource(Resource):
         if not update_data: # if cannot find any request
             return {'error': 'Invalid input'}, 400
 
-        place = facade.get_place(place_id)
-        if not place:
+        if not facade.get_place(place_id):
             return {'error': 'Place not found'}, 404
-        
-        # Update fields if provided
-        if 'title' in update_data:
-            place.title = update_data['title']
-        if 'description' in update_data:
-            place.description = update_data['description']
-        if 'price' in update_data:
-            place.price = update_data['price']
 
         updated_place = facade.update_place(place_id, update_data)
         return {"message": "Place updated successfully"}, 200
