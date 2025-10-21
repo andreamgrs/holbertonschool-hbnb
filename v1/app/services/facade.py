@@ -56,9 +56,13 @@ class HBnBFacade:
         # get the existing user
         user = self.get_user(user_id)
         # update fields via setters
-        user.first_name = user_data.get("first_name")
-        user.last_name = user_data.get("last_name")
-        user.email = user_data.get("email")
+        if "first_name" in user_data:
+            user.first_name = user_data["first_name"]
+        if "last_name" in user_data:
+            user.last_name = user_data["last_name"]
+        if "email" in user_data:
+            user.email = user_data["email"]
+
         #save updated data to repo
         updated_user = self.user_repo.update(user_id, user_data)
         return updated_user

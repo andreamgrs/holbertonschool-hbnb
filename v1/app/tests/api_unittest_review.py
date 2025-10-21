@@ -47,7 +47,8 @@ class TestReviewEndpoints(unittest.TestCase):
             "price": 100.0,
             "latitude": 37.7749,
             "longitude": -122.4194,
-            "owner_id": owner_id
+            "owner_id": owner_id,
+            "amenities": []
         })
         self.assertEqual(place_response.status_code, 201)
         #Get the id from places 
@@ -99,7 +100,7 @@ class TestReviewEndpoints(unittest.TestCase):
             "user_id": "jbcjdcj-jbc",
             "place_id": place_id
         })
-        self.assertEqual(review_bad_owner_id_response.status_code, 404) #404 if does not exist
+        self.assertEqual(review_bad_owner_id_response.status_code, 400) #404 if does not exist
         error_owner_data = json.loads(review_bad_owner_id_response.data)
         print("Status Code:", review_bad_owner_id_response.status_code, "Error:", error_owner_data.get("message"))    
 

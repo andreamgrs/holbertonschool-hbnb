@@ -84,11 +84,14 @@ class UserResource(Resource):
     def put(self, user_id):
         """Update a user's information"""
         update_data = request.get_json()
-        try:
-            updated_user = facade.update_user(user_id, update_data)
-        except ValueError:
-            return {'error': 'Invalid input data'}, 400
-        except TypeError:
-            return {'error': 'User not found'}, 404
+        if not update_data: # if cannot find any request
+            return {'error': 'Invalid input'}, 400
 
-        return {"User details retrieved successfully"}, 200
+        user = facade.get_user(user_id)
+        if not user:
+             return {'error': 'User not found'}, 404
+        updated_user = facade.update_user(user_id, update_data)
+    
+        return {
+            'message': "User updated successfully"
+        }, 200
