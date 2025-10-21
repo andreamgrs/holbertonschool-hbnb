@@ -36,8 +36,6 @@ class HBnBFacade:
             return False
 
     def get_user(self, user_id):
-            if not self._is_valid_uuid(user_id):
-                raise ValueError("User id not valid")
 
             user = self.user_repo.get(user_id)
             if not user:
@@ -177,9 +175,7 @@ class HBnBFacade:
 
     def update_amenity(self, amenity_id, amenity_data):
         """Update an amenity using setters to enforce validation"""
-        if not self._is_valid_uuid(amenity_id):
-            raise ValueError("Amenity id not valid")
-
+        
         amenity = self.amenity_repo.get(amenity_id)
         if not amenity:
             raise TypeError("Amenity not found")
