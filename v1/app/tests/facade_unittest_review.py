@@ -181,9 +181,11 @@ class TestReviewFacade(unittest.TestCase):
         """Test to updated review"""
         mock_review = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
         mock_review.id ="123r"
+        self.facade.get_review = MagicMock(return_value=mock_review)
+
 
          # Updated data
-        updated_data = {"text": "Great stay!", "rating": 5}
+        updated_data = {'text': "Great stay!", 'rating': 5}
 
         # Expected updated review
         updated_review = Review(text="Great stay!", rating=5, user_id="123u", place_id="123p")
@@ -192,8 +194,8 @@ class TestReviewFacade(unittest.TestCase):
         # Mock the repo update method
         self.facade.review_repo.update = MagicMock(return_value=updated_review)
         result = self.facade.update_review("123r", updated_data)
-        self.assertEqual(result.text, "Great stay!")
-        self.assertEqual(result.rating, 5)
+        self.assertEqual(result.text, updated_review.text)
+        self.assertEqual(result.rating, updated_review.rating)
 
 
     def test_get_all_reviews_multiple(self):
