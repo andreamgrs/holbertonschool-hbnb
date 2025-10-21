@@ -45,7 +45,6 @@ Implements HBnB Evolution’s backend using Python and Flask.
 
 ## 📁 Project Structure
 
- ```Hbnb
     v1/
     ├── app/
     │   ├── __init__.py
@@ -84,8 +83,7 @@ Implements HBnB Evolution’s backend using Python and Flask.
     ├── .gitignore
     ├── README.md
 
-## ⚙️ Installation 
-
+## 📁 Project Structure
 ## 🧪 Testing
 
 ## 👥 Contributors
