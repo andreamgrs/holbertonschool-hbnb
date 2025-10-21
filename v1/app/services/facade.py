@@ -175,5 +175,20 @@ class HBnBFacade:
 
         return amenity
 
-    def update_amenity(self, amenity_id, update_data):
-        return self.amenity_repo.update(amenity_id, update_data)
+    def update_amenity(self, amenity_id, amenity_data):
+        """Update an amenity using setters to enforce validation"""
+        if not self._is_valid_uuid(amenity_id):
+            raise ValueError("Amenity id not valid")
+
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            raise TypeError("Amenity not found")
+
+        # update fields via setters
+        if 'name' in amenity_data:
+            amenity.name = amenity_data['name']  # setter validates length/type
+
+        # save the updated amenity back to repo
+        self.amenity_repo.update(amenity_id, amenity)
+        return amenity
+
