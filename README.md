@@ -1,11 +1,10 @@
 # 🏠 HBnB Project
 
-Welcome to the HBnB project — a full-stack clone of the AirBnB web application, built to demonstrate learned capabilities of backend and frontend development, object-oriented programming, and deployment.
+Welcome to the HBnB project! A full-stack clone of the AirBnB web application, built to demonstrate learned capabilities of backend and frontend development, object-oriented programming, and deployment.
 
 ## 📌 Table of Contents
 
 - [Description](#description)
-- [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
