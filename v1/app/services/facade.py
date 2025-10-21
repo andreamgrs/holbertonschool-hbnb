@@ -56,9 +56,9 @@ class HBnBFacade:
         # get the existing user
         user = self.get_user(user_id)
         # update fields via setters
-        user.first_name = user_data.get("first_name", user.first_name)
-        user.last_name = user_data.get("last_name", user.last_name)
-        user.email = user_data.get("email", user.email)
+        user.first_name = user_data.get("first_name")
+        user.last_name = user_data.get("last_name")
+        user.email = user_data.get("email")
         #save updated data to repo
         updated_user = self.user_repo.update(user_id, user_data)
         return updated_user
@@ -181,14 +181,9 @@ class HBnBFacade:
         """Update an amenity using setters to enforce validation"""
         
         amenity = self.amenity_repo.get(amenity_id)
-        if not amenity:
-            raise TypeError("Amenity not found")
 
-        # update fields via setters
-        if 'name' in amenity_data:
-            amenity.name = amenity_data['name']  # setter validates length/type
+        amenity.name = amenity_data.get("name")
 
-        # save the updated amenity back to repo
-        self.amenity_repo.update(amenity_id, amenity)
-        return amenity
+        updated_amenity = self.amenity_repo.update(amenity_id, amenity_data)
+        return updated_amenity
 
