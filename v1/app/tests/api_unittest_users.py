@@ -37,6 +37,12 @@ class TestUserEndpoints(unittest.TestCase):
         "email": "james.doe@example.com"
         }
 
+        self.user_for_update = {
+        "first_name": "Jameson",
+        "last_name": "Doe",
+        "email": "jamesondoe@example.com"
+        }
+
     # --- API endpoint test ---
     def test_01_post_user_endpoint(self):
         """create user via /api/v1/users"""
@@ -80,6 +86,32 @@ class TestUserEndpoints(unittest.TestCase):
         # since DELETE isn't implemented, expect 405
         response = self.client.delete('/api/v1/users/123')
         self.assertEqual(response.status_code, 405)
+
+    def test_05_update_user_endpoint(self):
+        """update user via /api/v1/users/<id>"""
+        # create new user
+        create_response = self.client.post('/api/v1/users/', json=self.user_for_update)
+        self.assertEqual(create_response.status_code, 201)
+        user_id = create_response.get_json()['id']
+
+        # update only first name
+        updated_data = {"first_name": "Jamesonsecond"}
+
+        # update user
+        update_response = self.client.put(f'/api/v1/users/{user_id}', json=updated_data)
+        self.assertEqual(update_response.status_code, 200)
+        updated_user = update_response.get_json()
+
+        # change only first name
+        self.assertEqual(updated_user['id'], user_id)
+        self.assertEqual(updated_user['first_name'], updated_data['first_name'])
+        self.assertEqual(updated_user['last_name'], self.user_for_update['last_name'])
+        self.assertEqual(updated_user['email'], self.user_for_update['email'])
+
+        # if update a user that doesn't exist
+        response_not_found = self.client.put('/api/v1/users/non-existent-id', json=updated_data)
+        self.assertEqual(response_not_found.status_code, 404)
+        self.assertEqual(response_not_found.get_json().get('error'), 'User not found')
 
 if __name__ == '__main__':
     unittest.main()
