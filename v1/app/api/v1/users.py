@@ -82,51 +82,16 @@ class UserResource(Resource):
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input')
     def put(self, user_id):
-        """Update an existing user"""
-        update_data = request.get_json() # get the json data from request
-        if not update_data: # if cannot find any request
-            return {'error': 'Invalid input'}, 400
+        """Update a user's information"""
+        update_data = request.get_json()
+        if not update_data:
+            return {'error': 'Invalid input data'}, 400
 
-        user = facade.get_user(user_id) # confirm can find user before update
-        if not user:
+        try:
+            facade.update_user(user_id, update_data)
+        except ValueError:
+            return {'error': 'Invalid input data'}, 400
+        except TypeError:
             return {'error': 'User not found'}, 404
 
-        # Update fields if provided
-        if 'first_name' in update_data:
-            user.first_name = update_data['first_name']
-        if 'last_name' in update_data:
-            user.last_name = update_data['last_name']
-        if 'email' in update_data:
-            user.email = update_data['email']
-
-        updated_user = facade.update_user(user_id, update_data) # make sure your facade updates the repo
-        if not updated_user:
-            return {'error': 'User not found'}, 404
-        
-        return {
-            'id': updated_user.id,
-            'first_name': updated_user.first_name,
-            'last_name': updated_user.last_name,
-            'email': updated_user.email
-        }, 200
-    
-
-# OR WE CAN DO THIS
-# @api.expect(user_model)
-# @api.response(200, 'User updated successfully')
-# @api.response(404, 'User not found')
-# @api.response(400, 'Invalid input data')
-# def put(self, user_id):
-#     """Update a user's information"""
-#     update_data = request.get_json()
-#     if not update_data:
-#         return {'error': 'Invalid input data'}, 400
-
-#     try:
-#         updated_user = facade.update_user(user_id, update_data)
-#     except ValueError:
-#         return {'error': 'Invalid input data'}, 400
-#     except TypeError:
-#         return {'error': 'User not found'}, 404
-
-#     return {"message": "User updated successfully"}, 200
+        return {"message": "User updated successfully"}, 200
