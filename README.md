@@ -2,15 +2,6 @@
 
 Welcome to the HBnB project! A full-stack clone of the AirBnB web application, built to demonstrate learned capabilities of backend and frontend development, object-oriented programming, and deployment.
 
-## 📌 Table of Contents
-
-- [Description](#description)
-- [Project Overview](#project-overview)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Testing](#testing)
-- [Contributors](#contributors)
 
 ## 📖 Description
 
@@ -42,11 +33,8 @@ Implements HBnB Evolution’s backend using Python and Flask.
 
 
 ### 🚧 V3 – [Coming Soon]
-t
 
 ### 🚀 V4 – [Coming Soon]
-
-
 
 ## 🛠 Technologies Used
 
@@ -95,4 +83,12 @@ t
     ├── requirements.txt
     ├── .gitignore
     ├── README.md
-    ```
+
+## ⚙️ Installation 
+
+## 🧪 Testing
+
+## 👥 Contributors
+- Thannie Phan
+- Sheeny Soulsby
+- Andrea Munoz
