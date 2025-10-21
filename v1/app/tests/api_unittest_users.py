@@ -95,7 +95,11 @@ class TestUserEndpoints(unittest.TestCase):
         user_id = user_data['id']  # get the actual ID returned by the API
 
         # update only first name
-        updated_data = {"first_name": "Jamesonsecond"}
+        updated_data = {
+            "first_name": "Hello",
+            "last_name": "World",
+            "email": "hello@example.com"
+        }
 
         # update user
         update_response = self.client.put(f'/api/v1/users/{user_id}', json=updated_data)
@@ -104,8 +108,8 @@ class TestUserEndpoints(unittest.TestCase):
 
         self.assertEqual(updated_user['id'], user_id)
         self.assertEqual(updated_user['first_name'], updated_data['first_name'])
-        self.assertEqual(updated_user['last_name'], self.user_for_update['last_name'])
-        self.assertEqual(updated_user['email'], self.user_for_update['email'])
+        self.assertEqual(updated_user['last_name'], updated_data['last_name'])
+        self.assertEqual(updated_user['email'], updated_data['email'])
 
 if __name__ == '__main__':
     unittest.main()

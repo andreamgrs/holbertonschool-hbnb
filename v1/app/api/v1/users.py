@@ -91,4 +91,9 @@ class UserResource(Resource):
         except TypeError:
             return {'error': 'User not found'}, 404
 
-        return {"User details retrieved successfully"}, 200
+        return {
+                'id': updated_user.id,
+                'first_name': updated_user.first_name,
+                'last_name': updated_user.last_name,
+                'email': updated_user.email
+        }, 200
