@@ -34,9 +34,9 @@ class UserList(Resource):
                 'email': user.email
             }, 201
 
-        except ValueError as error:
-            if str(error) == 'Email already registered':
-                return {'error': 'Email already registered'}, 409
+        except ValueError:
+            return {'error': 'Email already registered'}, 400
+        except TypeError:
             return {"error": "Invalid input data"}, 400
 
     
