@@ -29,7 +29,7 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
             new_review = facade.create_review(review_data) #in method create store data in the repo, make sure user exist
         except (ValueError,TypeError) as e:
                 error_message = str(e)
-                if error_message == "User must exist" or error_message == "Place must exist":
+                if error_message == "User id not valid" or error_message == "Place must exist":
                     return {"error": error_message}, 404
                 else:
                     return {"error": error_message}, 400
@@ -72,15 +72,8 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        
-        # Update fields if provided
-        if 'text' in update_review_json:
-            review.text = update_review_json['text']
-        if 'rating' in update_review_json:
-            review.rating = update_review_json['rating']
 
-        facade.update_review(review_id, update_review_json) # facade updates the repo
-        
+        updated_review = facade.update_review(review_id, update_review_json)
         return {
             'message': "Review updated successfully"
         }, 200

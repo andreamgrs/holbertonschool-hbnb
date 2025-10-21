@@ -81,7 +81,7 @@ class HBnBFacade:
             
         # Validator of exitance for user_id 
         if self.get_user(review.user_id) is None:
-            raise ValueError("User must exist")
+            raise ValueError("User must exist")#in the api test doesnt show user_must_exist -> show user id not valid
             
         # Validator of exitance for place_id
         if self.get_place(review.place_id) is None:
@@ -112,6 +112,9 @@ class HBnBFacade:
         return reviews_by_place_id
 
     def update_review(self, review_id, review_data):
+        review = self.get_review(review_id)
+        review.text = review_data.get("text")
+        review.rating = review_data.get("rating")
         updated_review = self.review_repo.update(review_id, review_data)
         return updated_review
 
