@@ -39,13 +39,15 @@ class TestPlaceEndpoints(unittest.TestCase):
             "price": 100.0,
             "latitude": 37.7749,
             "longitude": -122.4194,
-            "owner_id": test_owner_id
+            "owner_id": test_owner_id,
+            "amenities": []
             }
         response_places = self.client.post('/api/v1/places/', json=request_place_data)
         response_place_data = json.loads(response_places.data)
         test_place_id = response_place_data["id"]
         # Remove id from response for comparison with request
         del response_place_data["id"]
+        del request_place_data["amenities"]
         self.assertEqual(request_place_data, response_place_data)
         self.assertEqual(response_places.status_code, 201)
 
@@ -93,7 +95,8 @@ class TestPlaceEndpoints(unittest.TestCase):
                 "first_name": "Jane",
                 "last_name": "Doe",
                 "email": "jane.doe@example.com"
-            }
+            },
+            "amenities": []
         }
         self.assertEqual(response_data, expected_response)
     
