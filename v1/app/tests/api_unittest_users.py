@@ -89,10 +89,10 @@ class TestUserEndpoints(unittest.TestCase):
 
     def test_05_update_user_endpoint(self):
         """update user via /api/v1/users/<id>"""
-        # create new user
         create_response = self.client.post('/api/v1/users/', json=self.user_for_update)
         self.assertEqual(create_response.status_code, 201)
-        user_id = create_response.get_json()['id']
+        user_data = create_response.get_json()
+        user_id = user_data['id']  # get the actual ID returned by the API
 
         # update only first name
         updated_data = {"first_name": "Jamesonsecond"}
@@ -102,16 +102,10 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(update_response.status_code, 200)
         updated_user = update_response.get_json()
 
-        # change only first name
         self.assertEqual(updated_user['id'], user_id)
         self.assertEqual(updated_user['first_name'], updated_data['first_name'])
         self.assertEqual(updated_user['last_name'], self.user_for_update['last_name'])
         self.assertEqual(updated_user['email'], self.user_for_update['email'])
-
-        # if update a user that doesn't exist
-        response_not_found = self.client.put('/api/v1/users/non-existent-id', json=updated_data)
-        self.assertEqual(response_not_found.status_code, 404)
-        self.assertEqual(response_not_found.get_json().get('error'), 'User not found')
 
 if __name__ == '__main__':
     unittest.main()

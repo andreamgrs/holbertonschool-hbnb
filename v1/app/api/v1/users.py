@@ -76,7 +76,7 @@ class UserResource(Resource):
         except TypeError:
             # raised when user not found
             return {'error': 'User not found'}, 404
-    
+            
 
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
@@ -84,9 +84,6 @@ class UserResource(Resource):
     def put(self, user_id):
         """Update a user's information"""
         update_data = request.get_json()
-        if not update_data:
-            return {'error': 'Invalid input data'}, 400
-
         try:
             updated_user = facade.update_user(user_id, update_data)
         except ValueError:
@@ -94,9 +91,4 @@ class UserResource(Resource):
         except TypeError:
             return {'error': 'User not found'}, 404
 
-        return {
-                'id': updated_user.id,
-                'first_name': updated_user.first_name,
-                'last_name': updated_user.last_name,
-                'email': updated_user.email
-            }, 200
+        return {"User details retrieved successfully"}, 200
