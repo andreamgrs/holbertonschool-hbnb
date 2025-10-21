@@ -83,7 +83,7 @@ Implements HBnB Evolution’s backend using Python and Flask.
     ├── .gitignore
     ├── README.md
 
-## 📁 Project Structure
+## 🛠 Installation
 ## 🧪 Testing
 
 ## 👥 Contributors
