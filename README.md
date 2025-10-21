@@ -2,27 +2,39 @@
 
 Welcome to the HBnB project! A full-stack clone of the AirBnB web application, built to demonstrate learned capabilities of backend and frontend development, object-oriented programming, and deployment.
 
-## 📌 Table of Contents
-
-- [Description](#description)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Testing](#testing)
-- [Contributors](#contributors)
 
 ## 📖 Description
 
-HBnB is a web-based application that allows users to create, update, and manage listings of places to stay. It mimics the core functionality of AirBnB, including user authentication, listing creation, and changes based on user interaction or data
+HBnB is a web-based application that allows users to create, update, and manage listings of places to stay. It mimics the core functionality of AirBnB, including user authentication, listing creation, and changes based on user interaction or data.
 
-This project is part of the Holberton School curriculum and is built in stages:
-- V1
-In this first part we focus on creating comprehensive technical documentation that will serve as the foundation for the development of the HBnB Evolution application.
-- V2
-In the second part we implement the core functionality of the application using Python and Flask. This will involve building the Presentation and Business logic layers, and defining essential classes, methods and API endpoints, based on the design developed in the previous part. 
-- V3
-- V4
+## 🏗️ Project Overview
 
+### 📚 V1 – Documentation Foundation
+
+This phase defines the architecture and business logic for HBnB Evolution.
+
+- Core entities: User, Place, Review, Amenity
+- Business rules and relationships
+- Layered architecture: Presentation, Business Logic, Persistence
+- UML diagrams: package, class, and API sequences
+
+The goal is to produce clear, implementation-ready documentation that guides development in later stages.
+
+
+### 🧩 V2 – Core Application Logic
+
+Implements HBnB Evolution’s backend using Python and Flask.
+
+- Core models (User, Place, Review, Amenity)
+- RESTful API endpoints with flask-restx.
+- Layered architecture with facade pattern.
+- Data serialization and validation.
+- Unittests for facade and endpoints.
+
+
+### 🚧 V3 – [Coming Soon]
+
+### 🚀 V4 – [Coming Soon]
 
 ## 🛠 Technologies Used
 
@@ -31,9 +43,8 @@ In the second part we implement the core functionality of the application using 
 | Backend      | Python, Flask                 |
 | Testing      | unittest, postman             |
 
-## Project Structure
+## 📁 Project Structure
 
- ```Hbnb
     v1/
     ├── app/
     │   ├── __init__.py
@@ -71,4 +82,11 @@ In the second part we implement the core functionality of the application using 
     ├── requirements.txt
     ├── .gitignore
     ├── README.md
-    ```
+
+## 🛠 Installation
+## 🧪 Testing
+
+## 👥 Contributors
+- Thannie Phan
+- Sheeny Soulsby
+- Andrea Munoz

@@ -37,15 +37,15 @@ class Place(BaseModel):
         if not isinstance(amenity, Amenity):
             raise TypeError('Amenity not an instance of the Amenity class')
         # check if amenity already exists
-        if amenity in self._amenities:
+        if amenity in self.amenities:
             raise ValueError('Amenity already exists')
         
-        self._amenities.append(amenity)
+        self.amenities.append(amenity)
     
     def list_amenities(self):
         """List all the amenities of a place"""
         print(f"The {self._title} listing has the following amenities:")
-        for element in self._amenities:
+        for element in self.amenities:
             print(element)
 
     # --- Getters and Setters ---

@@ -33,7 +33,7 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=False, description="List of amenities ID's")
+    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
 })
 
 @api.route('/')
@@ -76,6 +76,10 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
+        ammenity_list = []
+        for amenity in place.amenities:
+            amenity_dict = {"id": amenity.id, "name": amenity.name}
+            ammenity_list.append(amenity_dict)
         return {'id': place.id,
                 'title': place.title,
                 'description': place.description,
@@ -87,8 +91,8 @@ class PlaceResource(Resource):
                     'first_name': place.owner.first_name,
                     'last_name': place.owner.last_name,
                     'email': place.owner.email
-                }}
-        # need to add amenities to the return dict once the class is implemented
+                },
+                'amenities': ammenity_list}
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -105,7 +109,4 @@ class PlaceResource(Resource):
 
         updated_place = facade.update_place(place_id, update_data)
         return {"message": "Place updated successfully"}, 200
-    
-
-    
     
