@@ -43,6 +43,7 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
+        ## owner = facade.get_user(owner_id)
         payload_data = api.payload #contains the JSON body the user sent
         try:
             new_place = facade.create_place(payload_data)

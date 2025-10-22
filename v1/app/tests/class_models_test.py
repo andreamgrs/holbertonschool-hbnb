@@ -10,8 +10,9 @@ def test_user_creation():
     assert user.email == "john.doe@example.com"
     assert user.is_admin is False  # Default value
     print("User creation test passed!")
-test_user_creation()
 
+# test user name not string
+# test user name too long
 
 def test_place_creation():
     owner = User(first_name="Alice", last_name="Smith", email="alice.smith@example.com")
@@ -27,9 +28,10 @@ def test_place_creation():
     assert place.reviews[0].text == "Great stay!"
     print("Place creation and relationship test passed!")
 
-test_place_creation()
-
 def test_amenity_creation():
     amenity = Amenity(name="Wi-Fi")
     assert amenity.name == "Wi-Fi"
     print("Amenity creation test passed!")
+
+test_user_creation()
+test_place_creation()
