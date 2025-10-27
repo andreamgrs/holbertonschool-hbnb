@@ -97,10 +97,10 @@ class TestReviewEndpoints(unittest.TestCase):
         review_bad_owner_id_response = self.client.post('/api/v1/reviews/', json={
             "text": "Good space",
             "rating": 5,
-            "user_id": "ijl",
+            "user_id": "no-existance",
             "place_id": place_id
         })
-        self.assertEqual(review_bad_owner_id_response.status_code, 400) #404 if does not exist
+        self.assertEqual(review_bad_owner_id_response.status_code, 404) #404 if does not exist
         error_owner_data = json.loads(review_bad_owner_id_response.data)
         print("Status Code:", review_bad_owner_id_response.status_code, "Error:", error_owner_data.get("message"))    
 

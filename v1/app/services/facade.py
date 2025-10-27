@@ -39,7 +39,7 @@ class HBnBFacade:
 
             user = self.user_repo.get(user_id)
             if not user:
-                raise ValueError("User not found")
+                raise TypeError("User not found")
 
             return user
     
