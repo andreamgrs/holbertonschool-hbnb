@@ -37,3 +37,4 @@ def test_amenity_creation():
 
 test_user_creation()
 test_place_creation()
+test_amenity_creation()
