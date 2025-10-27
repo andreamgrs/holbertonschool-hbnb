@@ -3,6 +3,8 @@ from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
 
+# Run by python3 -m app.tests.class_models_test
+
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
     assert user.first_name == "John"
