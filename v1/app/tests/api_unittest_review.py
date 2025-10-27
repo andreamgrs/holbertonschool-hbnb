@@ -8,7 +8,7 @@
 7. Get review again to see update GET http://localhost:5000/api/v1/reviews/
 
 """
-
+#To run python3 -m unittest app/tests/api_unittest_review.py
 import json
 import unittest
 from app import create_app
@@ -97,7 +97,7 @@ class TestReviewEndpoints(unittest.TestCase):
         review_bad_owner_id_response = self.client.post('/api/v1/reviews/', json={
             "text": "Good space",
             "rating": 5,
-            "user_id": "jbcjdcj-jbc",
+            "user_id": "ijl",
             "place_id": place_id
         })
         self.assertEqual(review_bad_owner_id_response.status_code, 400) #404 if does not exist
