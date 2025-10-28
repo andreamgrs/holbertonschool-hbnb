@@ -20,7 +20,7 @@ class Amenity(BaseModel):
         # ensure that the value is up to 100 alphabets only after removing excess white-space
         is_valid_name = 0 < len(value.strip()) <= 50
         if is_valid_name:
-            self._name = value.strip()
+            self._name = value
         else:
             raise ValueError("Invalid name length!")
 
