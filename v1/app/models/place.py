@@ -55,10 +55,12 @@ class Place(BaseModel):
 
     @title.setter
     def title(self, value):
+        if not isinstance(value, str):
+            raise TypeError("title must be a string")
         if len(value) <= 0:
             raise ValueError("title must not be empty")
-        if len(value) > 50:
-            raise ValueError("title must be less than 50 characters") 
+        if len(value) > 100:
+            raise ValueError("title must be less than 100 characters") 
         self._title = value        
 
     @property
@@ -67,6 +69,8 @@ class Place(BaseModel):
     
     @description.setter
     def description(self, value):
+        if not isinstance(value, str):
+            raise TypeError("description must be a string")
         # airbnb descuptions are limited to 500 characters
         if len(value) > 500:
             raise ValueError("description must be less than 500 characters")
@@ -79,6 +83,8 @@ class Place(BaseModel):
     
     @price.setter
     def price(self, value):
+        if not isinstance(value, float):
+            raise TypeError("price must be a float")
         if value < 0:
             raise ValueError('price must be greater than 0')
         self._price = value
@@ -89,6 +95,8 @@ class Place(BaseModel):
 
     @latitude.setter
     def latitude (self, value):
+        if not isinstance(value, float):
+            raise TypeError("latitude must be a float")
         if value < -90 or value > 90:
             raise ValueError("latitude must be between -90 and 90")
         self._latitude  = value
@@ -99,6 +107,8 @@ class Place(BaseModel):
 
     @longitude.setter
     def longitude (self, value):
+        if not isinstance(value, float):
+            raise TypeError("longitude must be a float")
         if value < -180 or value > 180:
             raise ValueError("longitude must be between -180 and 180")
         self._longitude  = value
