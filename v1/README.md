@@ -85,7 +85,7 @@ Implements HBnB Evolution’s backend using Python and Flask.
     ├── .gitignore
     ├── README.md
 
-## 🛠 Installation and running for V1 
+## 🛠 Installation and running
 
 ### Clone the repository
 ```bash
@@ -94,16 +94,16 @@ cd holbertonschool-hbnb
 ```
 ### Create a virtual environment 
 ```bash
-python3 -m venv venv 
+cd v1/
+python3 -m venv venv
+source venv/bin/activate
 ```
 ### Install requirements
 ```bash
-cd v1/
 pip install -r requirements.txt
 ```
 ### Run the application and the API will start.
 ```bash
-cd v1/
 python3 run.py
 # Visit: http://localhost:5000/api/v1/
 ```
