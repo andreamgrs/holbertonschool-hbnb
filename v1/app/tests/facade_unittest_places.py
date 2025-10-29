@@ -9,7 +9,6 @@ from unittest.mock import ANY
 from app.services.facade import HBnBFacade
 import json
 
-
 class TestHBnBFacade(unittest.TestCase):
 
     def setUp(self):

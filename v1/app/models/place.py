@@ -120,5 +120,5 @@ class Place(BaseModel):
     @owner.setter
     def owner(self, value):
         if not isinstance(value, User):
-            raise TypeError('User is not an instance of the User class')
+            raise TypeError('Owner is not an instance of the User class')
         self._owner = value

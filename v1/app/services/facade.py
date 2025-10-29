@@ -125,14 +125,18 @@ class HBnBFacade:
                 raise ValueError(f"Amenity with ID {amenity_id} not found")
             amenities_list.append(amenity)
         
-        place = Place(
-                    title=place_data.get('title'),
-                    description=place_data.get('description', ''),
-                    price=place_data.get('price'),
-                    latitude=place_data.get('latitude'),
-                    longitude=place_data.get('longitude'),
-                    owner=owner  # Pass the actual User object
-                    )
+        try:
+            place = Place(
+                        title=place_data.get('title'),
+                        description=place_data.get('description', ''),
+                        price=place_data.get('price'),
+                        latitude=place_data.get('latitude'),
+                        longitude=place_data.get('longitude'),
+                        owner=owner  # Pass the actual User object
+                        )
+        except ValueError as e:
+            raise ValueError(e)
+        
         for amenity in amenities_list:
             place.add_amenity(amenity)
         
