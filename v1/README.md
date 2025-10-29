@@ -85,13 +85,29 @@ Implements HBnB Evolution’s backend using Python and Flask.
     ├── .gitignore
     ├── README.md
 
-## 🛠 Installation and running 
+## 🛠 Installation and running for V1 
+
+### Clone the repository
+```bash
+git clone https://github.com/andreamgrs/holbertonschool-hbnb.git
+cd holbertonschool-hbnb
+```
+### Create a virtual environment 
+```bash
+python3 -m venv venv 
+```
+### Install requirements
 ```bash
 cd v1/
 pip install -r requirements.txt
+```
+### Run the application and the API will start.
+```bash
+cd v1/
 python3 run.py
 # Visit: http://localhost:5000/api/v1/
 ```
+
 ## 🧪 Testing
 
 This project uses Python’s built-in `unittest` framework to validate class models, API endpoints, and facade logic. Each test ensures that components behave correctly and integrate smoothly.
@@ -114,7 +130,7 @@ cd v1/
 python3 -m unittest app/tests/api_unittest_review.py
 ```
 
-### 🔹 Facade LOgic Tests
+### 🔹 Facade Logic Tests
 
 Each model has its own test file named using the format: app/tests/facade_unittest_"name-of-model".py
 ```bash
