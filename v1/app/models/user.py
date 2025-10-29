@@ -17,34 +17,6 @@ class User(BaseModel):
         self.reviews = []
 
     # --- Methods ---
-    def create_place(self, place):
-        """User create a place"""
-        from . import Place
-        if not isinstance(place, Place):
-            raise TypeError('expecting a place')
-        
-        if not self.is_admin:
-            raise PermissionError('only admins/owners can add places.')
-
-        if place not in self.places:
-            self.places.append(place)
-            place.owner = self
-    
-    
-
-    def add_review(self, review):
-        """User write a review"""
-        from . import Review
-        from . import Place
-
-        if not isinstance(review, Review):
-            raise TypeError('expecting a review')
-        if not isinstance(review.place, Place):
-            raise TypeError("review must be for a valid place")
-
-        if review not in self.reviews:
-            self.reviews.append(review)
-            review.user = self
 
     def update(self, data):
         """update user details"""
