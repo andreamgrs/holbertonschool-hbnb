@@ -2,7 +2,6 @@
 
 Welcome to the HBnB project! A full-stack clone of the AirBnB web application, built to demonstrate learned capabilities of backend and frontend development, object-oriented programming, and deployment.
 
-
 ## 📖 Description
 
 HBnB is a web-based application that allows users to create, update, and manage listings of places to stay. It mimics the core functionality of AirBnB, including user authentication, listing creation, and changes based on user interaction or data.
@@ -69,9 +68,12 @@ Implements HBnB Evolution’s backend using Python and Flask.
     │   │   ├── __init__.py
     │   │   ├── repository.py
     │   ├── tests/
+    │   │   ├──api_unittest_amenity.py
     │   │   ├──api_unittest_places.py
     │       ├──api_unittest_review.py
     │       ├──api_unittest_users.py
+    │       ├──class_model_amenity_test.py
+    │       ├──class_model_review_test.py
     │       ├──class_models_test.py
     │       ├──facade_unittest_amenity.py
     │       ├──facade_unittest_places.py
@@ -83,8 +85,44 @@ Implements HBnB Evolution’s backend using Python and Flask.
     ├── .gitignore
     ├── README.md
 
-## 🛠 Installation
+## 🛠 Installation and running 
+```bash
+cd v1/
+pip install -r requirements.txt
+python3 run.py
+# Visit: http://localhost:5000/api/v1/
+```
 ## 🧪 Testing
+
+This project uses Python’s built-in `unittest` framework to validate class models, API endpoints, and facade logic. Each test ensures that components behave correctly and integrate smoothly.
+
+### 🔹 Class Model Tests
+
+Each model has its own test file named using the format: class_model_<name-of-model>_test.py
+Example with review test:
+```bash
+cd v1/
+python3 -m app.tests.class_model_review_test
+```
+
+### 🔹 API Endpoint Tests
+
+Each model has its own test file named using the format: app/tests/api_unittest_<name-of-model>.py
+Example with review test:
+```bash
+cd v1/
+python3 -m unittest app/tests/api_unittest_review.py
+```
+
+### 🔹 Facade LOgic Tests
+
+Each model has its own test file named using the format: app/tests/facade_unittest_<name-of-model>.py
+Example with review test:
+```bash
+cd v1/
+python3 -m unittest app/tests/facade_unittest_review.py
+```
+
 
 ## 👥 Contributors
 - Thannie Phan
