@@ -99,8 +99,8 @@ This project uses Python’s built-in `unittest` framework to validate class mod
 ### 🔹 Class Model Tests
 
 Each model has its own test file named using the format: class_model_<name-of-model>_test.py
-Example with review test:
 ```bash
+# Example with review test:
 cd v1/
 python3 -m app.tests.class_model_review_test
 ```
@@ -108,8 +108,8 @@ python3 -m app.tests.class_model_review_test
 ### 🔹 API Endpoint Tests
 
 Each model has its own test file named using the format: app/tests/api_unittest_<name-of-model>.py
-Example with review test:
 ```bash
+# Example with review test:
 cd v1/
 python3 -m unittest app/tests/api_unittest_review.py
 ```
@@ -117,8 +117,8 @@ python3 -m unittest app/tests/api_unittest_review.py
 ### 🔹 Facade LOgic Tests
 
 Each model has its own test file named using the format: app/tests/facade_unittest_<name-of-model>.py
-Example with review test:
 ```bash
+# Example with review test:
 cd v1/
 python3 -m unittest app/tests/facade_unittest_review.py
 ```
