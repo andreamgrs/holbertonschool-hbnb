@@ -1,5 +1,5 @@
 """This is the review class"""
-from .base import BaseModel # Import the class BaseModel from the package inside models 
+from . import BaseModel # Import the class BaseModel from the package inside models 
 
 
 class Review(BaseModel):
@@ -24,7 +24,7 @@ class Review(BaseModel):
     @text.setter
     def text(self, value):
         # Validates that text is not an empty string
-        if not value:
+        if not isinstance(value, str) or value.strip() == "":
             raise TypeError('Text must be a string and not an empty string')
         self._text = value
 
