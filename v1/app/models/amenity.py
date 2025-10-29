@@ -1,7 +1,7 @@
 """
 This is a amenity class
 """
-from .base import BaseModel
+from app.models.base import BaseModel
 
 class Amenity(BaseModel):
     def __init__(self, name):
