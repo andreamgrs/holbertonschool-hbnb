@@ -36,10 +36,13 @@ class HBnBFacade:
             return False
 
     def get_user(self, user_id):
-
+            if not self._is_valid_uuid(user_id):
+                raise ValueError(f"User id '{user_id}' is not valid")
+            
             user = self.user_repo.get(user_id)
+
             if not user:
-                raise TypeError("User not found")
+                raise TypeError(f"User with '{user_id}' not found")
 
             return user
     

@@ -68,18 +68,22 @@ class UserResource(Resource):
         try:
             user = facade.get_user(user_id)
             return {
+                'message': 'User details retrieved successfully',
+                'user': {
                 'id': user.id,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email
+                }
             }, 200
 
         except ValueError:
             # raised for invalid UUID
-            return {'error': 'User id not valid'}, 400
+            return {'error': f"User id '{user_id}' is not valid"}, 400
+
         except TypeError:
             # raised when user not found
-            return {'error': 'User not found'}, 404
+            return {'error': f"User with id '{user_id}' not found"}, 404
             
 
     @api.response(200, 'User updated successfully')
