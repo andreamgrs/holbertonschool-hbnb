@@ -1,7 +1,7 @@
 """
 This is the user class
 """
-from .base import BaseModel
+from app.models.base import BaseModel
 import re
 
 
