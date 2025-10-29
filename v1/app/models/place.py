@@ -1,7 +1,7 @@
 """
 This is the place class
 """
-from .base import BaseModel
+from app.models.base import BaseModel
 from .amenity import Amenity
 from .review import Review
 from .user import User
