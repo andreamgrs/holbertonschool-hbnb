@@ -11,6 +11,7 @@ user_model = api.model('User', {
     'email': fields.String(required=True, description='Email of the user')
 })
 
+# CREATE USER
 @api.route('/')
 class UserList(Resource):
     @api.expect(user_model, validate=True)
@@ -43,7 +44,7 @@ class UserList(Resource):
         except TypeError:
             return {"error": "Invalid input data"}, 400
 
-    
+    # GET ALL USER 
     def get(self):
         """Retrieve all users"""
         all_users = facade.get_all_users()
@@ -57,7 +58,7 @@ class UserList(Resource):
             })
         return users_list, 200
     
-
+# GET SINGLE USER BY ID
 @api.route('/<user_id>')
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
@@ -84,8 +85,10 @@ class UserResource(Resource):
         except TypeError:
             # raised when user not found
             return {'error': f"User with id '{user_id}' not found"}, 404
-            
-
+        
+        
+# UPDATE SINGLE USER BY ID
+    @api.expect(user_model, validate=True)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input')
@@ -97,12 +100,16 @@ class UserResource(Resource):
 
         user = facade.get_user(user_id)
         if not user:
-             return {'error': 'User not found'}, 404
+             return {'error': f"User id '{user_id}' is not valid"}, 404
+        
         updated_user = facade.update_user(user_id, update_data)
     
         return {
+                'message': 'User updated successfully',
+                'user': {
                 'id': updated_user.id,
                 'first_name': updated_user.first_name,
                 'last_name': updated_user.last_name,
                 'email': updated_user.email
+                }
             }, 201
