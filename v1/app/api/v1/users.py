@@ -28,10 +28,14 @@ class UserList(Resource):
 
             # return user as dict if successful
             return {
+                'message': 'User successfully created',
+                'user':
+                {
                 'id': user.id,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email
+                }
             }, 201
 
         except ValueError:
