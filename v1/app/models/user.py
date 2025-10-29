@@ -33,7 +33,7 @@ class User(BaseModel):
 
     @first_name.setter
     def first_name(self, value):
-        if not isinstance(value, str) or not value.isalpha():
+        if not isinstance(value, str)
             raise TypeError('first name must be a string')
        
         is_valid_name = 0 < len(value.strip()) <= 50
@@ -49,7 +49,7 @@ class User(BaseModel):
     
     @last_name.setter
     def last_name(self, value):
-        if not isinstance(value, str) or not value.isalpha():
+        if not isinstance(value, str)
             raise TypeError('last name must be a string')
  
         is_valid_name = 0 < len(value.strip()) <= 50
