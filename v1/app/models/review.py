@@ -1,5 +1,5 @@
 """This is the review class"""
-from . import BaseModel # Import the class BaseModel from the package inside models 
+from .base import BaseModel # Import the class BaseModel from the package inside models 
 
 
 class Review(BaseModel):
