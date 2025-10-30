@@ -16,9 +16,12 @@ class Amenity(BaseModel):
 
     @name.setter
     def name(self, value):
-        """Setter for prop name"""
+        """Setter for amenity name"""
+        if not isinstance(value, str):
+            raise TypeError('Amenity name must be a string')
+        
         if 0 < len(value.strip()) <= 50: # check name is <= 50 chars only after strip spaces
-            self._name = value.strip() # store only the name that's stripped of spaces in between
+            self._name = value # originally want to store only the name that's stripped of spaces in between but removed this to be aligned with feedback and users model file
         else:
             raise ValueError("Invalid name length!")
 

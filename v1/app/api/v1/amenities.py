@@ -9,9 +9,10 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
+# CREATE AMENITY
 @api.route('/')
 class AmenityList(Resource):
-    @api.expect(amenity_model)
+    @api.expect(amenity_model, validate=TRUE)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
@@ -27,7 +28,9 @@ class AmenityList(Resource):
             }, 201
         
         except ValueError:
-            return {'error': 'Invalid input data'}, 400
+            return {'error': 'Invalid name length'}, 400
+        except TypeError:
+            return {'error': 'Amenity name must be a string'}, 400
 
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
