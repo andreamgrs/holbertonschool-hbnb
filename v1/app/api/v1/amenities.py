@@ -12,7 +12,7 @@ amenity_model = api.model('Amenity', {
 # CREATE AMENITY
 @api.route('/')
 class AmenityList(Resource):
-    @api.expect(amenity_model, validate=TRUE)
+    @api.expect(amenity_model, validate=True)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
