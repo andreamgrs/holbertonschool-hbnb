@@ -88,6 +88,6 @@ class AmenityResource(Resource):
             }, 200
         
         except ValueError:
-            return {'error': 'Invalid input'}, 400
+            return {'error':  f"Amenity '{amenity_id}' is not valid"}, 400
         except TypeError:
             return {'error': f"Amenity '{amenity_id}' not found"}, 404
