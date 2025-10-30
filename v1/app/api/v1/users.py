@@ -100,7 +100,7 @@ class UserResource(Resource):
 
         user = facade.get_user(user_id)
         if not user:
-             return {'error': f"User id '{user_id}' is not valid"}, 404
+             return {'error': f"User id '{user_id}' cannot be found"}, 404
         
         updated_user = facade.update_user(user_id, update_data)
     
@@ -112,4 +112,4 @@ class UserResource(Resource):
                 'last_name': updated_user.last_name,
                 'email': updated_user.email
                 }
-            }, 201
+            }, 200
