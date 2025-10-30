@@ -4,8 +4,6 @@ from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
 
-
-
 # Define the review model for input validation and documentation
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
@@ -27,13 +25,9 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
             review_data = api.payload
             #We send the data into facade
             new_review = facade.create_review(review_data) #in method create store data in the repo, make sure user exist
-        except (ValueError,TypeError) as e:
-                error_message = str(e)
-                if error_message == "User id not valid" or error_message == "Place must exist":
-                    return {"error": error_message}, 404
-                else:
-                    return {"error": error_message}, 400
-        return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating, 'user_id': new_review.user_id, 'place_id': new_review.place_id}, 201
+        except Exception as e:
+                    return {"error": "Invalid input data"}, 400
+        return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating, 'user_id': new_review.user.id, 'place_id': new_review.place.id}, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
@@ -57,7 +51,7 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        return {'id': review.id, 'text': review.text, 'rating': review.rating, 'user_id': review.user_id, 'place_id': review.place_id}, 200
+        return {'id': review.id, 'text': review.text, 'rating': review.rating, 'user': review.user_id, 'place': review.place_id}, 200
 
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')

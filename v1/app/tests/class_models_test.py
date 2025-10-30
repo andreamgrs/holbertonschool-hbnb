@@ -21,7 +21,7 @@ def test_place_creation():
     place = Place(title="Cozy Apartment", description="A nice place to stay", price=100, latitude=37.7749, longitude=-122.4194, owner=owner)
 
     # Adding a review
-    review = Review(text="Great stay!", rating=5, place_id="123", user_id="s56")
+    review = Review(text="Great stay!", rating=5, place="123", user_id="s56")
     place.add_review(review)
 
     assert place.title == "Cozy Apartment"

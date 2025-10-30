@@ -70,17 +70,12 @@ class HBnBFacade:
 
 # Methods for review
     def create_review(self, review_data):
+        user = self.get_user(review_data['user_id'])
+        place = self.get_place(review_data['place_id'])
         """Create review"""
         # Extract fields from input
-        review = Review(**review_data) #unpacking
+        review = Review(text=review_data.get('text'), rating=review_data.get('rating'), place=place, user=user) #unpacking
             
-        # Validator of exitance for user_id 
-        if self.get_user(review.user_id) is None:
-            raise ValueError("User must exist")#in the api test doesnt show user_must_exist -> show user id not valid
-            
-        # Validator of exitance for place_id
-        if self.get_place(review.place_id) is None:
-            raise ValueError("Place must exist")
         self.review_repo.add(review)
         return review
 

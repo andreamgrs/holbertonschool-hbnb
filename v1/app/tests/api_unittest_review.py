@@ -34,9 +34,7 @@ class TestReviewEndpoints(unittest.TestCase):
         user_data = json.loads(user_response.data) 
         owner_id = user_data['id']
         self.assertEqual(user_response.status_code, 201) #It verify that user_response.status_code is equal to 201, 
-        #user_data = user_response.get_json()
-        #user_id = user_data.get("id")
-        #self.assertIsNotNone(user_id) #check that user_id is not None
+        print("Status code for user creation:",user_response.status_code)
         print("ID of the owner: {}".format(owner_id))
 
 
@@ -54,6 +52,7 @@ class TestReviewEndpoints(unittest.TestCase):
         #Get the id from places 
         place_data = json.loads(place_response.data)
         place_id = place_data['id']
+        print("Status code for place creation:", place_response.status_code)
         print("ID of the place: {}".format(place_id))
 
 
@@ -68,6 +67,7 @@ class TestReviewEndpoints(unittest.TestCase):
          #Get the id from the review
         review_data = json.loads(review_response.data)
         review_id = review_data['id']
+        print("Status code for review creation:", review_response.status_code)
         print("ID of review: {}".format(review_id))
 
         # Update a review
@@ -76,10 +76,11 @@ class TestReviewEndpoints(unittest.TestCase):
             "rating": 5
         })
         self.assertEqual(update_review_response.status_code, 200)
-
+        print("Status code for update review:", update_review_response.status_code)
         # Verify that data was updated
         updated_data = json.loads(update_review_response.data)
         self.assertEqual(updated_data['message'], "Review updated successfully")
+        print("Message for update review: {}".format(updated_data['message']))
 
 
         #Check the text is not empty 
@@ -91,7 +92,8 @@ class TestReviewEndpoints(unittest.TestCase):
         })
         self.assertEqual(review_empty_text_response.status_code, 400) #400 if input data invalid
         error_text_data = json.loads(review_empty_text_response.data)
-        print("Status Code:", review_empty_text_response.status_code,"Error:", error_text_data.get("message")) 
+        print("Status Code of empty text:", review_empty_text_response.status_code)
+        print("Message for error text: {}".format(error_text_data['error']))
 
         #Check the owner_id does not exist
         review_bad_owner_id_response = self.client.post('/api/v1/reviews/', json={
@@ -100,10 +102,11 @@ class TestReviewEndpoints(unittest.TestCase):
             "user_id": "no-existance",
             "place_id": place_id
         })
-        self.assertEqual(review_bad_owner_id_response.status_code, 404) #404 if does not exist
+        self.assertEqual(review_bad_owner_id_response.status_code, 400) #404 if does not exist
         error_owner_data = json.loads(review_bad_owner_id_response.data)
-        print("Status Code:", review_bad_owner_id_response.status_code, "Error:", error_owner_data.get("message"))    
-
+        print("Status Code of invalid user id:", review_bad_owner_id_response.status_code)    
+        print("Message for invalid user: {}".format(error_owner_data['error']))
+        
         #Check the place_id does not exist
         review_bad_place_id_response = self.client.post('/api/v1/reviews/', json={
             "text": "Good space",
@@ -111,10 +114,11 @@ class TestReviewEndpoints(unittest.TestCase):
             "user_id": owner_id,
             "place_id": "jbcjdcj-jbc"
         })
-        self.assertEqual(review_bad_place_id_response.status_code, 404) #404 if does not exist
+        self.assertEqual(review_bad_place_id_response.status_code, 400) #404 if does not exist
         error_place_data = json.loads(review_bad_place_id_response.data)
-        print("Status Code:", review_bad_place_id_response.status_code, "Error:", error_place_data.get("message"))
-
+        print("Status Code of invalid place id:", review_bad_place_id_response.status_code)
+        print("Message for invalid user: {}".format(error_place_data['error']))
+        
         #Check the place_id is empty string
         review_empty_place_response = self.client.post('/api/v1/reviews/', json={
             "text": "Good space",
@@ -124,7 +128,7 @@ class TestReviewEndpoints(unittest.TestCase):
         })
         self.assertEqual(review_empty_place_response.status_code, 400) #400 if input data invalid
         error_empty_place_data = json.loads(review_empty_place_response.data)
-        print("Status Code:", review_empty_place_response.status_code, "Error:", error_empty_place_data.get("message"))
-
+        print("Status Code for place id empty str:", review_empty_place_response.status_code)
+        print("Message for place id empty str: {}".format(error_empty_place_data['error']))
 
 

@@ -5,15 +5,15 @@ from app.models.review import Review
 class TestReviewClass(unittest.TestCase):
 
     def test_01_valid_review_creation(self):
-        review = Review(text="Great stay!", rating=5, place_id="123", user_id="s56")
+        review = Review(text="Great stay!", rating=5, place="123", user_id="s56")
         self.assertEqual(review.text, "Great stay!")
         self.assertEqual(review.rating, 5)
-        self.assertEqual(review.place_id, "123")
+        self.assertEqual(review.place, "123")
         self.assertEqual(review.user_id, "s56")
 
     def test_02_empty_text_raises_type_error(self):
         with self.assertRaises(TypeError) as e:
-            Review(text="", rating=4, place_id="place_123", user_id="user_456")
+            Review(text="", rating=4, place="place_123", user_id="user_456")
         self.assertEqual(str(e.exception), "Text must be a string and not an empty string")
 
 

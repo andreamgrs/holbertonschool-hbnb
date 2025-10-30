@@ -52,7 +52,7 @@ class TestReviewFacade(unittest.TestCase):
         self.assertEqual(review1.text, 'Great place to stay!')
         self.assertEqual(review1.rating, 5)
         self.assertEqual(review1.user_id, "123u")
-        self.assertEqual(review1.place_id, "123p")
+        self.assertEqual(review1.place, "123p")
 
 
     def test_create_review_02(self):
@@ -163,7 +163,7 @@ class TestReviewFacade(unittest.TestCase):
     def test_get_review(self):
         """Test to get review"""
         # Create review
-        mock_review = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
+        mock_review = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place="123p")
         mock_review.id ="123r"
         self.facade.review_repo.get = MagicMock(return_value=mock_review)
         result = self.facade.get_review("123r")
@@ -179,7 +179,7 @@ class TestReviewFacade(unittest.TestCase):
 
     def test_updated_review(self):
         """Test to updated review"""
-        mock_review = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
+        mock_review = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place="123p")
         mock_review.id ="123r"
         self.facade.get_review = MagicMock(return_value=mock_review)
 
@@ -188,7 +188,7 @@ class TestReviewFacade(unittest.TestCase):
         updated_data = {'text': "Great stay!", 'rating': 5}
 
         # Expected updated review
-        updated_review = Review(text="Great stay!", rating=5, user_id="123u", place_id="123p")
+        updated_review = Review(text="Great stay!", rating=5, user_id="123u", place="123p")
         updated_review.id = "123r"
 
         # Mock the repo update method
@@ -211,7 +211,7 @@ class TestReviewFacade(unittest.TestCase):
         mock_place1.id ="123p"
 
         # Create review
-        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
+        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place="123p")
         mock_review1.id ="123r"
 
         #------------SECOND OWNER--------------
@@ -224,7 +224,7 @@ class TestReviewFacade(unittest.TestCase):
         mock_place2.id ="1234p"
 
         # Create review
-        mock_review2 = Review(text = "Nice!", rating= 3, user_id ="1234u", place_id="1234p")
+        mock_review2 = Review(text = "Nice!", rating= 3, user_id ="1234u", place="1234p")
         mock_review1.id ="1234r"
 
         # Mock the review_repo.get_all method
@@ -256,9 +256,9 @@ class TestReviewFacade(unittest.TestCase):
         mock_place1.id ="123p"
 
         # Create review
-        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place_id="123p")
+        mock_review1 = Review(text = "Amazing stay!", rating= 4, user_id ="123u", place="123p")
         mock_review1.place = mock_place1
-        mock_review2 = Review(text = "Nice!", rating= 5, user_id ="1234u", place_id="123p")
+        mock_review2 = Review(text = "Nice!", rating= 5, user_id ="1234u", place="123p")
         mock_review2.place = mock_place1
     
         self.facade.review_repo.get_all = MagicMock(return_value=[mock_review1, mock_review2])

@@ -1,19 +1,19 @@
 """This is the review class"""
-from . import BaseModel # Import the class BaseModel from the package inside models 
+from app.models.base import BaseModel # Import the class BaseModel from the package inside models 
 
 
 class Review(BaseModel):
     """Class for review
     """
 
-    def __init__(self, text, rating, place_id, user_id):
+    def __init__(self, text, rating, place, user):
         """Initializes a Review instance.
         """
         super().__init__() # call init method from BaseModel 
         self.text = text
         self.rating = rating
-        self.place_id = place_id 
-        self.user_id = user_id
+        self.place = place 
+        self.user = user
     
     # --- Getters and Setters ---
     #Text
@@ -40,22 +40,23 @@ class Review(BaseModel):
         self._rating = value
     #place  
     @property
-    def place_id(self):
-        return self._place_id
+    def place(self):
+        return self._place
     
-    @place_id.setter
-    def place_id(self, value):
-        if not isinstance(value, str) or value.strip() == "":
-            raise TypeError('Place ID must be a non-empty string')
-        self._place_id = value
+    @place.setter
+    def place(self, value):
+        from app.models.place import Place
+        if not isinstance(value, Place):
+            raise TypeError('Place is not an instance of the Place class')
+        self._place = value
     #user
     @property
-    def user_id(self):
-        return self._user_id
+    def user(self):
+        return self._user
     
-    @user_id.setter
-    def user_id(self, value):
-        if not isinstance(value, str) or value.strip() == "":
-            raise TypeError('User ID must be a non-empty string')
-        self._user_id = value
-
+    @user.setter
+    def user(self, value):
+        from app.models.user import User
+        if not isinstance(value, User):
+            raise TypeError('User is not an instance of the User class')
+        self._user = value
