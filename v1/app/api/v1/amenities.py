@@ -9,9 +9,10 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
+# CREATE AMENITY
 @api.route('/')
 class AmenityList(Resource):
-    @api.expect(amenity_model)
+    @api.expect(amenity_model, validate=True)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
@@ -27,8 +28,11 @@ class AmenityList(Resource):
             }, 201
         
         except ValueError:
-            return {'error': 'Invalid input data'}, 400
+            return {'error': 'Invalid name length'}, 400
+        except TypeError:
+            return {'error': 'Amenity name must be a string'}, 400
 
+    # GET ALL AMENITIES
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
@@ -43,6 +47,7 @@ class AmenityList(Resource):
 
         return amenities_list, 200
 
+# GET SINGLE AMENITY USING ID
 @api.route('/<amenity_id>')
 class AmenityResource(Resource):
     @api.response(200, 'Amenity details retrieved successfully')
@@ -57,9 +62,11 @@ class AmenityResource(Resource):
         }, 200
 
         except ValueError:
-            return {'error': 'Amenity not found'}, 404
+            return {'error': f"Amenity '{amenity_id}' not found"}, 404
+        
 
-    @api.expect(amenity_model)
+    # UPDATE SINGLE AMENITY BY ID
+    @api.expect(amenity_model, validate=True)
     @api.response(200, 'Amenity updated successfully')
     @api.response(404, 'Amenity not found')
     @api.response(400, 'Invalid input data')
@@ -71,10 +78,16 @@ class AmenityResource(Resource):
             return {'error': 'Invalid input'}, 400
 
         try:
-            facade.update_amenity(amenity_id, update_data)
+            updated_amenity = facade.update_amenity(amenity_id, update_data)
+            return {
+                'message': 'Amenity updated successfully',
+                'amenity': {
+                    'id': updated_amenity.id,
+                    'name': updated_amenity.name
+                }
+            }, 200
+        
         except ValueError:
-            return {'error': 'Invalid input'}, 400
+            return {'error':  f"Amenity '{amenity_id}' is not valid"}, 400
         except TypeError:
-            return {'error': 'Amenity not found'}, 404
-
-        return {"message": "Amenity updated successfully"}, 200
+            return {'error': f"Amenity '{amenity_id}' not found"}, 404

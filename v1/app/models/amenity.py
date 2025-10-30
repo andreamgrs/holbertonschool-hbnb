@@ -1,7 +1,7 @@
 """
 This is a amenity class
 """
-from .base import BaseModel
+from app.models.base import BaseModel
 
 class Amenity(BaseModel):
     def __init__(self, name):
@@ -16,11 +16,12 @@ class Amenity(BaseModel):
 
     @name.setter
     def name(self, value):
-        """Setter for prop name"""
-        # ensure that the value is up to 100 alphabets only after removing excess white-space
-        is_valid_name = 0 < len(value.strip()) <= 50
-        if is_valid_name:
-            self._name = value
+        """Setter for amenity name"""
+        if not isinstance(value, str):
+            raise TypeError('Amenity name must be a string')
+        
+        if 0 < len(value.strip()) <= 50: # check name is <= 50 chars only after strip spaces
+            self._name = value # originally want to store only the name that's stripped of spaces in between but removed this to be aligned with feedback and users model file
         else:
             raise ValueError("Invalid name length!")
 

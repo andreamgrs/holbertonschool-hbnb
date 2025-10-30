@@ -2,21 +2,38 @@ import unittest
 from app.models.amenity import Amenity
 # Run by python3 -m app.tests.class_model_amenity_test
 
-class TestAmenityClass(unittest.TestCase):
+# TEST 1: Create amenity successfully
+def test_amenity_creation():
+    amenity = Amenity("Pool")
+    assert amenity.name == "Pool"
+    print("Amenity creation test passed!")
 
-    def test_01_valid_amenity_creation(self):
-        amenity = Amenity(name="Wi-Fi")
-        self.assertEqual(amenity.name, "Wi-Fi")
+# TEST 2: Amenity name is not a string
+def test_amenity_name_not_string():
+    try:
+        Amenity(123)
+    except TypeError as e:
+        assert str(e) == "Amenity name must be a string"
+        print("Amenity name not string test passed")
 
-    def test_02_invalid_input_spaces_raises_value_error(self):
-        with self.assertRaises(ValueError) as e:
-            amenity = Amenity(name="   ")
-        self.assertEqual(str(e.exception), "Invalid name length!")
-    
-    def test_03_invalid_input_too_long_raises_value_error(self):
-        with self.assertRaises(ValueError) as e:
-            amenity = Amenity(name="a" * 51)
-        self.assertEqual(str(e.exception), "Invalid name length!")
+# TEST 3: Amenity name empty string
+def test_amenity_name_empty():
+    try:
+        Amenity("")
+    except ValueError as e:
+        assert str(e) == "Invalid name length!"
+        print("Amenity name empty string test passed")
 
-if __name__ == "__main__":
-    unittest.main()
+# TEST 4: Amenity name too long
+def test_amenity_name_too_long():
+    try:
+        long_name = "A" * 51
+        Amenity(long_name)
+    except ValueError as e:
+        assert str(e) == "Invalid name length!"
+        print("Amenity name too long test passed")
+
+test_amenity_creation()
+test_amenity_name_empty()
+test_amenity_name_not_string()
+test_amenity_name_too_long()

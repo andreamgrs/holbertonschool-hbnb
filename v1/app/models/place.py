@@ -1,7 +1,7 @@
 """
 This is the place class
 """
-from .base import BaseModel
+from app.models.base import BaseModel
 from .amenity import Amenity
 from .review import Review
 from .user import User
@@ -120,5 +120,5 @@ class Place(BaseModel):
     @owner.setter
     def owner(self, value):
         if not isinstance(value, User):
-            raise TypeError('User is not an instance of the User class')
+            raise TypeError('Owner is not an instance of the User class')
         self._owner = value
