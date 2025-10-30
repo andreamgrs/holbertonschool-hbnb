@@ -18,7 +18,7 @@ class Amenity(BaseModel):
     def name(self, value):
         """Setter for prop name"""
         if 0 < len(value.strip()) <= 50: # check name is <= 50 chars only after strip spaces
-            self._name = value.strip() #store only the name that's stripped of spaces in between
+            self._name = value.strip() # store only the name that's stripped of spaces in between
         else:
             raise ValueError("Invalid name length!")
 

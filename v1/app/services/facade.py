@@ -182,7 +182,7 @@ class HBnBFacade:
 
     # CREATE AMENITY
     def create_amenity(self, amenity_data):
-        # check that amenity client trying to create doesn't already exist
+        # check amenity doesn't exist already
         if self.amenity_repo.get(amenity_data.get('id')):
             raise ValueError('Amenity already exists')
 
@@ -200,11 +200,12 @@ class HBnBFacade:
     # GET AMENITY USING AMENITY ID
     def get_amenity(self, amenity_id):
         if not self._is_valid_uuid(amenity_id):
-            raise ValueError('Amenity id not valid')
+            raise ValueError(f"Amenity id  '{amenity_id}' is not valid")
 
         amenity = self.amenity_repo.get(amenity_id)
+
         if not amenity:
-            raise TypeError('Amenity not found')
+            raise TypeError(f"Amenity with '{amenity_id}' not found")
 
         return amenity
 
