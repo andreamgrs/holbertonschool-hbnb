@@ -213,7 +213,7 @@ class HBnBFacade:
     def update_amenity(self, amenity_id, amenity_data):
         """Update an amenity using setters to enforce validation"""
         
-        amenity = self.amenity_repo.get(amenity_id)
+        amenity = self.get_amenity(amenity_id)
 
         if "name" in amenity:
             amenity.name = amenity_data.get("name")
