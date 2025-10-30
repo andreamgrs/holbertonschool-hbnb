@@ -31,8 +31,9 @@ class TestReviewEndpoints(unittest.TestCase):
             "email": "john.doe@example.com"
         })
         #raw content of the HTTP response. If the server returns JSON, response.data will contain that JSON as a byte string.
-        user_data = json.loads(user_response.data) 
-        owner_id = user_data['id']
+        user_data = json.loads(user_response.data)
+        print(user_data)
+        owner_id = user_data['user']['id']
         self.assertEqual(user_response.status_code, 201) #It verify that user_response.status_code is equal to 201, 
         print("Status code for user creation:",user_response.status_code)
         print("ID of the owner: {}".format(owner_id))
