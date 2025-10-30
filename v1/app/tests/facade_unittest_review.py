@@ -53,6 +53,7 @@ class TestReviewFacade(unittest.TestCase):
         self.assertEqual(review1.rating, 5)
         self.assertEqual(review1.user.id, "123u")
         self.assertEqual(review1.place.id, "123p")
+        print("Attributes of plce object: ", review1.place.__dict__) 
 
 
     def test_create_review_02(self):
