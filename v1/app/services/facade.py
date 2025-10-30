@@ -108,7 +108,7 @@ class HBnBFacade:
         reviews_by_place_id = []
 
         for review in reviews:
-            if review.place_id == place_id:
+            if review.place.id == place_id:
                 reviews_by_place_id.append(review)
         if not reviews_by_place_id:
             raise ValueError("No reviews found for this place")
