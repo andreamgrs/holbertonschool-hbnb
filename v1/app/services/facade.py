@@ -15,8 +15,9 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-# Methods for users
+# METHODS FOR USERS
 
+    # CREATE SINGLE USER
     def create_user(self, user_data):
         # check for duplicate email first
         if self.user_repo.get_by_attribute('email', user_data['email']):
@@ -27,7 +28,8 @@ class HBnBFacade:
         self.user_repo.add(user)
 
         return user  # always return User object
-
+    
+    # CHECK ID IS VALID
     def _is_valid_uuid(self, value):
         try:
             uuid.UUID(value, version=4)
@@ -35,6 +37,7 @@ class HBnBFacade:
         except (ValueError, TypeError):
             return False
 
+    # GET SINGLE USER BY ID
     def get_user(self, user_id):
             if not self._is_valid_uuid(user_id):
                 raise ValueError(f"User id '{user_id}' is not valid")
@@ -46,13 +49,16 @@ class HBnBFacade:
 
             return user
     
+    # GET SINGLE USER BY EMAIL
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
     
+    # GET ALL USERS
     def get_all_users(self):
         """Return a list of all users"""
         return self.user_repo.get_all()  # InMemoryRepo has get_all function in persistence repo
     
+    # UPDATE SINGLE USER 
     def update_user(self, user_id, user_data):
         """Update a user using setters to enforce validation"""
 
@@ -71,7 +77,9 @@ class HBnBFacade:
         return updated_user
     
 
-# Methods for review
+# METHODS FOR REVIEW
+
+    # CREATE REVIEW
     def create_review(self, review_data):
         """Create review"""
         # Extract fields from input
@@ -87,15 +95,17 @@ class HBnBFacade:
         self.review_repo.add(review)
         return review
 
-
+    # GET A REVIEW USING REVIEW ID
     def get_review(self, review_id):
         """Get review by ID"""
         return self.review_repo.get(review_id)
-
+    
+    # GET ALL REVIEWS
     def get_all_reviews(self):
         """Get all the reviews"""
         return self.review_repo.get_all() 
-
+    
+    # GET ALL REVIEWS OF A SINGLE PLACE USING PLACE ID
     def get_reviews_by_place(self, place_id):
         """Get reviews by place_id"""
         #get all the reviews
@@ -108,7 +118,8 @@ class HBnBFacade:
         if not reviews_by_place_id:
             raise ValueError("No reviews found for this place")
         return reviews_by_place_id
-
+    
+    # UPDATE REVIEW
     def update_review(self, review_id, review_data):
         review = self.get_review(review_id)
         review.text = review_data.get("text")
@@ -116,7 +127,9 @@ class HBnBFacade:
         updated_review = self.review_repo.update(review_id, review_data)
         return updated_review
 
-# Methods for place
+# METHODS FOR PLACE
+
+    # CREATE PLACE
     def create_place(self, place_data):
         owner = self.get_user(place_data['owner_id'])
         amenities_id = place_data.get('amenities', [])
@@ -146,14 +159,17 @@ class HBnBFacade:
         self.place_repo.add(place)
         return place
 
+    # GET PLACE BY PLACE ID
     def get_place(self, place_id):
         # Retrieve a place by ID, including associated owner and amenities
         return self.place_repo.get(place_id)
-
+    
+    # GET ALL PLACES
     def get_all_places(self):
         # Retrieve all places
         return self.place_repo.get_all() 
-
+    
+    # UPDATE PLACE USING PLACEID
     def update_place(self, place_id, place_data):
         place = self.get_place(place_id)
         place.title = place_data.get("title")
@@ -162,8 +178,9 @@ class HBnBFacade:
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
     
-# Methods for amenities
+# METHODS FOR AMENITIES
 
+    # CREATE AMENITY
     def create_amenity(self, amenity_data):
         # check that amenity client trying to create doesn't already exist
         if self.amenity_repo.get(amenity_data.get('id')):
@@ -175,9 +192,12 @@ class HBnBFacade:
 
         return amenity # return amenity obj
 
+    # GET ALL AMENITIES
     def get_all_amenities(self):
         return self.amenity_repo.get_all()
+    
 
+    # GET AMENITY USING AMENITY ID
     def get_amenity(self, amenity_id):
         if not self._is_valid_uuid(amenity_id):
             raise ValueError('Amenity id not valid')
@@ -188,6 +208,7 @@ class HBnBFacade:
 
         return amenity
 
+    # UPDATE AMENITY USING AMENITY ID
     def update_amenity(self, amenity_id, amenity_data):
         """Update an amenity using setters to enforce validation"""
         
