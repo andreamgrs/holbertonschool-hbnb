@@ -22,6 +22,8 @@ update_place_model = api.model('Place', {
     'price': fields.Float(required=True, description='Price per night'),
 })
 
+
+# CREATE PLACE
 @api.route('/')
 class PlaceList(Resource):
     @api.expect(place_model, validate=True)
@@ -30,6 +32,7 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         payload_data = api.payload #contains the JSON body the user sent
+        
         try:
             new_place = facade.create_place(payload_data)
         except Exception as e:
@@ -40,6 +43,7 @@ class PlaceList(Resource):
                 'owner_id': new_place.owner.id}, 201
     
 
+    # GET ALL PLACES
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
@@ -54,6 +58,7 @@ class PlaceList(Resource):
                 'longitude': place.longitude})
         return places_list, 200
 
+# GET SINGLE PLACE BY ID
 @api.route('/<place_id>')
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
@@ -62,11 +67,13 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         place = facade.get_place(place_id)
         if not place:
-            return {'error': 'Place not found'}, 404
+            return {'error': f"Place with id '{place_id}' not found"}, 404
+        
         ammenity_list = []
         for amenity in place.amenities:
             amenity_dict = {"id": amenity.id, "name": amenity.name}
             ammenity_list.append(amenity_dict)
+        
         return {'id': place.id,
                 'title': place.title,
                 'description': place.description,
@@ -81,6 +88,7 @@ class PlaceResource(Resource):
                 },
                 'amenities': ammenity_list}
 
+    # UPDATE SINGLE PLACE BY ID
     @api.expect(update_place_model, validate=True)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
@@ -88,12 +96,11 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Update a place's information"""
         update_data = request.get_json() # get the json data from request
-        # not sure about this bit being necessary?
         if not update_data: # if cannot find any request
             return {'error': 'Invalid input'}, 400
 
         if not facade.get_place(place_id):
-            return {'error': 'Place not found'}, 404
+            return {'error': f"Place with id '{place_id}' not found"}, 404
 
         try:
             updated_place = facade.update_place(place_id, update_data)

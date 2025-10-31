@@ -21,16 +21,15 @@ class AmenityList(Resource):
 
         try:
             new_amenity = facade.create_amenity(amenity_data)
-
             return {
                 'id': new_amenity.id,
                 'name': new_amenity.name
             }, 201
         
-        except ValueError:
-            return {'error': 'Invalid name length'}, 400
-        except TypeError:
-            return {'error': 'Amenity name must be a string'}, 400
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except TypeError as e:
+            return {'error': str(e)}, 400
 
     # GET ALL AMENITIES
     @api.response(200, 'List of amenities retrieved successfully')
@@ -62,7 +61,7 @@ class AmenityResource(Resource):
         }, 200
 
         except ValueError:
-            return {'error': f"Amenity '{amenity_id}' not found"}, 404
+            return {'error': f"Amenity with id '{amenity_id}' not found"}, 404
         
 
     # UPDATE SINGLE AMENITY BY ID
@@ -87,7 +86,7 @@ class AmenityResource(Resource):
                 }
             }, 200
         
-        except ValueError:
-            return {'error':  f"Amenity '{amenity_id}' is not valid"}, 400
-        except TypeError:
-            return {'error': f"Amenity '{amenity_id}' not found"}, 404
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except TypeError as e:
+            return {'error': str(e)}, 404

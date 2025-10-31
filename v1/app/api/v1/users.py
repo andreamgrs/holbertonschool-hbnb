@@ -26,7 +26,6 @@ class UserList(Resource):
             # call facade
             user = facade.create_user(user_data)
 
-
             # return user as dict if successful
             return {
                 'message': 'User successfully created',
@@ -41,10 +40,12 @@ class UserList(Resource):
 
         except ValueError:
             return {'error': 'Email already registered'}, 400
-        except TypeError:
-            return {"error": "Invalid input data"}, 400
+        except TypeError as e:
+            # Return e to provide details on which input is invalid
+            return {"error": str(e)}, 400
 
     # GET ALL USER 
+    @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve all users"""
         all_users = facade.get_all_users()
@@ -87,7 +88,7 @@ class UserResource(Resource):
             return {'error': f"User with id '{user_id}' not found"}, 404
         
         
-# UPDATE SINGLE USER BY ID
+    # UPDATE SINGLE USER BY ID
     @api.expect(user_model, validate=True)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
@@ -110,7 +111,8 @@ class UserResource(Resource):
                 }
             }, 200
         
-        except ValueError:
-            return {'error': f"User id '{user_id}' is not valid"}, 400
-        except TypeError:
-            return {'error': f"User id '{user_id}' cannot be found"}, 404
+        # catch errors and return e to give more detail
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except TypeError as e:
+            return {'error': str(e)}, 404

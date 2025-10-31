@@ -12,23 +12,28 @@ review_model = api.model('Review', {
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
+
+# CREATE REVIEW
 @api.route('/')
 class ReviewList(Resource): #with resource we manage the methods GET POST PUT DELETE
-    @api.expect(review_model)
+    @api.expect(review_model, validate=True)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new review"""
-        # Placeholder for the logic to register a new review
         try:
-        # Get the data from the user in json and convert it into a python dict 
+            # Get the data from the user in json and convert it into a python dict 
             review_data = api.payload
             #We send the data into facade
             new_review = facade.create_review(review_data) #in method create store data in the repo, make sure user exist
         except Exception as e:
-                    return {"error": "Invalid input data"}, 400
-        return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating, 'user_id': new_review.user.id, 'place_id': new_review.place.id}, 201
+                    return {"error": str(e)}, 400
+        return {'id': new_review.id, 'text': new_review.text,
+                'rating': new_review.rating, 'user_id': new_review.user.id,
+                'place_id': new_review.place.id}, 201
 
+
+    # GET ALL REVIEWS
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
@@ -42,6 +47,7 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
             })
         return reviews_list, 200
 
+# GET SINGLE REVIEW BY ID
 @api.route('/<review_id>')
 class ReviewResource(Resource):
     @api.response(200, 'Review details retrieved successfully')
@@ -50,10 +56,11 @@ class ReviewResource(Resource):
         """Get review details by ID"""
         review = facade.get_review(review_id)
         if not review:
-            return {'error': 'Review not found'}, 404
+            return {'error': f"Review with id '{review_id}' not found"}, 404
         return {'id': review.id, 'text': review.text, 'rating': review.rating, 'user': review.user_id, 'place': review.place_id}, 200
 
-    @api.expect(review_model)
+    # UPDATE SINGLE REVIEW BY ID
+    @api.expect(review_model, validate=True)
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
@@ -65,14 +72,19 @@ class ReviewResource(Resource):
 
         review = facade.get_review(review_id)
         if not review:
-            return {'error': 'Review not found'}, 404
+            return {'error': f"Review with id '{review_id}' not found"}, 404
 
-        updated_review = facade.update_review(review_id, update_review_json)
+        try:
+            updated_review = facade.update_review(review_id, update_review_json)
+        except Exception as e:
+            return {"error": str(e)}, 400
+        
         return {
             'message': "Review updated successfully"
         }, 200
 
 
+# GET LIST OF REVIEWS FOR PLACE BY PLACE ID
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
     @api.response(200, 'List of reviews for the place retrieved successfully')
