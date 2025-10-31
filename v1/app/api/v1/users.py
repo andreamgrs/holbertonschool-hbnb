@@ -79,13 +79,10 @@ class UserResource(Resource):
                 }
             }, 200
 
-        except ValueError:
-            # raised for invalid UUID
-            return {'error': f"User id '{user_id}' is not valid"}, 400
-
-        except TypeError:
-            # raised when user not found
-            return {'error': f"User with id '{user_id}' not found"}, 404
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except TypeError as e:
+            return {'error': str(e)}, 404
         
         
     # UPDATE SINGLE USER BY ID
