@@ -210,7 +210,7 @@ class HBnBFacade:
         
         amenity = self.get_amenity(amenity_id)
 
-        if "name" in amenity:
+        if "name" in amenity_data:
             amenity.name = amenity_data.get("name")
 
         updated_amenity = self.amenity_repo.update(amenity_id, amenity_data)
