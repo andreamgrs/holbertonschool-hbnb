@@ -60,8 +60,10 @@ class AmenityResource(Resource):
             'name': amenity.name
         }, 200
 
-        except ValueError:
-            return {'error': f"Amenity with id '{amenity_id}' not found"}, 404
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 404
         
 
     # UPDATE SINGLE AMENITY BY ID
