@@ -27,7 +27,7 @@ class HBnBFacade:
         user = User(**user_data)
         self.user_repo.add(user)
 
-        return user  # always return User object
+        return user  # Q: Whether should allow this to be return user or not
     
     # CHECK ID IS VALID
     def _is_valid_uuid(self, value):

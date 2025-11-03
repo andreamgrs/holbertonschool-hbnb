@@ -8,7 +8,8 @@ api = Namespace('users', description='User operations') #creates a “group” o
 user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
-    'email': fields.String(required=True, description='Email of the user')
+    'email': fields.String(required=True, description='Email of the user'),
+    'password': fields.String(required=True, description='Password of the user')
 })
 
 # CREATE USER
@@ -25,7 +26,7 @@ class UserList(Resource):
         try:           
             # call facade
             user = facade.create_user(user_data)
-
+            
             # return user as dict if successful
             return {
                 'message': 'User successfully created',
