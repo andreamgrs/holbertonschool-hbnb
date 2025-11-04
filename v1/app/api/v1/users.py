@@ -1,6 +1,8 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 
 api = Namespace('users', description='User operations') #creates a “group” of endpoints under /users aka everything in this file will be prefix with users in the url
 
@@ -26,7 +28,7 @@ class UserList(Resource):
         try:           
             # call facade
             user = facade.create_user(user_data)
-            
+
             # return user as dict if successful
             return {
                 'message': 'User successfully created',
@@ -87,18 +89,27 @@ class UserResource(Resource):
         
         
     # UPDATE SINGLE USER BY ID
-    @api.expect(user_model, validate=True)
+    @api.expect(user_model)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input')
+    @api.response(403, 'Unauthorized action')
+    @jwt_required()
     def put(self, user_id):
         """Update a user's information"""
+        current_user_id = get_jwt_identity()
+        print(f"JWT user: {current_user_id}")
+        print(f"Route user: {user_id}")
+
+        if user_id  != current_user_id: # prevent modify other user data
+            return {'error': 'Unauthorized action.'}, 403
+        
         update_data = request.get_json()
         if not update_data: # if cannot find any request
             return {'error': 'Invalid input'}, 400
 
         try:
-            updated_user = facade.update_user(user_id, update_data)    
+            updated_user = facade.update_user(user_id, update_data) # prevent user from modifying email and password via the facade when update user 
             return {
                 'message': 'User updated successfully',
                 'user': {

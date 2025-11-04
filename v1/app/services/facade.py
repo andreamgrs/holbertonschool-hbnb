@@ -62,6 +62,12 @@ class HBnBFacade:
     def update_user(self, user_id, user_data):
         """Update a user using setters to enforce validation"""
 
+        if "email" in user_data:
+            raise ValueError('You cannot modify email or password')
+        
+        if "password" in user_data:
+            raise ValueError('You cannot modify email or password')
+
         # get the existing user
         user = self.get_user(user_id)
         # update fields via setters
@@ -69,8 +75,7 @@ class HBnBFacade:
             user.first_name = user_data["first_name"]
         if "last_name" in user_data:
             user.last_name = user_data["last_name"]
-        if "email" in user_data:
-            user.email = user_data["email"]
+
 
         #save updated data to repo
         updated_user = self.user_repo.update(user_id, user_data)
