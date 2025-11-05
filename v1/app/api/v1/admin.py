@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_jwt_in_request
 
 
 api = Namespace('admin', description='User operations') #creates a “group” of endpoints under /users aka everything in this file will be prefix with users in the url
@@ -17,36 +17,6 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
-# CREATE ADMIN USER - TESTING ONLY
-@api.route('/users/admin')
-class AdminUserCreate(Resource):
-    @api.expect(user_model, validate=True)
-    @api.response(201, 'User successfully created')
-    @api.response(400, 'Invalid input data')
-    def post(self):
-        """ FOR TESTING PURPOSES ONLY """
-        """Register a admin user without jwt checks."""
-        user_data = api.payload  # JSON body sent by client
-        existing_users = facade.get_all_users()
-        if not existing_users:
-            try: 
-                user = facade.create_user(user_data)
-                return {
-                'message': 'first user ever created, if has is_admin make admin',
-                'user':
-                {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email
-                }
-                }, 201
-            except TypeError as e:
-                # Return e to provide details on which input is invalid
-                return {"error": str(e)}, 400
-        else:
-            return {"error": "There are existing users already"}, 400
-
 # CREATE USER - ADMIN ONLY
 @api.route('/users/')
 class AdminUserCreate(Resource):
@@ -55,29 +25,34 @@ class AdminUserCreate(Resource):
     @api.response(400, 'Invalid input data')
     @api.response(400, 'Email already registered')
     @api.response(403, 'Admin privileges required')
-    @jwt_required()
     def post(self):
         """Register a new user"""
-        current_user = get_jwt()
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
+        user_data = api.payload  # JSON body sent by client
 
-        user_data = request.json
-        email = user_data.get('email')
-
+        existing_users = facade.get_all_users()
+        if not existing_users:
+            message = "First user successfully created"
+        # Only run the jwt checks if there are already existing users
+        else:
+            message = "User successfully created"
+            # Equivalent to the jwt_required decorator verification
+            verify_jwt_in_request()
+            current_user = get_jwt()
+            if not current_user.get('is_admin'):
+                return {'error': 'Admin privileges required'}, 403        
+        
         # Check if email is already in use
+        email = user_data.get('email')
         if facade.get_user_by_email(email):
             return {'error': 'Email already registered'}, 400
         
-        user_data = api.payload  # JSON body sent by client
-
         try:           
             # call facade
             user = facade.create_user(user_data)
 
             # return user as dict if successful
             return {
-                'message': 'User successfully created',
+                'message': message,
                 'user':
                 {
                 'id': user.id,
