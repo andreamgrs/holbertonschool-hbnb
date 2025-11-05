@@ -7,16 +7,19 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_j
 api = Namespace('admin', description='User operations') #creates a “group” of endpoints under /users aka everything in this file will be prefix with users in the url
 
 # Define the user model for input validation and documentation
+# All fields required to create a user
 user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
     'password': fields.String(required=True, description='Password of the user')
 })
-user_update_model = api.model('User', {
-    'first_name': fields.String(description='First name of the user'),
-    'last_name': fields.String(description='Last name of the user'),
-    'email': fields.String(description='Email of the user')
+# Any fields can be supplied for user update
+user_update_model = api.model('UserUpdate', {
+    'first_name': fields.String(required=False, description='First name of the user'),
+    'last_name': fields.String(required=False, description='Last name of the user'),
+    'email': fields.String(required=False, description='Email of the user'),
+    'password': fields.String(required=False, description='Password of the user')
 })
 amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
