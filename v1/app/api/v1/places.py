@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, decode_token
 from app.services import facade
 from flask import request
 
@@ -106,12 +106,13 @@ class PlaceResource(Resource):
         if not place:
             return {'error': f"Place with id '{place_id}' not found"}, 404
 
-        current_user = get_jwt_identity()
+        # Get dictionary of the jwt payload
+        current_user_dict = get_jwt()
+        print(f"current user is {current_user_dict}")
         # Set is_admin default to False if not exists
-        is_admin = current_user.get('is_admin', False)
-        user_id = current_user.get('id')
-
-        if not is_admin and place.owner_id != user_id:
+        is_admin = current_user_dict.get('is_admin', False)
+        user_id = current_user_dict.get('sub')
+        if not is_admin and place.owner.id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:
