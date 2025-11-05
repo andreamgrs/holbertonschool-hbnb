@@ -62,9 +62,6 @@ class HBnBFacade:
     def update_user(self, user_id, user_data):
         """Update a user using setters to enforce validation"""
 
-        if "email" in user_data:
-            raise ValueError('You cannot modify email or password')
-        
         if "password" in user_data:
             raise ValueError('You cannot modify email or password')
 
