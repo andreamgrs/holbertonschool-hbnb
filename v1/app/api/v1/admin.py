@@ -11,7 +11,12 @@ user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=False, description='Password of the user')
+    'password': fields.String(required=True, description='Password of the user')
+})
+user_update_model = api.model('User', {
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user'),
+    'email': fields.String(description='Email of the user')
 })
 amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
@@ -72,7 +77,7 @@ class AdminUserCreate(Resource):
 # UPDATE SINGLE USER BY ID - ADMIN ONLY
 @api.route('/users/<user_id>')
 class AdminUserResource(Resource):
-    @api.expect(user_model)
+    @api.expect(user_update_model, validate=True)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input')
