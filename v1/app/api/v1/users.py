@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_jwt_in_request
 
 
 api = Namespace('users', description='User operations') #creates a “group” of endpoints under /users aka everything in this file will be prefix with users in the url
@@ -22,10 +22,33 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Invalid input data')
     @api.response(409, 'Email already registered')
+
     def post(self):
         """Register a new user"""
+
         user_data = api.payload  # JSON body sent by client
 
+        existing_users = facade.get_all_users()
+        if not existing_users:
+            user = facade.create_user(user_data)
+            return {
+            'message': 'first user ever created, if has is_admin make admin',
+            'user':
+            {
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+            }
+        }, 201
+
+        verify_jwt_in_request()
+
+        current_user = get_jwt()
+
+        if not current_user['is_admin']:
+            return {'error': 'Admin privilleges required'}, 403
+        
         try:           
             # call facade
             user = facade.create_user(user_data)
