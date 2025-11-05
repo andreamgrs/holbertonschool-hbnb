@@ -7,8 +7,7 @@ from app.api.v1.reviews import api as reviews_ns
 from app.api.v1.places import api as places_ns
 from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.auth import api as auth_ns
-
-
+from app.api.v1.admin import api as admin_ns
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -30,5 +29,8 @@ def create_app(config_class="config.DevelopmentConfig"):# create multiple indend
     api.add_namespace(amenities_ns, path='/api/v1/amenities')
     # register reviews namespace, allowing the route defined in api/v1/reviews to be accessible through /api/v1/reviews
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
+    # register auth namespace, allowing the route defined in api/v1/auth to be accessible through /api/v1/auth
     api.add_namespace(auth_ns, path='/api/v1/auth')
+    # register admin namespace, allowing the route defined in api/v1 to be accessible through /api/v1
+    api.add_namespace(admin_ns, path='/api/v1')
     return app
