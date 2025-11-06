@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
+<<<<<<< HEAD
 from ...app import db
 from ..models.user import User
 from ..models.place import Place
 from ..models.amenity import Amenity
 from ..models.review import Review
+=======
+from app import db
+>>>>>>> fb0d8cce78b4e1d61937ad5cbec007e0a4c63f67
 
 
 class Repository(ABC): # repo defines that all these methods are required when you create a subclass but repo does not implement the logic
