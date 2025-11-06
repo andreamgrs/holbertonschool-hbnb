@@ -9,6 +9,7 @@ from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.auth import api as auth_ns
 from app.api.v1.admin import api as admin_ns
 
+
 bcrypt = Bcrypt()
 jwt = JWTManager()
 

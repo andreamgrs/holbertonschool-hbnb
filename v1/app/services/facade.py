@@ -62,9 +62,6 @@ class HBnBFacade:
     def update_user(self, user_id, user_data):
         """Update a user using setters to enforce validation"""
 
-        if "password" in user_data:
-            raise ValueError('You cannot modify email or password')
-
         # get the existing user
         user = self.get_user(user_id)
         # update fields via setters
@@ -72,6 +69,10 @@ class HBnBFacade:
             user.first_name = user_data["first_name"]
         if "last_name" in user_data:
             user.last_name = user_data["last_name"]
+        if "email" in user_data:
+            user.email = user_data["email"]
+        if "password" in user_data:
+            user.hash_password(user_data["password"])
 
 
         #save updated data to repo
@@ -113,8 +114,18 @@ class HBnBFacade:
             if review.place.id == place_id:
                 reviews_by_place_id.append(review)
         if not reviews_by_place_id:
-            raise ValueError("No reviews found for this place")
+            return reviews_by_place_id 
+            #raise ValueError("No reviews found for this place")
         return reviews_by_place_id
+    
+    # DELETE REVIEW
+    def delete_review(self, review_id):
+        review = self.review_repo.get(review_id)
+        if not review: #Check if I need to return false or a ValueError
+            raise ValueError(f"Review with id {review_id} not found")
+        self.review_repo.delete(review_id)
+        return True
+
     
     # UPDATE REVIEW
     def update_review(self, review_id, review_data):

@@ -16,10 +16,10 @@ place_model = api.model('Place', {
 })
 
 # Define the place model for the update method
-update_place_model = api.model('Place', {
-    'title': fields.String(description='Title of the place'),
-    'description': fields.String('Description of the place'),
-    'price': fields.Float(description='Price per night'),
+update_place_model = api.model('PlaceUpdate', {
+    'title': fields.String(required=False, description='Title of the place'),
+    'description': fields.String(required=False, description='Description of the place'),
+    'price': fields.Float(required=False, description='Price per night'),
 })
 
 
@@ -120,5 +120,13 @@ class PlaceResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 400
         
-        return {"message": "Place updated successfully"}, 200
+        return {"message": "Place updated successfully",
+                "place":{
+                    'id': place.id,
+                    'title': place.title,
+                    'price': place.price,
+                    'latitude': place.latitude,
+                    'longitude': place.longitude
+                    }
+                }, 200
     

@@ -6,15 +6,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_j
 
 api = Namespace('users', description='User operations') #creates a “group” of endpoints under /users aka everything in this file will be prefix with users in the url
 
-# Define the user model for input validation and documentation
-user_model = api.model('User', {
-    'first_name': fields.String(required=True, description='First name of the user'),
-    'last_name': fields.String(required=True, description='Last name of the user'),
-    'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='Password of the user'),
-    'is_admin': fields.Boolean(required=False, description='If user is admin')
-})
-
 # GET ALL USER 
 @api.route('/')
 class UserList(Resource):
