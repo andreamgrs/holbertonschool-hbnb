@@ -10,17 +10,15 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class User(BaseModel):
-
     __tablename__ = 'users'
 
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(128), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
+    _first_name = db.Column(db.String(50), nullable=False)
+    _last_name = db.Column(db.String(50), nullable=False)
+    _email = db.Column(db.String(120), nullable=False, unique=True)
+    _password = db.Column(db.String(128), nullable=False)
+    _is_admin = db.Column(db.Boolean, default=False)
 
     # --- Methods ---
-
     def hash_password(self, password):
         from app import bcrypt 
         """Hashes the password before storing it."""
@@ -40,7 +38,7 @@ class User(BaseModel):
     def first_name(self, value):
         self._first_name = value
     
-    @validates("first_name")
+    @validates("_first_name")
     def validate_first_name(self, key, value):
         
         if not isinstance(value, str):
@@ -58,9 +56,9 @@ class User(BaseModel):
     
     @last_name.setter
     def last_name(self, value):
-        self.last_name = value
+        self._last_name = value
 
-    @validates("last_name")
+    @validates("_last_name")
     def validate_last_name(self, key, value):
 
         if not isinstance(value, str):
@@ -78,11 +76,10 @@ class User(BaseModel):
     
     @email.setter
     def email(self, value):
-        self.email = value
+        self._email = value
     
-    @validates("email")
+    @validates("_email")
     def validate_email(self, key, value):
-
         clean_value = value.strip()
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         if re.fullmatch(pattern, clean_value):
@@ -104,9 +101,9 @@ class User(BaseModel):
 
     @is_admin.setter
     def is_admin(self, value):
-        return value
+        self._is_admin = value
     
-    @validates("is_admin")
+    @validates("_is_admin")
     def validate_admin(self, key, value):
         if isinstance(value, bool):
             return value
