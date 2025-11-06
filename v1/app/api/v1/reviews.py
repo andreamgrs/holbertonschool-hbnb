@@ -13,6 +13,11 @@ review_model = api.model('Review', {
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
+review_model_updated = api.model('ReviewUpdated', {
+    'text': fields.String(required=True, description='Text of the review'),
+    'rating': fields.Integer(required=True, description='Rating of the place (1-5)')
+})
+
 
 # CREATE REVIEW
 @api.route('/')
@@ -77,7 +82,7 @@ class ReviewResource(Resource):
         return {'id': review.id, 'text': review.text, 'rating': review.rating, 'user_id': review.user.id, 'place_id': review.place.id}, 200
 
     # UPDATE SINGLE REVIEW BY ID
-    @api.expect(review_model, validate=True)
+    @api.expect(review_model_updated, validate=True)
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
@@ -104,7 +109,14 @@ class ReviewResource(Resource):
             return {"error": str(e)}, 400
         
         return {
-            'message': "Review updated successfully"
+            'message': "Review updated successfully",
+            'review': {
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating,
+                'user_id': review.user.id,
+                'place_id': review.place.id
+            }
         }, 200
     
     @api.response(200, 'Review deleted successfully')
