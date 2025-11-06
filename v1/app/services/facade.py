@@ -3,8 +3,8 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
+from app.persistence.user_repository import UserRepository
 import uuid
-from app.services.repository.user_repository import UserRepository
 
 #import logging
 #logger = logging.getLogger(__name__)

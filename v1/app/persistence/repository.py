@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from app import db
-from app.models import User, Place, Review, Amenity 
 
 
 class Repository(ABC): # repo defines that all these methods are required when you create a subclass but repo does not implement the logic

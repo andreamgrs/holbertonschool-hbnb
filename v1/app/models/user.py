@@ -1,10 +1,10 @@
 """
 This is the user class
 """
-from app.models.base import BaseModel
-import re
 from app import db, bcrypt
 import uuid
+from .base import BaseModel
+import re
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 
