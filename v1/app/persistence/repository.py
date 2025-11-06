@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
-from app import db
-from app.models import User, Place, Review, Amenity 
+from ...app import db
+from ..models.user import User
+from ..models.place import Place
+from ..models.amenity import Amenity
+from ..models.review import Review
 
 
 class Repository(ABC): # repo defines that all these methods are required when you create a subclass but repo does not implement the logic
@@ -85,5 +88,3 @@ class InMemoryRepository(Repository): # use for testing
 
     def get_by_attribute(self, attr_name, attr_value):
         return next((obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value), None)
-    
-    
