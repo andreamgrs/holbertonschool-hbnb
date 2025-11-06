@@ -114,8 +114,18 @@ class HBnBFacade:
             if review.place.id == place_id:
                 reviews_by_place_id.append(review)
         if not reviews_by_place_id:
-            raise ValueError("No reviews found for this place")
+            return reviews_by_place_id 
+            #raise ValueError("No reviews found for this place")
         return reviews_by_place_id
+    
+    # DELETE REVIEW
+    def delete_review(self, review_id):
+        review = self.review_repo.get(review_id)
+        if not review: #Check if I need to return false or a ValueError
+            raise ValueError(f"Review with id {review_id} not found")
+        self.review_repo.delete(review_id)
+        return True
+
     
     # UPDATE REVIEW
     def update_review(self, review_id, review_data):
