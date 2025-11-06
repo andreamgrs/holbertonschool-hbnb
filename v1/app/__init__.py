@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_restx import Api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
@@ -12,6 +13,7 @@ from app.api.v1.admin import api as admin_ns
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
+db = SQLAlchemy()
 
 
 def create_app(config_class="config.DevelopmentConfig"):# create multiple indendepent instances of app for test/stage
@@ -21,6 +23,7 @@ def create_app(config_class="config.DevelopmentConfig"):# create multiple indend
 
     bcrypt.init_app(app)
     jwt.init_app(app)
+    db.init_app(app)
 
     # register the users namespace, allowing the route defined in api/v1/users to be accessible through /api/v1/users
     api.add_namespace(users_ns, path='/api/v1/users')
