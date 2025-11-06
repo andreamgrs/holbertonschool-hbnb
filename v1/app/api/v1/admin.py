@@ -13,10 +13,11 @@ user_model = api.model('User', {
     'email': fields.String(required=True, description='Email of the user'),
     'password': fields.String(required=True, description='Password of the user')
 })
-user_update_model = api.model('User', {
+user_update_model = api.model('UserUpdate', {
     'first_name': fields.String(description='First name of the user'),
     'last_name': fields.String(description='Last name of the user'),
     'email': fields.String(description='Email of the user')
+    
 })
 amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
