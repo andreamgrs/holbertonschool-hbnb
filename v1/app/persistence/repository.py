@@ -85,3 +85,5 @@ class InMemoryRepository(Repository): # use for testing
 
     def get_by_attribute(self, attr_name, attr_value):
         return next((obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value), None)
+    
+    

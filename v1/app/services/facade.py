@@ -4,13 +4,15 @@ from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
 import uuid
+from app.services.repository.user_repository import UserRepository
+
 #import logging
 #logger = logging.getLogger(__name__)
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = SQLAlchemyRepository(User) # connect to memory for testing before connecting to actual database later
+        self.user_repo = UserRepository() # connect to memory for testing before connecting to actual database later
         self.place_repo = SQLAlchemyRepository(Place)
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
@@ -25,6 +27,7 @@ class HBnBFacade:
 
         # then create the user — model validates first_name, last_name, email
         user = User(**user_data)
+        user.hash_password(user_data['password'])
         self.user_repo.add(user)
 
         return user  # Q: Whether should allow this to be return user or not
@@ -51,7 +54,7 @@ class HBnBFacade:
     
     # GET SINGLE USER BY EMAIL
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
     
     # GET ALL USERS
     def get_all_users(self):
