@@ -120,5 +120,13 @@ class PlaceResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 400
         
-        return {"message": "Place updated successfully"}, 200
+        return {"message": "Place updated successfully",
+                "place":{
+                    'id': place.id,
+                    'title': place.title,
+                    'price': place.price,
+                    'latitude': place.latitude,
+                    'longitude': place.longitude
+                    }
+                }, 200
     
