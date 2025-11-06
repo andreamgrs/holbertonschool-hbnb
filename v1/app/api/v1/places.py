@@ -16,10 +16,10 @@ place_model = api.model('Place', {
 })
 
 # Define the place model for the update method
-update_place_model = api.model('Place', {
-    'title': fields.String(description='Title of the place'),
-    'description': fields.String('Description of the place'),
-    'price': fields.Float(description='Price per night'),
+update_place_model = api.model('PlaceUpdate', {
+    'title': fields.String(required=False, description='Title of the place'),
+    'description': fields.String(required=False, description='Description of the place'),
+    'price': fields.Float(required=False, description='Price per night'),
 })
 
 
