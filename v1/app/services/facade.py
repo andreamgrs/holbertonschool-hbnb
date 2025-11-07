@@ -190,6 +190,15 @@ class HBnBFacade:
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
     
+    # DELETE PLACE
+    def delete_place(self, place_id):
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError(f"Place with id {place_id} not found")
+        self.place_repo.delete(place_id)
+        return {'message': 'Place deleted successfully'}
+
+    
 # METHODS FOR AMENITIES
 
     # CREATE AMENITY
