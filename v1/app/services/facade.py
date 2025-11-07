@@ -229,6 +229,6 @@ class HBnBFacade:
         if "name" in amenity_data:
             amenity.name = amenity_data.get("name")
 
-        updated_amenity = self.amenity_repo.update(amenity_id, amenity_data)
-        return updated_amenity
+        self.amenity_repo.update(amenity_id, amenity_data)
+        return amenity
 

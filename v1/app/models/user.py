@@ -44,7 +44,7 @@ class User(BaseModel):
         if not isinstance(value, str):
             raise TypeError('first name must be a string')
        
-        if len(value.strip()) <= 50 and len(value.strip()) > 0:
+        if 0 < len(value.strip()) <= 50:
             return value
         
         else:
