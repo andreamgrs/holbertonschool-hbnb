@@ -1,24 +1,23 @@
 """
 This is the place class
 """
+from app import db, bcrypt
 from app.models.base import BaseModel
 from .amenity import Amenity
 from .review import Review
 from .user import User
+from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class Place(BaseModel):
+    __tablename__ = 'places'
 
-    def __init__(self, title, description, price, latitude,  longitude, owner):
-        super().__init__()
-        self.title = title
-        self.description = description
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.owner = owner
-        self.reviews = []
-        self.amenities = []
+    _title = db.Column(db.String(100), nullable=False)
+    _description = db.Column(db.String(500), nullable=False)
+    _price = db.Column(db.Float, nullable=False)
+    _latitude = db.Column(db.Float, nullable=False)
+    _longitude = db.Column(db.Float, nullable=False)
 
     # --- Methods ---
     def add_review(self, review):
@@ -47,72 +46,95 @@ class Place(BaseModel):
         print(f"The {self._title} listing has the following amenities:")
         for element in self.amenities:
             print(element)
-
+    
     # --- Getters and Setters ---
-    @property
+    @hybrid_property
     def title(self):
         return self._title
 
     @title.setter
     def title(self, value):
+        self._title = value   
+
+    @validates("_title")
+    def validate_title(self, key, value):
         if not isinstance(value, str):
             raise TypeError("title must be a string")
         if len(value) <= 0:
             raise ValueError("title must not be empty")
         if len(value) > 100:
             raise ValueError("title must be less than 100 characters") 
-        self._title = value        
+        return value
 
-    @property
+    @hybrid_property
     def description(self):
         return self._description
     
     @description.setter
     def description(self, value):
+        self._description = value
+
+    @validates("_description")
+    def validate_description(self, key, value):
         if not isinstance(value, str):
             raise TypeError("description must be a string")
         # airbnb descuptions are limited to 500 characters
         if len(value) > 500:
             raise ValueError("description must be less than 500 characters")
-        self._description = value
-
+        return value
         
-    @property
+    @hybrid_property
     def price(self):
         return self._price
     
     @price.setter
     def price(self, value):
-        if not isinstance(value, float):
-            raise TypeError("price must be a float")
+        self._price = value
+
+    @validates("_price")
+    def validate_price(self, key, value):
+        # accept int or float and coerce to float
+        if not isinstance(value, (int, float)):
+            raise TypeError("price must be a number")
+        value = float(value)
         if value < 0:
             raise ValueError('price must be greater than 0')
-        self._price = value
+        return value
         
-    @property
+    @hybrid_property
     def latitude (self):
         return self._latitude 
 
     @latitude.setter
     def latitude (self, value):
-        if not isinstance(value, float):
-            raise TypeError("latitude must be a float")
-        if value < -90 or value > 90:
-            raise ValueError("latitude must be between -90 and 90")
         self._latitude  = value
 
-    @property
+    @validates("_latitude")
+    def validate_latitude(self, key, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError("latitude must be a number")
+        value = float(value)
+        if value < -90 or value > 90:
+            raise ValueError("latitude must be between -90 and 90")
+        return value
+
+    @hybrid_property
     def longitude (self):
         return self._longitude 
 
     @longitude.setter
     def longitude (self, value):
-        if not isinstance(value, float):
-            raise TypeError("longitude must be a float")
+        self._longitude  = value
+
+    @validates("_longitude")
+    def validate_longitude(self, key, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError("longitude must be a number")
+        value = float(value)
         if value < -180 or value > 180:
             raise ValueError("longitude must be between -180 and 180")
-        self._longitude  = value
-       
+        return value
+    
     @property
     def owner(self):
         return self._owner

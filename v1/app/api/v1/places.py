@@ -72,16 +72,20 @@ class PlaceResource(Resource):
             return {'error': f"Place with id '{place_id}' not found"}, 404
         
         ammenity_list = []
+        ''' Remove for now till amenities are mapped and persisted
         for amenity in place.amenities:
             amenity_dict = {"id": amenity.id, "name": amenity.name}
             ammenity_list.append(amenity_dict)
-        
+        '''
+
         return {'id': place.id,
                 'title': place.title,
                 'description': place.description,
                 'price': place.price,
                 'latitude': place.latitude,
-                'longitude': place.longitude,
+                'longitude': place.longitude
+                }
+    ''' Remove owner and amenities till they are `mapped and persisted
                 'owner': {
                     'id': place.owner.id,
                     'first_name': place.owner.first_name,
@@ -89,6 +93,7 @@ class PlaceResource(Resource):
                     'email': place.owner.email
                 },
                 'amenities': ammenity_list}
+                '''
 
     # UPDATE SINGLE PLACE BY ID
     @api.expect(update_place_model, validate=True)
@@ -112,7 +117,8 @@ class PlaceResource(Resource):
         # Set is_admin default to False if not exists
         is_admin = current_user_dict.get('is_admin', False)
         user_id = current_user_dict.get('sub')
-        if not is_admin and place.owner.id != user_id:
+        '''if not is_admin and place.owner.id != user_id:'''
+        if not is_admin:
             return {'error': 'Unauthorized action'}, 403
 
         try:
