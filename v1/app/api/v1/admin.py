@@ -227,25 +227,3 @@ class AdminAmenityModify(Resource):
         except TypeError as e:
             return {'error': str(e)}, 400
 
-
-# DELETE PLACE - ADMIN ONLY
-@api.route('/places/<place_id>')
-class AdminPlaceDelete(Resource):
-    @api.response(200, 'Place successfully deleted')
-    @api.response(404, 'Place not found')
-    @api.response(403, 'Admin privileges required')
-    @jwt_required()
-    def delete(self, place_id):
-        """Delete an place's information"""
-        current_user = get_jwt()
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
-
-        try:
-            facade.delete_place(place_id)
-            return {'message': f'Place with id {place_id} successfully deleted'}, 200
-
-        except ValueError as e:
-            return {'error': str(e)}, 404
-        except TypeError as e:
-            return {'error': str(e)}, 400
