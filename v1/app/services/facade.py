@@ -233,3 +233,13 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
 
+        
+    # DELETE AMENITY
+    def delete_amenity(self, amenity_id):
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            raise ValueError(f"Amenity with id {amenity_id} not found")
+        self.amenity_repo.delete(amenity_id)
+        return {'message': 'Amenity deleted successfully'}
+
+
