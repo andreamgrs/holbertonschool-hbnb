@@ -113,7 +113,7 @@ class PlaceResource(Resource):
 
         # Get dictionary of the jwt payload
         current_user_dict = get_jwt()
-        print(f"current user is {current_user_dict}")
+
         # Set is_admin default to False if not exists
         is_admin = current_user_dict.get('is_admin', False)
         user_id = current_user_dict.get('sub')
@@ -136,3 +136,31 @@ class PlaceResource(Resource):
                     }
                 }, 200
     
+    @api.response(200, 'Place successfully deleted')
+    @api.response(404, 'Place not found')
+    @api.response(403, 'Admin privileges required')
+    @jwt_required()
+    def delete(self, place_id):
+        """Delete a place's information"""
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': f"Place with id '{place_id}' not found"}, 404
+
+        # Get dictionary of the jwt payload
+        current_user_dict = get_jwt()
+
+        # Set is_admin default to False if not exists
+        is_admin = current_user_dict.get('is_admin', False)
+        user_id = current_user_dict.get('sub')
+        '''if not is_admin and place.owner.id != user_id:'''
+        if not is_admin:
+            return {'error': 'Unauthorized action'}, 403
+
+        try:
+            facade.delete_place(place_id)
+            return {'message': f'Place with id {place_id} successfully deleted'}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 400
