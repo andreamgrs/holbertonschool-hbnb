@@ -123,6 +123,27 @@ class AdminUserResource(Resource):
         except TypeError as e:
             return {'error': str(e)}, 404
         
+    # DELETE USER - ADMIN ONLY
+    @api.response(200, 'User successfully deleted')
+    @api.response(404, 'User not found')
+    @api.response(403, 'Admin privileges required')
+    @jwt_required()
+    def delete(self, user_id):
+        """Delete an user information"""
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        try:
+            facade.delete_user(user_id)
+            return {'message': f'User with id {user_id} successfully deleted'}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 400
+    
+        
 # ADD AMENITY - ADMIN ONLY
 @api.route('/amenities/')
 class AdminAmenityCreate(Resource):
@@ -185,3 +206,46 @@ class AdminAmenityModify(Resource):
             return {'error': str(e)}, 400
         except TypeError as e:
             return {'error': str(e)}, 404
+        
+    # DELETE AMENITY - ADMIN ONLY
+    @api.response(200, 'Amenity successfully deleted')
+    @api.response(404, 'Amenity not found')
+    @api.response(403, 'Admin privileges required')
+    @jwt_required()
+    def delete(self, amenity_id):
+        """Delete an amenity's information"""
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        try:
+            facade.delete_amenity(amenity_id)
+            return {'message': f'Amenity with id {amenity_id} successfully deleted'}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 400
+
+
+# DELETE PLACE - ADMIN ONLY
+@api.route('/places/<place_id>')
+class AdminPlaceDelete(Resource):
+    @api.response(200, 'Place successfully deleted')
+    @api.response(404, 'Place not found')
+    @api.response(403, 'Admin privileges required')
+    @jwt_required()
+    def delete(self, place_id):
+        """Delete an place's information"""
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        try:
+            facade.delete_place(place_id)
+            return {'message': f'Place with id {place_id} successfully deleted'}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 400

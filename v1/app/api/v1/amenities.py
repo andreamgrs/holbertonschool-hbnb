@@ -45,3 +45,4 @@ class AmenityResource(Resource):
             return {'error': str(e)}, 404
         except TypeError as e:
             return {'error': str(e)}, 404
+        

@@ -4,6 +4,7 @@ from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
 from app.persistence.user_repository import UserRepository
+from app.persistence.place_repository import PlaceRepository
 import uuid
 
 #import logging
@@ -13,7 +14,7 @@ import uuid
 class HBnBFacade:
     def __init__(self):
         self.user_repo = UserRepository() # connect to memory for testing before connecting to actual database later
-        self.place_repo = SQLAlchemyRepository(Place)
+        self.place_repo = PlaceRepository()
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
 
@@ -81,6 +82,15 @@ class HBnBFacade:
         #save updated data to repo
         updated_user = self.user_repo.update(user_id, user_data)
         return updated_user
+
+            
+    # DELETE USER
+    def delete_user(self, user_id):
+        user = self.user_repo.get(user_id)
+        if not user:
+            raise ValueError(f"User with id {user_id} not found")
+        self.user_repo.delete(user_id)
+        return {'message': 'User deleted successfully'}
     
 
 # METHODS FOR REVIEW
@@ -151,7 +161,7 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity with ID {amenity_id} not found")
             amenities_list.append(amenity)
-        
+        print(f"title is {place_data.get('title')}")
         try:
             place = Place(
                         title=place_data.get('title'),
@@ -166,7 +176,7 @@ class HBnBFacade:
         
         for amenity in amenities_list:
             place.add_amenity(amenity)
-        
+        print(f"Created place with title: {place.title})")
         self.place_repo.add(place)
         return place
 
@@ -188,6 +198,15 @@ class HBnBFacade:
         place.price = place_data.get("price")
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
+    
+    # DELETE PLACE
+    def delete_place(self, place_id):
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError(f"Place with id {place_id} not found")
+        self.place_repo.delete(place_id)
+        return {'message': 'Place deleted successfully'}
+
     
 # METHODS FOR AMENITIES
 
@@ -229,6 +248,16 @@ class HBnBFacade:
         if "name" in amenity_data:
             amenity.name = amenity_data.get("name")
 
-        updated_amenity = self.amenity_repo.update(amenity_id, amenity_data)
-        return updated_amenity
+        self.amenity_repo.update(amenity_id, amenity_data)
+        return amenity
+
+        
+    # DELETE AMENITY
+    def delete_amenity(self, amenity_id):
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            raise ValueError(f"Amenity with id {amenity_id} not found")
+        self.amenity_repo.delete(amenity_id)
+        return {'message': 'Amenity deleted successfully'}
+
 
