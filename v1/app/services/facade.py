@@ -82,6 +82,15 @@ class HBnBFacade:
         #save updated data to repo
         updated_user = self.user_repo.update(user_id, user_data)
         return updated_user
+
+            
+    # DELETE USER
+    def delete_user(self, user_id):
+        user = self.user_repo.get(user_id)
+        if not user:
+            raise ValueError(f"User with id {user_id} not found")
+        self.user_repo.delete(user_id)
+        return {'message': 'User deleted successfully'}
     
 
 # METHODS FOR REVIEW
