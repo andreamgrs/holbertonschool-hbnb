@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.services import facade
+from ...services import facade
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_jwt_in_request
 
@@ -123,6 +123,27 @@ class AdminUserResource(Resource):
         except TypeError as e:
             return {'error': str(e)}, 404
         
+    # DELETE USER - ADMIN ONLY
+    @api.response(200, 'User successfully deleted')
+    @api.response(404, 'User not found')
+    @api.response(403, 'Admin privileges required')
+    @jwt_required()
+    def delete(self, user_id):
+        """Delete an user information"""
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        try:
+            facade.delete_user(user_id)
+            return {'message': f'User with id {user_id} successfully deleted'}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 404
+        except TypeError as e:
+            return {'error': str(e)}, 400
+    
+        
 # ADD AMENITY - ADMIN ONLY
 @api.route('/amenities/')
 class AdminAmenityCreate(Resource):
@@ -205,6 +226,7 @@ class AdminAmenityModify(Resource):
             return {'error': str(e)}, 404
         except TypeError as e:
             return {'error': str(e)}, 400
+
 
 # DELETE PLACE - ADMIN ONLY
 @api.route('/places/<place_id>')

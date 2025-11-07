@@ -9,6 +9,7 @@ jwt = JWTManager()
 db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):# create multiple indendepent instances of app for test/stage
+    
     app = Flask(__name__)
     app.config.from_object(config_class)
 
