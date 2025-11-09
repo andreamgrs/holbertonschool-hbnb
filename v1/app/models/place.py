@@ -18,6 +18,10 @@ class Place(BaseModel):
     _price = db.Column(db.Float, nullable=False)
     _latitude = db.Column(db.Float, nullable=False)
     _longitude = db.Column(db.Float, nullable=False)
+    _owner_id = db.Column(db.String(50), db.ForeignKey('users.id'), nullable=False)
+    owner = db.relationship('User')
+
+
 
     # --- Methods ---
     def add_review(self, review):
@@ -134,13 +138,13 @@ class Place(BaseModel):
         if value < -180 or value > 180:
             raise ValueError("longitude must be between -180 and 180")
         return value
-    
+   
     @property
-    def owner(self):
-        return self._owner
+    def owner_id(self):
+        return self._owner_id
     
-    @owner.setter
-    def owner(self, value):
+    @owner_id.setter
+    def owner_id(self, value):
         if not isinstance(value, User):
             raise TypeError('Owner is not an instance of the User class')
-        self._owner = value
+        self._owner_id = value

@@ -1,44 +1,52 @@
 """This is the review class"""
 from app.models.base import BaseModel # Import the class BaseModel from the package inside models 
-
+from app import db, bcrypt
+from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
 class Review(BaseModel):
     """Class for review
     """
 
-    def __init__(self, text, rating, place, user):
-        """Initializes a Review instance.
-        """
-        super().__init__() # call init method from BaseModel 
-        self.text = text
-        self.rating = rating
-        self.place = place 
-        self.user = user
+    __tablename__ = 'reviews'
+    _text = db.Column(db.String(100), nullable=False)
+    _rating = db.Column(db.Integer, nullable=False)
     
-    # --- Getters and Setters ---
+    
+    # --- hybrid property and getters and setters ---
     #Text
-    @property
+    @hybrid_property
     def text(self):
         return self._text
 
     @text.setter
     def text(self, value):
+        self._text = value
+
+    @validates("_text")
+    def validate_text(self, key, value):
         # Validates that text is not an empty string
         if not isinstance(value, str) or value.strip() == "":
             raise TypeError('Text must be a string and not an empty string')
-        self._text = value
-
+        return value
+    
     #rating 
-    @property
+    @hybrid_property
     def rating(self):
         return self._rating
 
     @rating.setter
     def rating(self, value):
+        self._rating = value
+
+    @validates("_rating")
+    def validate_rating(self, key, value):
         if value < 1 or value > 5:
             raise ValueError('Rating must be between 1 and 5')
-        self._rating = value
-    #place  
+        return value
+
+
+    #PLACE with getter and setter only
     @property
     def place(self):
         return self._place
@@ -49,7 +57,8 @@ class Review(BaseModel):
         if not isinstance(value, Place):
             raise TypeError('Place is not an instance of the Place class')
         self._place = value
-    #user
+
+    #PLACE with getter and setter only
     @property
     def user(self):
         return self._user

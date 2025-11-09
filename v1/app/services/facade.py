@@ -5,6 +5,8 @@ from app.models.review import Review
 from app.models.amenity import Amenity
 from app.persistence.user_repository import UserRepository
 from app.persistence.place_repository import PlaceRepository
+from app.persistence.review_repository import ReviewRepository
+from app.persistence.amenity_repository import AmenityRepository
 import uuid
 
 #import logging
@@ -15,8 +17,8 @@ class HBnBFacade:
     def __init__(self):
         self.user_repo = UserRepository() # connect to memory for testing before connecting to actual database later
         self.place_repo = PlaceRepository()
-        self.review_repo = SQLAlchemyRepository(Review)
-        self.amenity_repo = SQLAlchemyRepository(Amenity)
+        self.review_repo = ReviewRepository()
+        self.amenity_repo = AmenityRepository()
 
 # METHODS FOR USERS
 
@@ -152,7 +154,7 @@ class HBnBFacade:
 
     # CREATE PLACE
     def create_place(self, place_data):
-        owner = self.get_user(place_data['owner_id'])
+        owner= self.get_user(place_data['owner_id'])
         amenities_id = place_data.get('amenities', [])
         amenities_list = []
 
