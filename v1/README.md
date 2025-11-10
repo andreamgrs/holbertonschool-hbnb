@@ -80,6 +80,8 @@ curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <u
 }'
 ```
 
+
+
 ## Part 2 Implementation of Business Logic and API Endpoints
 
 Implements HBnB Evolution’s backend using Python and Flask.
