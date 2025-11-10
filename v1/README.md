@@ -173,9 +173,9 @@ curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: applica
 }'
 ```
 #### Create a place:
-Need authorization in this part you need to put the token from the user/owner of the place
+Need authorization in this part you need to put the token from the user/owner of the place.
 ```bash
-curl -X POST "http://localhost:5000/api/v1/places/" -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
    "title": "Cozy Apartment",
     "description": "A nice place to stay",
     "price": 100.0,
