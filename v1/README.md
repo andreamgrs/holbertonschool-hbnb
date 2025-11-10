@@ -1,5 +1,95 @@
 # 🏠 HBnB Project 
 
+## Part 3 Enhanced Backend with Authentication and Database Integration
+
+In this Part 3 of the HBnB Project we focus on transforming the backend into a secure, persistent, and production-ready system. Where we implement user authentication, enforce access control, and migrate from in-memory storage to a robust database architecture using SQLAlchemy and SQLite with MySQL prepared for deployment.
+
+### 🧱 Project Structure Summary
+- Add password hashing to User model with bcrypt2
+- Secure API with JWT authentication (Flask-JWT-Extended)
+- Implement role-based access control (is_admin)
+- Replace in-memory storage with SQLite using SQLAlchemy
+- Map models (User, Place, Review, Amenity) to database tables
+- Configure MySQL for production use
+- Visualize schema with mermaid.js diagrams
+
+### 🛠 Installation and running
+
+#### Install requirements
+```bash
+pip install -r requirements.txt
+pip install flask-bcrypt
+```
+#### Run the application
+
+```bash
+python3 run.py
+```
+
+#### To initialize the database and create the table, run:
+```bash
+python3 -m flask --app run shell
+>>> from app import db
+>>> db.create_all()
+```
+### 🧪 Swagger documentation
+Once you run the application, you can access the swagger documentation. 
+Eg: http://127.0.0.1:5000/api/v1/
+
+
+### 🧪 Testing (using Postman/cURL)
+
+Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
+
+#### 🔐 Access Control Overview
+
+Only authenticated users can perform actions tied to their ownership:
+- Create, update, and delete their own places
+- Create and update reviews, with checks to prevent reviewing their own places or submitting duplicates
+- Modify their user profile (excluding email and password)
+
+Admin users have elevated privileges:
+- Create new users
+- Modify any user’s data, including email and password (with unique email validation)
+- Add and update amenities
+- Bypass ownership restrictions on places and reviews
+
+
+#### Test user creation and retrieval using Postman or cURL. For example, create a first ever new user:
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application/json" -d '{
+   "first_name": "Tom",
+    "last_name": "Doe",
+    "email": "tom@example.com",
+    "password": "your_password1",
+    "is_admin": true
+}'
+```
+
+#### Get token from user:
+```bash
+curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
+   "email": "tom@example.com",
+    "password": "your_password1"
+}'
+```
+#### Create a place:
+You need authorization token from the owner of the place to create a place. Admin can bypass this restriction. 
+
+```bash
+curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
+   "title": "Cozy Apartment",
+    "description": "A nice place to stay",
+    "price": 100.0,
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "owner_id": "<user_id>",
+    "amenities": []
+}'
+```
+
+
+
 ## Part 2 Implementation of Business Logic and API Endpoints
 
 Implements HBnB Evolution’s backend using Python and Flask.
@@ -113,85 +203,6 @@ Each model has its own test file named using the format: app/tests/facade_unitte
 cd v1/
 python3 -m unittest app/tests/facade_unittest_review.py
 ```
-## Part 3 Enhanced Backend with Authentication and Database Integration
-
-In this Part 3 of the HBnB Project we focus on transforming the backend into a secure, persistent, and production-ready system. Where we implement user authentication, enforce access control, and migrate from in-memory storage to a robust database architecture using SQLAlchemy and SQLite with MySQL prepared for deployment.
-
-### 🧱 Project Structure Summary
-- Add password hashing to User model with bcrypt2
-- Secure API with JWT authentication (Flask-JWT-Extended)
-- Implement role-based access control (is_admin)
-- Replace in-memory storage with SQLite using SQLAlchemy
-- Map models (User, Place, Review, Amenity) to database tables
-- Configure MySQL for production use
-- Visualize schema with mermaid.js diagrams
-
-### 🛠 Installation and running
-
-#### Install requirements
-```bash
-pip install -r requirements.txt
-pip install flask-bcrypt
-```
-Same as Part 2 follow the instructions until Run the application and the API will start.
-
-
-#### To initialize the database and create the table, run:
-```bash
-python3 -m flask --app run shell
->>> from app import db
->>> db.create_all()
-```
-### 🧪 Testing
-
-Test using Postman or cURL, when you create a user for the first time need to be admin so in "is_admin" needs to be true.
-
-#### 🔐 Access Control Overview
-
-Only authenticated users can perform actions tied to their ownership:
-- Create, update, and delete their own places
-- Create and update reviews, with checks to prevent reviewing their own places or submitting duplicates
-- Modify their user profile (excluding email and password)
-
-Admin users have elevated privileges:
-- Create new users
-- Modify any user’s data, including email and password (with unique email validation)
-- Add and update amenities
-- Bypass ownership restrictions on places and reviews
-
-
-#### Test user creation and retrieval using Postman or cURL. For example, create a new user:
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application/json" -d '{
-   "first_name": "Tom",
-    "last_name": "Doe",
-    "email": "tom@example.com",
-    "password": "your_password1",
-    "is_admin": true
-}'
-```
-
-#### Get token from user:
-```bash
-curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
-   "email": "tom@example.com",
-    "password": "your_password1"
-}'
-```
-#### Create a place:
-Need authorization in this part you need to put the token from the user/owner of the place.
-```bash
-curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
-   "title": "Cozy Apartment",
-    "description": "A nice place to stay",
-    "price": 100.0,
-    "latitude": 37.7749,
-    "longitude": -122.4194,
-    "owner_id": "<user_id>",
-    "amenities": []
-}'
-```
-
 
 ## 👥 Contributors
 - Thannie Phan
