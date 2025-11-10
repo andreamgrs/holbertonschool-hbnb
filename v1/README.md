@@ -144,7 +144,7 @@ python3 -m flask --app run shell
 ```
 ### 🧪 Testing
 
-Test using Postman or cURL, when you create a user for the first time need to be admin so in "is_admin" needs to be true.
+Test using Postman or cURL, when you create a user for the first time, that user need to be admin in order to perform certain subsequent tasks later so you need "is_admin" to be true when creating the first ever user. 
 
 #### 🔐 Access Control Overview
 
