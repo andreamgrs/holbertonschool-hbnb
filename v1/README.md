@@ -140,7 +140,7 @@ python3 -m flask --app run shell
 
 Test using Postman or cURL, when you create a user for the first time need to be admin so in "is_admin" needs to be true.
 
-🔐 Access Control Overview
+#### 🔐 Access Control Overview
 
 Only authenticated users can perform actions tied to their ownership:
 - Create, update, and delete their own places
@@ -162,6 +162,27 @@ curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application
     "email": "tom@example.com",
     "password": "your_password1",
     "is_admin": true
+}'
+```
+
+#### Get token from user:
+```bash
+curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
+   "email": "tom@example.com",
+    "password": "your_password1"
+}'
+```
+#### Create a place:
+Need authorization in this part you need to put the token from the user/owner of the place
+```bash
+curl -X POST "http://localhost:5000/api/v1/places/" -H "Content-Type: application/json" -d '{
+   "title": "Cozy Apartment",
+    "description": "A nice place to stay",
+    "price": 100.0,
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "owner_id": "<user_id>",
+    "amenities": []
 }'
 ```
 
