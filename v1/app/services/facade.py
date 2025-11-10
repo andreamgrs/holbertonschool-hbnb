@@ -154,7 +154,8 @@ class HBnBFacade:
 
     # CREATE PLACE
     def create_place(self, place_data):
-        owner= self.get_user(place_data['owner_id'])
+        owner = self.get_user(place_data['owner_id'])
+        print(f"owner is {owner}")
         amenities_id = place_data.get('amenities', [])
         amenities_list = []
 
@@ -163,7 +164,6 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity with ID {amenity_id} not found")
             amenities_list.append(amenity)
-        print(f"title is {place_data.get('title')}")
         try:
             place = Place(
                         title=place_data.get('title'),
@@ -178,7 +178,6 @@ class HBnBFacade:
         
         for amenity in amenities_list:
             place.add_amenity(amenity)
-        print(f"Created place with title: {place.title})")
         self.place_repo.add(place)
         return place
 

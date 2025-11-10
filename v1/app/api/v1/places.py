@@ -35,6 +35,7 @@ class PlaceList(Resource):
         current_user = get_jwt_identity()
         payload_data = api.payload #contains the JSON body the user sent
         payload_data["owner_id"] = current_user
+        print(f"current user in api is {current_user}")
         try:
             new_place = facade.create_place(payload_data)
         except Exception as e:

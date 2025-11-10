@@ -14,10 +14,10 @@ class Review(BaseModel):
     _rating = db.Column(db.Integer, nullable=False)
 
     place_id = db.Column(db.String(60), ForeignKey('places.id'), nullable=False)
-    place = relationship('Review', backref='places', lazy=True)
+    place = relationship('Place', backref='review', lazy=True)
 
     user_id = db.Column(db.String(60), ForeignKey('users.id'), nullable=False)
-    user = relationship('User', backref='places', lazy=True)
+    user = relationship('User', backref='review', lazy=True)
 
     
     

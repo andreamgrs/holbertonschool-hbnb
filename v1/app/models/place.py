@@ -10,6 +10,12 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
+# Association table for many-to-many relationship
+place_amenity = db.Table('place_amenity',
+    Column('place_id', Integer, ForeignKey('places.id'), primary_key=True),
+    Column('amenity_id', Integer, ForeignKey('amenities.id'), primary_key=True)
+)
+
 
 class Place(BaseModel):
     __tablename__ = 'places'
@@ -19,13 +25,11 @@ class Place(BaseModel):
     _price = db.Column(db.Float, nullable=False)
     _latitude = db.Column(db.Float, nullable=False)
     _longitude = db.Column(db.Float, nullable=False)
+    _owner = relationship('User', backref='place', lazy=True)
 
     user_id = db.Column(db.String(60), ForeignKey('users.id'), nullable=False)
-    user = relationship('User', backref='places', lazy=True)
-
-    review = relationship('Review', backref='places', lazy=True)
-
-
+    amenities = relationship('Amenity', secondary=place_amenity, lazy='subquery', backref=db.backref('place', lazy=True))
+    reviews = relationship('Review', backref='place', lazy=True)
 
     # --- Methods ---
     def add_review(self, review):
@@ -143,12 +147,16 @@ class Place(BaseModel):
             raise ValueError("longitude must be between -180 and 180")
         return value
    
-    @property
+    @hybrid_property
     def owner(self):
         return self._owner
     
     @owner.setter
     def owner(self, value):
+        self._owner = value
+
+    @validates("_owner")
+    def validate_longitude(self, key, value):
         if not isinstance(value, User):
             raise TypeError('Owner is not an instance of the User class')
-        self._owner = value
+        return value
