@@ -1,4 +1,4 @@
--- HBnB: Test CRUD operations
+-- HBnB: Test Inital Data and CRUD operations
 -- ==========================
 SELECT '* List tables in database' AS '** HBnB Database Tests';
 USE hbnb_task10;
