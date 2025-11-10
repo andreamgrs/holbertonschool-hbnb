@@ -20,8 +20,11 @@ In this Part 3 of the HBnB Project we focus on transforming the backend into a s
 pip install -r requirements.txt
 pip install flask-bcrypt
 ```
-Same as Part 2 follow the instructions until Run the application and the API will start.
+#### Run the application
 
+```bash
+python3 run.py
+```
 
 #### To initialize the database and create the table, run:
 ```bash
@@ -29,6 +32,11 @@ python3 -m flask --app run shell
 >>> from app import db
 >>> db.create_all()
 ```
+### 🧪 Swagger documentation
+Once you run the application, you can access the swagger documentation. 
+Eg: http://127.0.0.1:5000/api/v1/
+
+
 ### 🧪 Testing (using Postman/cURL)
 
 Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
