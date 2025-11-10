@@ -128,7 +128,13 @@ In this Part 3 of the HBnB Project we focus on transforming the backend into a s
 
 ### 🛠 Installation and running
 
+#### Install requirements
+```bash
+pip install -r requirements.txt
+pip install flask-bcrypt
+```
 Same as Part 2 follow the instructions until Run the application and the API will start.
+
 
 #### To initialize the database and create the table, run:
 ```bash
