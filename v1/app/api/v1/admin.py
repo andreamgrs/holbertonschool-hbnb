@@ -98,13 +98,6 @@ class AdminUserResource(Resource):
         if not update_data: # if cannot find any request
             return {'error': 'Invalid input'}, 400
 
-        email = update_data.get('email')
-        if email:
-            # Check if email is already in use
-            existing_user = facade.get_user_by_email(email)
-            if existing_user and existing_user.id != user_id:
-                return {'error': 'Email is already in use'}, 400
-            
         try:
             updated_user = facade.update_user(user_id, update_data) # prevent user from modifying email and password via the facade when update user 
             return {
