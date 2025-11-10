@@ -29,9 +29,9 @@ python3 -m flask --app run shell
 >>> from app import db
 >>> db.create_all()
 ```
-### 🧪 Testing
+### 🧪 Testing (using Postman/cURL)
 
-Test using Postman or cURL, when you create a user for the first time, that user need to be admin in order to perform certain subsequent tasks later so you need "is_admin" to be true when creating the first ever user. 
+Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
 
 #### 🔐 Access Control Overview
 
@@ -47,7 +47,7 @@ Admin users have elevated privileges:
 - Bypass ownership restrictions on places and reviews
 
 
-#### Test user creation and retrieval using Postman or cURL. For example, create a new user:
+#### Test user creation and retrieval using Postman or cURL. For example, create a first ever new user:
 ```bash
 curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application/json" -d '{
    "first_name": "Tom",
@@ -66,7 +66,8 @@ curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: applica
 }'
 ```
 #### Create a place:
-Need authorization in this part you need to put the token from the user/owner of the place.
+You need authorization token from the owner of the place to create a place. Admin can bypass this restriction. 
+
 ```bash
 curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
    "title": "Cozy Apartment",
