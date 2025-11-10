@@ -4,13 +4,24 @@ This is a amenity class
 from app import db
 from .base import BaseModel
 import re
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
+
+# Association table for many-to-many relationship
+place_amenity = db.Table('place_amenity',
+    Column('place_id', Integer, ForeignKey('places.id'), primary_key=True),
+    Column('amenity_id', Integer, ForeignKey('amenities.id'), primary_key=True)
+)
+
 
 class Amenity(BaseModel):
     __tablename__ = 'amenities'
 
     _name  = db.Column(db.String(50), nullable=False)
+
+    places = relationship('Place', secondary=place_amenity, lazy='subquery', backref=db.backref('amenities', lazy=True))
+
 
     # --- Getters and Setters ---
     @hybrid_property

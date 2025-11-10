@@ -1,7 +1,8 @@
 """This is the review class"""
 from app.models.base import BaseModel # Import the class BaseModel from the package inside models 
 from app import db, bcrypt
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Review(BaseModel):
@@ -11,6 +12,13 @@ class Review(BaseModel):
     __tablename__ = 'reviews'
     _text = db.Column(db.String(100), nullable=False)
     _rating = db.Column(db.Integer, nullable=False)
+
+    place_id = db.Column(db.String(60), ForeignKey('places.id'), nullable=False)
+    place = relationship('Review', backref='places', lazy=True)
+
+    user_id = db.Column(db.String(60), ForeignKey('users.id'), nullable=False)
+    user = relationship('User', backref='places', lazy=True)
+
     
     
     # --- hybrid property and getters and setters ---

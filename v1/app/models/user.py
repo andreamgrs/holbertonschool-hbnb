@@ -5,7 +5,8 @@ from app import db, bcrypt
 import uuid
 from .base import BaseModel
 import re
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 
@@ -17,6 +18,11 @@ class User(BaseModel):
     _email = db.Column(db.String(120), nullable=False, unique=True)
     _password = db.Column(db.String(128), nullable=False)
     _is_admin = db.Column(db.Boolean, default=False)
+
+
+    places = relationship('Place', backref='users', lazy=True)
+    review = relationship('Review', backref='users', lazy=True)
+
 
     # --- Methods ---
     def hash_password(self, password):

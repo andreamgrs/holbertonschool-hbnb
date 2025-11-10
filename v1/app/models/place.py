@@ -6,7 +6,8 @@ from app.models.base import BaseModel
 from .amenity import Amenity
 from .review import Review
 from .user import User
-from sqlalchemy.orm import validates
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 
@@ -18,8 +19,11 @@ class Place(BaseModel):
     _price = db.Column(db.Float, nullable=False)
     _latitude = db.Column(db.Float, nullable=False)
     _longitude = db.Column(db.Float, nullable=False)
-    _owner_id = db.Column(db.String(50), db.ForeignKey('users.id'), nullable=False)
-    owner = db.relationship('User')
+
+    user_id = db.Column(db.String(60), ForeignKey('users.id'), nullable=False)
+    user = relationship('User', backref='places', lazy=True)
+
+    review = relationship('Review', backref='places', lazy=True)
 
 
 
@@ -140,11 +144,11 @@ class Place(BaseModel):
         return value
    
     @property
-    def owner_id(self):
-        return self._owner_id
+    def owner(self):
+        return self._owner
     
-    @owner_id.setter
-    def owner_id(self, value):
+    @owner.setter
+    def owner(self, value):
         if not isinstance(value, User):
             raise TypeError('Owner is not an instance of the User class')
-        self._owner_id = value
+        self._owner = value
