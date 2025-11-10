@@ -95,6 +95,51 @@ WHERE id = '8bcce66e-2008-4b78-813f-c0ff37804e35';
 SELECT * FROM places;
 
 
+-- Review Table Test
+-- ==========================
+-- Create a review
+SELECT '* Insert new review.' AS '** Review Tests';
+INSERT INTO reviews
+VALUES (
+    '7e828749-4cbc-41e2-ac49-77b5885531fe', -- id (random UUID)
+    'Good stay', -- text
+    5, -- rating
+    '36c9050e-ddd3-4c3b-9731-9f487208bbc1', -- owner id (admin user)
+    'cadb7beb-a956-45f0-9a68-933d450ba490' -- place id
+);
+
+-- Retreive all reviews
+SELECT '* List all reviews:' AS '** Review Tests';
+SELECT * FROM reviews;
+
+-- Update review name based on id
+SELECT '* Update review based on id and show the change' AS '** Review Tests';
+UPDATE reviews
+SET text = 'Not good', rating = 3
+WHERE id = '7e828749-4cbc-41e2-ac49-77b5885531fe';
+SELECT * FROM reviews
+WHERE id = '7e828749-4cbc-41e2-ac49-77b5885531fe';
+
+-- Delete review based on id
+SELECT '* Delete review using id and list reviews' AS '** Review Tests';
+DELETE FROM reviews
+WHERE id = '7e828749-4cbc-41e2-ac49-77b5885531fe';
+SELECT * FROM reviews;
+
+-- Create a new review
+SELECT '* Insert new review and show all reviews.' AS '** Review Tests';
+INSERT INTO reviews
+VALUES (
+    '7e828749-4cbc-41e2-ac49-77b5885531ff', -- id (random UUID)
+    'Amazing!', -- text
+    5, -- rating
+    '36c9050e-ddd3-4c3b-9731-9f487208bbc1', -- owner id (admin user)
+    'cadb7beb-a956-45f0-9a68-933d450ba490' -- place id
+);
+SELECT * FROM reviews
+WHERE id = '7e828749-4cbc-41e2-ac49-77b5885531ff';
+
+
 -- Amenity Table Tests
 -- ==========================
 -- Create an amenity
