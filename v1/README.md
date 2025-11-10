@@ -115,7 +115,7 @@ python3 -m unittest app/tests/facade_unittest_review.py
 ```
 ## Part 3 Enhanced Backend with Authentication and Database Integration
 
-In this Part 3 of the HBnB Project! We focus on transforming the backend into a secure, persistent, and production-ready system. Where we implement user authentication, enforce access control, and migrate from in-memory storage to a robust database architecture using SQLAlchemy and SQLite with MySQL prepared for deployment.
+In this Part 3 of the HBnB Project we focus on transforming the backend into a secure, persistent, and production-ready system. Where we implement user authentication, enforce access control, and migrate from in-memory storage to a robust database architecture using SQLAlchemy and SQLite with MySQL prepared for deployment.
 
 ### 🧱 Project Structure Summary
 - Add password hashing to User model with bcrypt2
@@ -126,7 +126,44 @@ In this Part 3 of the HBnB Project! We focus on transforming the backend into a 
 - Configure MySQL for production use
 - Visualize schema with mermaid.js diagrams
 
+### 🛠 Installation and running
 
+Same as Part 2 follow the instructions until Run the application and the API will start.
+
+#### To initialize the database and create the table, run:
+```bash
+python3 -m flask --app run shell
+>>> from app import db
+>>> db.create_all()
+```
+### 🧪 Testing
+
+Test using Postman or cURL, when you create a user for the first time need to be admin so in "is_admin" needs to be true.
+
+🔐 Access Control Overview
+
+Only authenticated users can perform actions tied to their ownership:
+- Create, update, and delete their own places
+- Create and update reviews, with checks to prevent reviewing their own places or submitting duplicates
+- Modify their user profile (excluding email and password)
+
+Admin users have elevated privileges:
+- Create new users
+- Modify any user’s data, including email and password (with unique email validation)
+- Add and update amenities
+- Bypass ownership restrictions on places and reviews
+
+
+#### Test user creation and retrieval using Postman or cURL. For example, create a new user:
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application/json" -d '{
+   "first_name": "Tom",
+    "last_name": "Doe",
+    "email": "tom@example.com",
+    "password": "your_password1",
+    "is_admin": true
+}'
+```
 
 
 ## 👥 Contributors
