@@ -8,14 +8,13 @@ USE hbnb_task10;
 -- User Table:
 -- ==========================
 CREATE TABLE IF NOT EXISTS users (
-    id CHAR(36) PRIMARY KEY, -- this is the uuid
+    id CHAR(36) PRIMARY KEY, /* this is the uuid */
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(120) NOT NULL UNIQUE,
     password VARCHAR(128) NOT NULL,
-    is_admin BOOLEAN NOT NULL DEFAULT FALSE -- admin yes or no default to not admin first
-
-);
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE /* admin yes or no default to not admin first */
+    );
 
 -- Place Table:
 -- ==========================
@@ -26,9 +25,8 @@ CREATE TABLE IF NOT EXISTS places (
     price DECIMAL(10, 2) NOT NULL,
     latitude FLOAT NOT NULL,
     longitude FLOAT NOT NULL,
-    owner_id CHAR(36) NOT NULL, -- instruction for last task said user_id and now this task says owner_id
-    --if user is deleted, all places referecing the user will be deleted
-    CONSTRAINT place_foreignkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    owner_id CHAR(36) NOT NULL, /* instruction for last task said user_id and now this task says owner_id */
+    FOREIGN KEY (owner_id) REFERENCES users(id) /* if user is deleted, all places referecing the user will be deleted */
 );
 
 
@@ -36,15 +34,15 @@ CREATE TABLE IF NOT EXISTS places (
 -- ==========================
 CREATE TABLE IF NOT EXISTS reviews (
     id CHAR(36) PRIMARY KEY,
-    text VARCHAR(100) NOT NULL,
+    text TEXT NOT NULL,
     rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
     user_id CHAR(36) NOT NULL,
     place_id CHAR(36) NOT NULL,
 
-    CONSTRAINT user_foreignkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT place_foreignkey FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
 
-    CONSTRAINT unique_user UNIQUE(user_id, place_id) -- this is equal to 1 user 1 place 1 review only
+    CONSTRAINT unique_user UNIQUE(user_id, place_id) /* this is equal to 1 user 1 place 1 review only */
 );
 
 
@@ -65,10 +63,10 @@ CREATE TABLE IF NOT EXISTS place_amenity (
     CONSTRAINT pk_place_amenity PRIMARY KEY (place_id, amenity_id), -- to ensure we don't have the same amenities in the same place?
 
     -- Foreign key linking to places
-    CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
 
     -- Foreign key linking to amenities
-    CONSTRAINT fk_amenity FOREIGN KEY (amenity_id) REFERENCES amenities(id) ON DELETE CASCADE
+    FOREIGN KEY (amenity_id) REFERENCES amenities(id) ON DELETE CASCADE
 );
 
 
@@ -89,13 +87,8 @@ INSERT INTO users (id, first_name, last_name, email, password, is_admin) VALUES 
 -- INSERT DATA - CREATE INITIAL AMENITIES:
 -- ==========================
 
-INSERT INTO amenities (id, name) VALUES (
+INSERT INTO amenities (id, name) VALUES
 ('8b44d013-1adf-4688-b776-d6293680af13', 'WiFi'),
 ('bc5c25ac-48de-489f-a41f-ec7d762fa38a', 'Swimming Pool'),
-('fbd0f8d0-800d-481d-9867-e6ee206ad110', 'Air Conditioning'
-);
+('fbd0f8d0-800d-481d-9867-e6ee206ad110', 'Air Conditioning');
 
-
-
--- INSERT DATA - CREATE INITIAL AMENITIES:
--- ==========================
