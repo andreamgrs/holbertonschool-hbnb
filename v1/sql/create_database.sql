@@ -1,6 +1,7 @@
 -- HBnB: Table generation & Initial Data
 -- ==========================
 
+DROP DATABASE IF EXISTS hbnb_task10; /*Deletes the database*/
 CREATE DATABASE IF NOT EXISTS hbnb_task10;
 USE hbnb_task10;
 
@@ -92,3 +93,15 @@ INSERT INTO amenities (id, name) VALUES
 ('bc5c25ac-48de-489f-a41f-ec7d762fa38a', 'Swimming Pool'),
 ('fbd0f8d0-800d-481d-9867-e6ee206ad110', 'Air Conditioning');
 
+-- INSERT DATA PLACE FOR REVIEW:
+-- ==========================
+
+INSERT INTO places (id, title, description, price, latitude, longitude, owner_id) VALUES (
+    'cadb7beb-a956-45f0-9a68-933d450ba490', -- id (random UUID)
+    'Cozy Apartment', -- title
+    'A nice place to stay', -- description
+    100.0, -- price
+    37.7749, -- latitude
+    -122.4194, -- longitude
+    '36c9050e-ddd3-4c3b-9731-9f487208bbc1' -- owner id (admin user)
+);
