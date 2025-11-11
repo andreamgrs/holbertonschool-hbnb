@@ -88,7 +88,7 @@ curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <u
     "amenities": []
 }'
 ```
-#### Create a new user in orDer to get a review (the owner of the place cannot make a review):
+#### Create a new user in order to get a review (the owner of the place cannot make a review):
 ```bash
 curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Authorization: Bearer <admin_token>" -H "Content-Type: application/json" -d '{
    "first_name": "Ally",
@@ -139,12 +139,12 @@ Install MySQL on Ubuntu
 sudo apt update
 sudo apt install mysql-server
 ```
-Run scripts;
+Run scripts
 ```bash
 cat create_database.sql | mysql -uroot -p
 cat test_operations.sql | mysql -uroot -p
 ```
-Connect to your MySQL server, use query show databases to see the database hbnb_task10:
+Connect to your MySQL server, use query show databases to see the database hbnb_task10
 ```bash
 sudo mysql
 Welcome to the MySQL monitor...
