@@ -160,7 +160,7 @@ Entity-Relationship (ER) diagrams to visually represent the structure of the dat
 
 This setup enables users to review different places, and places to accumulate feedback from various users.
 
-For bookings:
+For bookings or reservations:
 - USER has a one-to-many relationship with BOOKING, an user can make multiple bookings.
 - PLACE has a one-to-many relationship with BOOKING, allowing each place to be booked multiple times by different users.
 
