@@ -13,7 +13,7 @@ In this Part 3 of the HBnB Project we focus on transforming the backend into a s
 - Configure MySQL for production use
 - Visualize schema with mermaid.js diagrams
 
-### 🛠 Installation and running
+### 🛠️ Installation and running
 
 #### Install requirements
 ```bash
@@ -32,7 +32,7 @@ python3 -m flask --app run shell
 >>> from app import db
 >>> db.create_all()
 ```
-### 🧪 Swagger documentation
+### 🚀 Swagger documentation
 Once you run the application, you can access the swagger documentation. 
 Eg: http://127.0.0.1:5000/api/v1/
 
@@ -41,7 +41,7 @@ Eg: http://127.0.0.1:5000/api/v1/
 
 Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
 
-#### 🔐 Access Control Overview
+### 🔐 Access Control Overview
 
 Only authenticated users can perform actions tied to their ownership:
 - Create, update, and delete their own places
@@ -130,7 +130,7 @@ curl -X GET "http://127.0.0.1:5000/api/v1/reviews/"
 curl -X DELETE "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>"
 ```
 
-### 🧪 SQL Scripts for Table Generation and Initial Data
+### ⚙️ SQL Scripts for Table Generation and Initial Data
 
 In order to run the scripts first:
 
@@ -150,7 +150,7 @@ sudo mysql
 Welcome to the MySQL monitor...
 mysql> show databases;
 ```
-### Generate Database Diagrams
+### 📝 Generate Database Diagrams
 Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
 
 - USER entity has a one-to-many relationship with PLACE, meaning each user (admin) can create multiple places, but each place is owned by a single user. 
