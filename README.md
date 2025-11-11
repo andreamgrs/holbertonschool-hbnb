@@ -31,7 +31,14 @@ Implements HBnB Evolution’s backend using Python and Flask.
 - Unittests for facade and endpoints.
 
 
-### 🚧 V3 – [Coming Soon]
+### 🚧 V3 – Enhanced Backend with Authentication and Database Integration
+
+In this phase we extend the backend of the application by introducing user authentication, authorization, and database integration using SQLAlchemy and SQLite for development.
+
+- Authentication and Authorization using Flask-JWT-Extended and role-based access control with the is_admin attribute for specific endpoints.
+- Database Integration
+- Refactor all CRUD operations to interact with a persistent database.
+- Database Design and Visualization using mermeid.js
 
 ### 🚀 V4 – [Coming Soon]
 
