@@ -49,10 +49,6 @@ In this phase we extend the backend of the application by introducing user authe
 | Backend      | Python, Flask                 |
 | Testing      | unittest, postman             |
 
-## 📁 Project Structure
-
-    v1/
-    ├── 
 
 ## 👥 Contributors
 - Thannie Phan
