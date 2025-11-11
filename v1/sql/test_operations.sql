@@ -138,3 +138,34 @@ VALUES (
 );
 SELECT * FROM reviews
 WHERE id = '7e828749-4cbc-41e2-ac49-77b5885531ff';
+
+
+-- Amenity Table Tests
+-- ==========================
+-- Create an amenity
+SELECT '* Insert new amenity (Sauna).' AS '** Amenity Tests';
+INSERT INTO amenities
+VALUES (
+    '969441e2-42c6-4b2f-93ec-7b37a425dd0e', -- id (random UUID)
+    'Sauna' -- name
+);
+
+
+-- Retrieve all amenities
+SELECT '* List all amenities:' AS '** Amenity Tests';
+SELECT * FROM amenities;
+
+
+-- Update amenity name based on ID
+SELECT '* Update the amenity Sauna using id and show the new amenity name using id' AS '** Amenity Tests';
+UPDATE amenities
+SET name = 'New Sauna'
+WHERE id = '969441e2-42c6-4b2f-93ec-7b37a425dd0e';
+SELECT * FROM amenities
+WHERE id = '969441e2-42c6-4b2f-93ec-7b37a425dd0e';
+
+-- Delete amenity based on ID
+SELECT '* Delete the amenity New Sauna using id and list all amenities to see it has been deleted' AS '** Amenity Tests';
+DELETE FROM amenities
+WHERE id = '969441e2-42c6-4b2f-93ec-7b37a425dd0e';
+SELECT * FROM amenities;
