@@ -154,7 +154,7 @@ mysql> show databases;
 Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
 
 - USER entity has a one-to-many relationship with PLACE, meaning each user (admin) can create multiple places, but each place is owned by a single user. 
-- PLACE and AMENITY entities are connected through a many-to-many relationship, implemented via the PLACE_AMENITY join table. This allows each place to have multiple amenities, and each amenity to be associated with multiple places.
+- PLACE and AMENITY entities are connected through a many-to-many relationship, implemented via the PLACE_AMENITY join table. Each place can have multiple amenities, and each amenity is associated with multiple places.
 - USER has one-to-many relationship with REVIEW, a user can write multiple reviews. 
 - PLACE has one-to-many relationship with REVIEW, each place can receive multiple reviews. 
 
