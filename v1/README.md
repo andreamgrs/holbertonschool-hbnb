@@ -41,7 +41,7 @@ Eg: http://127.0.0.1:5000/api/v1/
 
 Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
 
-### 🔐 Access Control Overview
+#### 🔐 Access Control Overview
 
 Only authenticated users can perform actions tied to their ownership:
 - Create, update, and delete their own places
