@@ -56,6 +56,7 @@ Admin users have elevated privileges:
 
 
 #### Test user creation and retrieval using Postman or cURL. For example, create a first ever new user:
+The initial user must be an admin. To create additional users, you need to include the admin's Authorization Bearer token in the request header.
 ```bash
 curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application/json" -d '{
    "first_name": "Tom",
@@ -66,16 +67,16 @@ curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Content-Type: application
 }'
 ```
 
-#### Get token from user:
+#### Get token from ADMIN:
 ```bash
 curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
    "email": "tom@example.com",
     "password": "your_password1"
 }'
 ```
-#### Create a place:
-You need authorization token from the owner of the place to create a place. Admin can bypass this restriction. 
 
+#### Create a place:
+You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
 ```bash
 curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
    "title": "Cozy Apartment",
@@ -87,7 +88,68 @@ curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <u
     "amenities": []
 }'
 ```
+#### Create a new user in orDer to get a review (the owner of the place cannot make a review):
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Authorization: Bearer <admin_token>" -H "Content-Type: application/json" -d '{
+   "first_name": "Ally",
+    "last_name": "Doe",
+    "email": "ally@example.com",
+    "password": "your_password1",
+    "is_admin": false
+}'
+```
+#### Get token from new user:
+```bash
+curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
+   "email": "ally@example.com",
+    "password": "your_password1"
+}'
+```
+#### Create a new review:
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/reviews/" -H "Authorization: Bearer <new_user_token>" -H "Content-Type: application/json" -d '{
+  "text": "Great",
+    "rating": 5,
+    "user_id": "<user_id>",
+    "place_id": "<place_id>"
+}'
+```
+#### Update review BY ID:
+```bash
+curl -X PUT "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>" -H "Content-Type: application/json" -d '{
+  "text": "Not bad",
+    "rating": 2
+}'
+```
+#### Get review
+```bash
+curl -X GET "http://127.0.0.1:5000/api/v1/reviews/"
+```
+#### Delete review
+```bash
+curl -X DELETE "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>"
+```
 
+### 🧪 SQL Scripts for Table Generation and Initial Data
+
+In order to run the scripts first:
+
+Install MySQL on Ubuntu
+```bash
+sudo apt update
+sudo apt install mysql-server
+```
+Run scripts;
+```bash
+cat create_database.sql | mysql -uroot -p
+cat test_operations.sql | mysql -uroot -p
+```
+Connect to your MySQL server, use query show databases to see the database hbnb_task10:
+```bash
+sudo mysql
+Welcome to the MySQL monitor...
+mysql> show databases;
+```
 
 
 ## Part 2 Implementation of Business Logic and API Endpoints

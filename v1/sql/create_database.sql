@@ -98,10 +98,10 @@ INSERT INTO amenities (id, name) VALUES
 
 INSERT INTO places (id, title, description, price, latitude, longitude, owner_id) VALUES (
     'cadb7beb-a956-45f0-9a68-933d450ba490', -- id (random UUID)
-    'Cozy Apartment', -- title
-    'A nice place to stay', -- description
-    100.0, -- price
-    37.7749, -- latitude
-    -122.4194, -- longitude
+    'Cozy place', -- title
+    'A nice stay', -- description
+    150.0, -- price
+    40.7749, -- latitude
+    -100.4194, -- longitude
     '36c9050e-ddd3-4c3b-9731-9f487208bbc1' -- owner id (admin user)
 );
