@@ -150,6 +150,19 @@ sudo mysql
 Welcome to the MySQL monitor...
 mysql> show databases;
 ```
+### Generate Database Diagrams
+Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
+
+- USER entity has a one-to-many relationship with PLACE, meaning each user (admin) can create multiple places, but each place is owned by a single user. 
+- PLACE and AMENITY entities are connected through a many-to-many relationship, implemented via the PLACE_AMENITY join table. This allows each place to have multiple amenities, and each amenity to be associated with multiple places.
+- USER has one-to-many relationship with REVIEW, a user can write multiple reviews. 
+- PLACE has one-to-many relationship with REVIEW, each place can receive multiple reviews. 
+
+This setup enables users to review different places, and places to accumulate feedback from various users.
+
+For bookings:
+- USER has a one-to-many relationship with BOOKING, an user can make multiple bookings.
+- PLACE has a one-to-many relationship with BOOKING, allowing each place to be booked multiple times by different users.
 
 
 ## Part 2 Implementation of Business Logic and API Endpoints
