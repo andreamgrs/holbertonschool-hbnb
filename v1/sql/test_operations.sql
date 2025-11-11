@@ -147,7 +147,7 @@ SELECT '* Insert new amenity (Sauna).' AS '** Amenity Tests';
 INSERT INTO amenities
 VALUES (
     '969441e2-42c6-4b2f-93ec-7b37a425dd0e', -- id (random UUID)
-    'Sauna', -- name
+    'Sauna' -- name
 );
 
 
