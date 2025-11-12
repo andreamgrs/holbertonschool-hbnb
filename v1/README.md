@@ -42,6 +42,8 @@ Eg: http://127.0.0.1:5000/api/v1/
 
 Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
 
+For this Part 3 inside v1/instance, option to delete permanently the database.db file for testing and creating the first user as an admin. A new database.db will be created as following the instructions. 
+
 #### 🔐 Access Control Overview
 
 Only authenticated users can perform actions tied to their ownership:
@@ -169,6 +171,8 @@ This setup enables users to review different places, and places to accumulate fe
 For bookings or reservations:
 - USER has a one-to-many relationship with BOOKING, an user can make multiple bookings.
 - PLACE has a one-to-many relationship with BOOKING, allowing each place to be booked multiple times by different users.
+
+You can view our diagram using the file entity_relationship_diagram.svg
 
 
 ## Part 2 Implementation of Business Logic and API Endpoints
