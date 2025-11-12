@@ -166,6 +166,8 @@ For bookings or reservations:
 - USER has a one-to-many relationship with BOOKING, an user can make multiple bookings.
 - PLACE has a one-to-many relationship with BOOKING, allowing each place to be booked multiple times by different users.
 
+You can view our diagram using the file entity_relationship_diagram.svg
+
 
 ## Part 2 Implementation of Business Logic and API Endpoints
 
