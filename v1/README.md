@@ -40,6 +40,7 @@ Eg: http://127.0.0.1:5000/api/v1/
 ### 🧪 Testing (using Postman/cURL)
 
 Prior to test: When you create a user for the first time, that user need to be an admin in order to perform certain subsequent tasks later on. "is_admin" needs to be true when creating the first ever user. 
+For this Part 3 inside instance, option to delete permanently the database.db file for testing and creating the first user as an admin. A new database.db will be created as following the instructions. 
 
 #### 🔐 Access Control Overview
 
