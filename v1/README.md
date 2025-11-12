@@ -16,10 +16,11 @@ In this Part 3 of the HBnB Project we focus on transforming the backend into a s
 ### 🛠️ Installation and running
 
 #### Install requirements
+From the v1 folder:
 ```bash
 pip install -r requirements.txt
-pip install flask-bcrypt
 ```
+
 #### Run the application
 
 ```bash
@@ -28,7 +29,7 @@ python3 run.py
 
 #### To initialize the database and create the table, run:
 ```bash
-python3 -m flask --app run shell
+flask shell
 >>> from app import db
 >>> db.create_all()
 ```
@@ -139,7 +140,12 @@ Install MySQL on Ubuntu
 sudo apt update
 sudo apt install mysql-server
 ```
+Start the SQL server
+```bash
+service mysql start
+```
 Run scripts
+From the v1/sql folder
 ```bash
 cat create_database.sql | mysql -uroot -p
 cat test_operations.sql | mysql -uroot -p
