@@ -57,9 +57,6 @@ Admin users have elevated privileges:
     |   |   `-- user_repository.py
     |   |-- services
     |   |   |-- __init__.py
-    |   |   |-- __pycache__
-    |   |   |   |-- __init__.cpython-38.pyc
-    |   |   |   `-- facade.cpython-38.pyc
     |   |   `-- facade.py
     |   `-- tests
     |       |-- __init__.py
@@ -146,7 +143,6 @@ POST to 'http://localhost:5000/api/v1/auth/login' endpoint
 Once you run the application, you can access the swagger documentation. 
 Eg: http://127.0.0.1:5000/api/v1/
 
-
 ### API Endpoints
 
 #### Admin
@@ -189,7 +185,6 @@ Eg: http://127.0.0.1:5000/api/v1/
       5. DELETE /api/v1/reviews/{review_id} - Delete review
 
 ### Endpoint Examples
-
 #### Create a place:
 You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
 ```bash
