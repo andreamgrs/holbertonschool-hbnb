@@ -146,6 +146,7 @@ POST to 'http://localhost:5000/api/v1/auth/login' endpoint
 ### 🚀 Swagger documentation
 Once you run the application, you can access the swagger documentation. 
 Eg: http://127.0.0.1:5000/api/v1/
+For start testing the endpoints go to **Create first admin user** and inside admin create a first user, or normal users adding the authorization header. 
 
 ### API Endpoints
 
