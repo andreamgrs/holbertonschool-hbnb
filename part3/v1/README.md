@@ -27,59 +27,62 @@ Admin users have elevated privileges:
 - Bypass ownership restrictions on places and reviews
 
 #### Project Structure
--- v1
-    |-- README.md
-    |-- app
-    |   |-- __init__.py
-    |   |-- api
-    |   |   |-- __init__.py
-    |   |   `-- v1
-    |   |       |-- __init__.py
-    |   |       |-- admin.py
-    |   |       |-- amenities.py
-    |   |       |-- auth.py
-    |   |       |-- places.py
-    |   |       |-- reviews.py
-    |   |       `-- users.py
-    |   |-- models
-    |   |   |-- __init__.py
-    |   |   |-- amenity.py
-    |   |   |-- base.py
-    |   |   |-- place.py
-    |   |   |-- review.py
-    |   |   `-- user.py
-    |   |-- persistence
-    |   |   |-- __init__.py
-    |   |   |-- amenity_repository.py
-    |   |   |-- place_repository.py
-    |   |   |-- repository.py
-    |   |   |-- review_repository.py
-    |   |   `-- user_repository.py
-    |   |-- services
-    |   |   |-- __init__.py
-    |   |   `-- facade.py
-    |   `-- tests
-    |       |-- __init__.py
-    |       |-- api_unittest_amenity.py
-    |       |-- api_unittest_places.py
-    |       |-- api_unittest_review.py
-    |       |-- api_unittest_users.py
-    |       |-- class_model_amenity_test.py
-    |       |-- class_model_review_test.py
-    |       |-- class_models_place_test.py
-    |       |-- class_models_test.py
-    |       |-- doc_api_unittest_places.txt
-    |       |-- facade_unittest_amenity.py
-    |       |-- facade_unittest_places.py
-    |       |-- facade_unittest_review.py
-    |       `-- facade_unittest_user.py
-    |-- config.py
-    |-- entity_relationship_diagram.svg
-    |-- requirements.txt
-    |-- run.py
-    `-- sql
-        |-- create_database.sql
-        `-- test_operations.sql
+
+```
+v1/
+|-- README.md
+|-- app
+|   |-- __init__.py
+|   |-- api
+|   |   |-- __init__.py
+|   |   `-- v1
+|   |       |-- __init__.py
+|   |       |-- admin.py
+|   |       |-- amenities.py
+|   |       |-- auth.py
+|   |       |-- places.py
+|   |       |-- reviews.py
+|   |       `-- users.py
+|   |-- models
+|   |   |-- __init__.py
+|   |   |-- amenity.py
+|   |   |-- base.py
+|   |   |-- place.py
+|   |   |-- review.py
+|   |   `-- user.py
+|   |-- persistence
+|   |   |-- __init__.py
+|   |   |-- amenity_repository.py
+|   |   |-- place_repository.py
+|   |   |-- repository.py
+|   |   |-- review_repository.py
+|   |   `-- user_repository.py
+|   |-- services
+|   |   |-- __init__.py
+|   |   `-- facade.py
+|   `-- tests
+|       |-- __init__.py
+|       |-- api_unittest_amenity.py
+|       |-- api_unittest_places.py
+|       |-- api_unittest_review.py
+|       |-- api_unittest_users.py
+|       |-- class_model_amenity_test.py
+|       |-- class_model_review_test.py
+|       |-- class_models_place_test.py
+|       |-- class_models_test.py
+|       |-- doc_api_unittest_places.txt
+|       |-- facade_unittest_amenity.py
+|       |-- facade_unittest_places.py
+|       |-- facade_unittest_review.py
+|       `-- facade_unittest_user.py
+|-- config.py
+|-- entity_relationship_diagram.svg
+|-- requirements.txt
+|-- run.py
+`-- sql
+      |-- create_database.sql
+      `-- test_operations.sql
+```
 
 ### 🛠️ Installation and running
 #### Clone the repository
