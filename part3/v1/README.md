@@ -85,7 +85,7 @@ v1/
 ```
 
 ### 🛠️ Installation and running
-#### Clone the repository
+#### Clone the repository and make sure to have python3 installed
 ```bash
 git clone https://github.com/andreamgrs/holbertonschool-hbnb.git
 cd holbertonschool-hbnb
@@ -190,8 +190,10 @@ Eg: http://127.0.0.1:5000/api/v1/
 ### Endpoint Examples
 #### Create a place:
 You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
+POST to "http://localhost:5000/api/v1/places/" endpoint
+**Request Body**
 ```bash
-curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
+{
    "title": "Cozy Apartment",
     "description": "A nice place to stay",
     "price": 100.0,
@@ -199,49 +201,55 @@ curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <u
     "longitude": -122.4194,
     "owner_id": "<user_id>",
     "amenities": []
-}'
+}
 ```
 #### Create a new user in order to get a review (the owner of the place cannot make a review):
+POST to "http://127.0.0.1:5000/api/v1/users/" endpoint
+**Request Body**
 ```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Authorization: Bearer <admin_token>" -H "Content-Type: application/json" -d '{
+{
    "first_name": "Ally",
     "last_name": "Doe",
     "email": "ally@example.com",
     "password": "your_password1",
     "is_admin": false
-}'
+}
 ```
 #### Get token from new user:
+POST to "http://localhost:5000/api/v1/auth/login" endpoint
+**Request Body**
 ```bash
-curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
+{
    "email": "ally@example.com",
     "password": "your_password1"
-}'
+}
 ```
 #### Create a new review:
+POST to "http://127.0.0.1:5000/api/v1/reviews/" endpoint
+**Request Body**
 ```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/reviews/" -H "Authorization: Bearer <new_user_token>" -H "Content-Type: application/json" -d '{
+{
   "text": "Great",
     "rating": 5,
     "user_id": "<user_id>",
     "place_id": "<place_id>"
-}'
+}
 ```
 #### Update review BY ID:
+
+PUT to "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
+**Request Body**
 ```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>" -H "Content-Type: application/json" -d '{
+{
   "text": "Not bad",
     "rating": 2
-}'
+}
 ```
 #### Get review
-```bash
-curl -X GET "http://127.0.0.1:5000/api/v1/reviews/"
-```
+GET from "http://127.0.0.1:5000/api/v1/reviews/" endpoint
+
 #### Delete review
-```bash
-curl -X DELETE "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>"
-```
+DELETE from "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
 
 ### ⚙️ SQL Scripts for Table Generation and Initial Data
 
