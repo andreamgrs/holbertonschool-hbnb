@@ -108,6 +108,7 @@ flask shell
 #### Run the application
 
 ```bash
+cd v1
 python3 run.py
 ```
 
