@@ -198,7 +198,7 @@ For start testing the endpoints go to **Create first admin user** and inside adm
 ### Endpoint Examples
 #### Create a place:
 You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
-POST to "http://localhost:5000/api/v1/places/" endpoint
+POST to /api/v1/places/ endpoint
 
 **Request Body**
 ```bash
@@ -213,7 +213,7 @@ POST to "http://localhost:5000/api/v1/places/" endpoint
 }
 ```
 #### Create a new user in order to get a review (the owner of the place cannot make a review):
-POST to "http://127.0.0.1:5000/api/v1/users/" endpoint
+POST to /api/v1/users/ endpoint
 
 **Request Body**
 ```bash
@@ -226,7 +226,7 @@ POST to "http://127.0.0.1:5000/api/v1/users/" endpoint
 }
 ```
 #### Get token from new user:
-POST to "http://localhost:5000/api/v1/auth/login" endpoint
+POST to /api/v1/auth/login endpoint
 
 **Request Body**
 ```bash
@@ -236,7 +236,7 @@ POST to "http://localhost:5000/api/v1/auth/login" endpoint
 }
 ```
 #### Create a new review:
-POST to "http://127.0.0.1:5000/api/v1/reviews/" endpoint
+POST to /api/v1/reviews/ endpoint
 
 **Request Body**
 ```bash
@@ -249,7 +249,7 @@ POST to "http://127.0.0.1:5000/api/v1/reviews/" endpoint
 ```
 #### Update review BY ID:
 
-PUT to "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
+PUT to /api/v1/reviews/<review_id> endpoint
 
 **Request Body**
 ```bash
@@ -259,10 +259,10 @@ PUT to "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
 }
 ```
 #### Get review
-GET from "http://127.0.0.1:5000/api/v1/reviews/" endpoint
+GET /api/v1/reviews/ endpoint
 
 #### Delete review
-DELETE from "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
+DELETE /api/v1/reviews/<review_id> endpoint
 
 ### ⚙️ SQL Scripts for Table Generation and Initial Data
 
