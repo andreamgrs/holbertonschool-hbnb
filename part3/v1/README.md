@@ -120,7 +120,9 @@ http://127.0.0.1:5000/api/v1/
 #### Create first admin user
 When the first user is created, the need for an admin authorisation token is bypassed. However, for an subsequent admin actions (e.g. creating another user, creating an amenity, or modifying a user) an admin authorisation token is required.
 So, the first user MUST be an admin user and be created with the is_admin flag must be set to TRUE.
-For example:
+
+**For example:**
+
 POST to 'http://127.0.0.1:5000/api/v1/users/' endpoint
 ```bash
 {
@@ -134,7 +136,9 @@ POST to 'http://127.0.0.1:5000/api/v1/users/' endpoint
 
 #### Get authorisation token for admin user:
 Log in using the admin details to generate an authorisation token. This token will be required to perform subsequent admin only actions.
-For example:
+
+**For example:**
+
 POST to 'http://localhost:5000/api/v1/auth/login' endpoint
 ```bash
 {
@@ -145,7 +149,9 @@ POST to 'http://localhost:5000/api/v1/auth/login' endpoint
 
 ### 🚀 Swagger documentation
 Once you run the application, you can access the swagger documentation. 
+
 Eg: http://127.0.0.1:5000/api/v1/
+
 For start testing the endpoints go to **Create first admin user** and inside admin create a first user, or normal users adding the authorization header. 
 
 ### API Endpoints
@@ -193,6 +199,7 @@ For start testing the endpoints go to **Create first admin user** and inside adm
 #### Create a place:
 You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
 POST to "http://localhost:5000/api/v1/places/" endpoint
+
 **Request Body**
 ```bash
 {
@@ -207,6 +214,7 @@ POST to "http://localhost:5000/api/v1/places/" endpoint
 ```
 #### Create a new user in order to get a review (the owner of the place cannot make a review):
 POST to "http://127.0.0.1:5000/api/v1/users/" endpoint
+
 **Request Body**
 ```bash
 {
@@ -219,6 +227,7 @@ POST to "http://127.0.0.1:5000/api/v1/users/" endpoint
 ```
 #### Get token from new user:
 POST to "http://localhost:5000/api/v1/auth/login" endpoint
+
 **Request Body**
 ```bash
 {
@@ -228,6 +237,7 @@ POST to "http://localhost:5000/api/v1/auth/login" endpoint
 ```
 #### Create a new review:
 POST to "http://127.0.0.1:5000/api/v1/reviews/" endpoint
+
 **Request Body**
 ```bash
 {
@@ -240,6 +250,7 @@ POST to "http://127.0.0.1:5000/api/v1/reviews/" endpoint
 #### Update review BY ID:
 
 PUT to "http://127.0.0.1:5000/api/v1/reviews/<review_id>" endpoint
+
 **Request Body**
 ```bash
 {
