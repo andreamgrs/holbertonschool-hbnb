@@ -123,7 +123,7 @@ So, the first user MUST be an admin user and be created with the is_admin flag m
 
 **For example:**
 
-POST to 'http://127.0.0.1:5000/api/v1/users/' endpoint
+POST /api/v1/users/ endpoint
 ```bash
 {
    "first_name": "Tom",
@@ -139,7 +139,7 @@ Log in using the admin details to generate an authorisation token. This token wi
 
 **For example:**
 
-POST to 'http://localhost:5000/api/v1/auth/login' endpoint
+POST /api/v1/auth/login endpoint
 ```bash
 {
    "email": "tom@example.com",
@@ -198,6 +198,7 @@ For start testing the endpoints go to **Create first admin user** and inside adm
 ### Endpoint Examples
 #### Create a place:
 You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
+
 POST to /api/v1/places/ endpoint
 
 **Request Body**
