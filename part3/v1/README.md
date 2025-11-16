@@ -117,8 +117,9 @@ http://127.0.0.1:5000/api/v1/
 ```
 
 #### Create first admin user
-When the first user is created, the need for an admin authorisation token is bypassed. However, for an subsequent admin actions (e.g. creating another user, creating an amenity, or modifying a user) an admin authorisation token is required.
-So, the first user MUST be an admin user and be created with the is_admin flag must be set to TRUE.
+When the system has no users yet, the system lets you create the first user without an admin token. However, after this, in order to test creating another user, creating an amenity, or modify a user, etc, we need an admin autorisation token (aka login as an admin). 
+
+For this reason, the first user must be an admin. You must set is_admin = TRUE when creating the first user. 
 
 **For example:**
 
@@ -150,8 +151,6 @@ POST /api/v1/auth/login endpoint
 Once you run the application, you can access the swagger documentation. 
 
 Eg: http://127.0.0.1:5000/api/v1/
-
-For start testing the endpoints go to **Create first admin user** and inside admin create a first user, or normal users adding the authorization header. 
 
 ### API Endpoints
 
@@ -290,7 +289,7 @@ Welcome to the MySQL monitor...
 mysql> show databases;
 ```
 ### 📝 Generate Database Diagrams
-Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
+We have created Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
 
 - USER entity has a one-to-many relationship with PLACE, meaning each user (admin) can create multiple places, but each place is owned by a single user. 
 - PLACE and AMENITY entities are connected through a many-to-many relationship, implemented via the PLACE_AMENITY join table. Each place can have multiple amenities, and each amenity is associated with multiple places.
