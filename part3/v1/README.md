@@ -105,10 +105,9 @@ python3 -m flask --app run shell
 >>> db.create_all()
 ```
 
-#### Run the application
+#### Run the application inside v1
 
 ```bash
-cd v1
 python3 run.py
 ```
 
