@@ -152,6 +152,8 @@ Once you run the application, you can access the swagger documentation.
 
 Eg: http://127.0.0.1:5000/api/v1/
 
+**IMPORTANT:** Test API endpoints using CURLS/POSTMAN 
+
 ### API Endpoints
 
 #### Admin
