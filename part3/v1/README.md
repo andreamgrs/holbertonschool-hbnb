@@ -92,15 +92,15 @@ cd holbertonschool-hbnb
 ```
 
 #### Install requirements
-Navigate to the part3 folder.
+Navigate to the part3 directory, folder v1. 
 ```bash
-cd part3
+cd part3/v1
 pip install -r requirements.txt
 ```
 
 #### To initialize the database and create the table, run:
 ```bash
-flask shell
+python3 -m flask --app run shell
 >>> from app import db
 >>> db.create_all()
 ```
