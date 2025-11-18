@@ -7,11 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="login.html" id="login-link">Login</a>
-        </nav>
-    </header>
+    {% include 'header.html'%}
     <main>
         <section id="filter">
             <label for="price-filter">Max Price:</label>
@@ -21,8 +17,16 @@
         </section>
         <section id="places-list">
             <!-- List of places will be populated dynamically -->
+            {% for place in places-list}
+            <div class="place-card">
+                <p>{{ place.name }}</p>
+                <p>$ {{ place.price }}</p>
+                <button class="details-button"><a href="place.html" id="details-button">View Details</a></button>
+            </div>
+            {%endfor}
         </section>
     </main>
     <script src="scripts.js"></script>
+    {% include 'footer.html'%}
 </body>
 </html>
