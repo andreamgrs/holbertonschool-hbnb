@@ -7,22 +7,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    {% include 'header.html'%}
+    {% include 'header.html' %}
     <main>
         <section id="place-details">
             <!-- Place details will be populated dynamically -->
             <div class="place-info">
-                <p>Place: ${{place.name}}</p>
-                <p>Host: ${{place.owner}}</p>
+                <p>Place: {{place.name}}</p>
+                <p>Host: {{place.owner}}</p>
             </div>
             <div class="place-details">
-                <p>Price: ${{place.price}}</p>
-                <p>Description: ${{place.description}}</p>
-                <p>Amenities: ${{place.amenities}}</p>
+                <p>Price: {{place.price}}</p>
+                <p>Description: {{place.description}}</p>
+                <p>Amenities: {{place.amenities}}</p>
             </div>
         </section>
         <section id="reviews">
             <!-- Reviews will be populated dynamically -->
+            {% if places.reviews %}
+            {% for review in places.reviews %}
+            <div class="review-card">
+                <p>Username: {{review.user}}</p>
+                <p>Comment: {{review.text}}</p>
+                <p>Rating: {{review.rating}}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+                <p>No reviews</p>
+            {% endif %}
+            {% if logged_in %}
+                <button class="add_review-button"><a href="add_review.html" id="add_review-button">Add Review</a></button>
+            {%vendif %}
         </section>
         <section id="add-review">
             <h2>Add a Review</h2>
