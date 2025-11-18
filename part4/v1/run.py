@@ -1,8 +1,9 @@
 from app import create_app
 from flask import Flask, render_template
+from flask_cors import CORS
 
 app = create_app()
-
+CORS(app)
 
 @app.route('/api/v1/auth/login')
 def login():
