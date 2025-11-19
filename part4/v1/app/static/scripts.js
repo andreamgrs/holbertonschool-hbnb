@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else{
       // test at index
       checkAuthentication();
+      const price_filter = document.getElementById('price-filter');
+      price_filter.innerHTML = '<option value="10">10</option><option value="50">50</option><option value="100">100</option><option value="All">All</option>'
     }
   });
 
@@ -79,7 +81,51 @@ function displayPlaces(places) {
     // Iterate over the places data
     // For each place, create a div element and set its content
     // Append the created element to the places list
+    const place_list = document.getElementById('places-list');
+    place_list.innerHTML=" "
+    places.forEach(place => {
+            console.log(places);
+            let place_html = '<div class="place-card">';
+            place_html += "<p>" + place.title + "</p>";
+            place_html += '<p class="place-price">' + "$" + place.price + "</p>";
+            place_html += '<button class="details-button"><a href="place.html" id="details-button">View Details</a></button>'
+            place_html += '</div>'
+            place_list.innerHTML += place_html;
+            console.log(place_list.innerHTML);
+        });
 }
+
+document.getElementById('price-filter').addEventListener('change', (event) => {
+    // Get the selected price value
+    const place_list = document.getElementById('places-list');
+    const price_list = document.querySelectorAll('.place-price');
+    console.log(price_list)
+    const max_price = event.target.value;
+    console.log(max_price);
+    let counter=0 
+    for (const place_card of place_list.children) {
+      let price_of_place = price_list[counter].textContent;
+      console.log(price_of_place)
+      price_of_place=price_of_place.substring(1);
+      console.log(price_of_place);
+      if (max_price != "All") {
+        place_card.style.display = "none";
+      }else{
+        place_card.style.display = "block";
+      }
+      if (parseInt(price_of_place) > parseInt(max_price)) {
+          place_card.style.display = "none";
+      }else{
+          place_card.style.display = "block";
+      }
+      
+      counter += 1;
+    }
+    
+    
+
+    // Iterate over the places and show/hide them based on the selected price
+});
 
 function getCookie(name) {
     // Function to get a cookie value by its name

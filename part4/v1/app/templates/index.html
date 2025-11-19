@@ -17,13 +17,6 @@
         </section>
         <section id="places-list">
             <!-- List of places will be populated dynamically -->
-            {% for place in places_list %}
-            <div class="place-card">
-                <p>{{ place.name }}</p>
-                <p>$ {{ place.price }}</p>
-                <button class="details-button"><a href="place.html" id="details-button">View Details</a></button>
-            </div>
-            {% endfor %}
         </section>
     </main>
     {% include 'footer.html'%}
