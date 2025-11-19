@@ -9,6 +9,10 @@ CORS(app)
 def login():
     return render_template('login.html')
 
+@app.route('/api/v1/index')
+def index():
+    return render_template('index.html', places_list=[])
+
 if __name__ == '__main__':
     app.run(host='localhost', port=5000, debug=True)
 

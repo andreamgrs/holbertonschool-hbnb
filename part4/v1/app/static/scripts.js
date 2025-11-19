@@ -15,7 +15,7 @@
     if (response.ok) {
       const data = await response.json();
       document.cookie = `token=${data.access_token}; path=/`;
-      window.location.href = 'index.html';
+      window.location.href = '../index'
     } else {
         alert('Login failed: ' + response.statusText);
     }
@@ -34,4 +34,67 @@ document.addEventListener('DOMContentLoaded', () => {
             await loginUser(email, password)
         });
     }
+    else{
+      // test at index
+      checkAuthentication();
+    }
   });
+
+
+function checkAuthentication() {
+  const token = getCookie('token');
+  const loginLink = document.getElementById('login-button');
+
+  if (!token) {
+      loginLink.style.display = 'block';
+  } else {
+      loginLink.style.display = 'none';
+      // Fetch places data if the user is authenticated
+      fetchPlaces(token);
+  }
+}
+
+async function fetchPlaces(token) {
+    // Make a GET request to fetch places data
+    const response = await fetch('http://127.0.0.1:5000/api/v1/places', {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`
+      }
+    });
+    // Include the token in the Authorization header
+    // Handle the response and pass the data to displayPlaces function
+     if (response.ok) {
+       //alert('Response Places OK: ' + response.statusText);
+       const data = await response.json();
+       displayPlaces(data)
+
+    } else {
+        alert('Failed to get places: ' + response.statusText);
+    }
+}
+
+function displayPlaces(places) {
+    // Clear the current content of the places list
+    // Iterate over the places data
+    // For each place, create a div element and set its content
+    // Append the created element to the places list
+}
+
+function getCookie(name) {
+    // Function to get a cookie value by its name
+    console.log(name);
+    cookies = document.cookie.split(";")
+    let cookie_name = name + "=";
+    console.log(cookies);
+    for(let i = 0; i < cookies.length; i++) {
+      let c = cookies[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(cookie_name) == 0) {
+        console.log("the return", c.substring(cookie_name.length, c.length))
+        return c.substring(cookie_name.length, c.length);
+      } 
+    }
+}

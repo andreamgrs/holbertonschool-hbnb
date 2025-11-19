@@ -15,6 +15,7 @@ class Login(Resource):
     @api.expect(login_model)
     def post(self):
         """Authenticate user and return a JWT token"""
+        
         credentials = api.payload  # Get the email and password from the request payload
         
         # Step 1: Retrieve the user based on the provided email
