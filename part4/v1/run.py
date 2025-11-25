@@ -18,6 +18,10 @@ def index():
 def place():
     return render_template('place.html')
 
+@app.route('/api/v1/add_review')
+def add_review():
+    return render_template('add_review.html')
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
 
