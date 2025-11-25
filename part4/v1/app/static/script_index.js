@@ -144,3 +144,16 @@ function getCookie(name) {
       } 
     }
 }
+
+
+/* GET THE ID FROM PLACE URL */
+function getPlaceIdFromURL() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  const place_id = urlParams.get('id');
+  console.log(place_id)
+    // Extract the place ID from window.location.search
+    // Your code here
+}
+
