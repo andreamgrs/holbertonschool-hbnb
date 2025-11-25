@@ -11,7 +11,12 @@ def login():
 
 @app.route('/api/v1/index')
 def index():
-    return render_template('index.html', places_list=[])
+    return render_template('index.html')
+
+
+@app.route('/api/v1/place/<place_id>')
+def place():
+    return render_template('place.html')
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000, debug=True)
