@@ -52,8 +52,8 @@ function checkAuthentication() {
   } else {
       loginLink.style.display = 'none';
       // Fetch places data if the user is authenticated
-      fetchPlaces(token);
   }
+  fetchPlaces(token);
 }
 
 async function fetchPlaces(token) {

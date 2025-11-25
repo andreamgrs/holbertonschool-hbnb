@@ -16,10 +16,9 @@ function checkAuthentication() {
         addReviewSection.style.display = 'none';
     } else {
         addReviewSection.style.display = 'block';
-        // Store the token for later use
-        placeId = getPlaceIdFromURL();
-        fetchPlaceDetails(token, placeId);
     }
+    placeId = getPlaceIdFromURL();
+    fetchPlaceDetails(token, placeId);
 }
 
 function getCookie(name) {
