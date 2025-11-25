@@ -88,7 +88,7 @@ function displayPlaces(places) {
             let place_html = '<div class="place-card">';
             place_html += "<p>" + place.title + "</p>";
             place_html += '<p class="place-price">' + "$" + place.price + "</p>";
-            place_html += '<button class="details-button"><a href="place.html" id="details-button">View Details</a></button>'
+            place_html += '<button class="details-button"><a href=place?id=' + place.id + 'id="details-button">View Details</a></button>'
             place_html += '</div>'
             place_list.innerHTML += place_html;
             console.log(place_list.innerHTML);
