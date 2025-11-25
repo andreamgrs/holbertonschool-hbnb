@@ -3,43 +3,11 @@
   Please, follow the project instructions to complete the tasks.
 */
 
- async function loginUser(email, password) {
-    const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
-    // Handle the response
-    if (response.ok) {
-      const data = await response.json();
-      document.cookie = `token=${data.access_token}; path=/`;
-      window.location.href = '../index'
-    } else {
-        alert('Login failed: ' + response.statusText);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            // Your code to handle form submission
-            console.log(email);
-            await loginUser(email, password)
-        });
-    }
-    else{
-      // test at index
       checkAuthentication();
       const price_filter = document.getElementById('price-filter');
-      price_filter.innerHTML = '<option value="10">10</option><option value="50">50</option><option value="100">100</option><option value="All">All</option>'
-    }
+      price_filter.innerHTML = '<option value="10">10</option><option value="50">50</option><option value="100">100</option><option value="All">All</option>' 
   });
 
 
@@ -55,6 +23,25 @@ function checkAuthentication() {
   }
   fetchPlaces(token);
 }
+
+function getCookie(name) {
+    // Function to get a cookie value by its name
+    console.log(name);
+    cookies = document.cookie.split(";")
+    let cookie_name = name + "=";
+    console.log(cookies);
+    for(let i = 0; i < cookies.length; i++) {
+      let c = cookies[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(cookie_name) == 0) {
+        console.log("the return", c.substring(cookie_name.length, c.length))
+        return c.substring(cookie_name.length, c.length);
+      } 
+    }
+}
+
 
 async function fetchPlaces(token) {
     // Make a GET request to fetch places data
@@ -121,39 +108,9 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
       
       counter += 1;
     }
-    
-    
-
+  
     // Iterate over the places and show/hide them based on the selected price
 });
 
-function getCookie(name) {
-    // Function to get a cookie value by its name
-    console.log(name);
-    cookies = document.cookie.split(";")
-    let cookie_name = name + "=";
-    console.log(cookies);
-    for(let i = 0; i < cookies.length; i++) {
-      let c = cookies[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(cookie_name) == 0) {
-        console.log("the return", c.substring(cookie_name.length, c.length))
-        return c.substring(cookie_name.length, c.length);
-      } 
-    }
-}
 
-
-/* GET THE ID FROM PLACE URL */
-function getPlaceIdFromURL() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-
-  const place_id = urlParams.get('id');
-  console.log(place_id)
-    // Extract the place ID from window.location.search
-    // Your code here
-}
 
