@@ -15,6 +15,11 @@
     margin-top: 5px;
 }
 
+/* Hide login button initially so it doesn't load before realising there's a token and hide it */
+#login-button {
+    display: none;
+}
+
 /* GENERAL STYLING */
 * {
     box-sizing: border-box;
