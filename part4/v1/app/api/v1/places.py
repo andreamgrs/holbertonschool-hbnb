@@ -116,7 +116,7 @@ class PlaceResource(Resource):
         is_admin = current_user_dict.get('is_admin', False)
         user_id = current_user_dict.get('sub')
         '''if not is_admin and place.owner.id != user_id:'''
-        if not is_admin:
+        if not is_admin and place.user_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:
@@ -151,7 +151,7 @@ class PlaceResource(Resource):
         is_admin = current_user_dict.get('is_admin', False)
         user_id = current_user_dict.get('sub')
         '''if not is_admin and place.owner.id != user_id:'''
-        if not is_admin:
+        if not is_admin and place.user_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:
