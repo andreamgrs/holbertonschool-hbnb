@@ -33,21 +33,14 @@ class AdminUserCreate(Resource):
     @api.response(400, 'Invalid input data')
     @api.response(400, 'Email already registered')
     @api.response(403, 'Admin privileges required')
+    @jwt_required()
     def post(self):
         """Register a new user"""
         user_data = api.payload  # JSON body sent by client
 
-        existing_users = facade.get_all_users()
-        if not existing_users:
-            message = "First user successfully created"
-        # Only run the jwt checks if there are already existing users
-        else:
-            message = "User successfully created"
-            # Equivalent to the jwt_required decorator verification
-            verify_jwt_in_request()
-            current_user = get_jwt()
-            if not current_user.get('is_admin'):
-                return {'error': 'Admin privileges required'}, 403        
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403        
         
         # Check if email is already in use
         email = user_data.get('email')
@@ -60,7 +53,6 @@ class AdminUserCreate(Resource):
 
             # return user as dict if successful
             return {
-                'message': message,
                 'user':
                 {
                 'id': user.id,
