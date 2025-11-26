@@ -32,9 +32,17 @@ main {
 }
 
 /*Margin only for place and review cards*/
-.place-card, .review-card{
+.place-card,
+.review-card {
     margin: 20px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
+}
+
+/*EACH PLACE. review star rating */
+.star-rating {
+    color: #FFD700;
+    font-size: 1.2em;
+    margin-top: 4px;
 }
