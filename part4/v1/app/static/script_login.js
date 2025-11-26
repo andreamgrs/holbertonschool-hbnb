@@ -22,6 +22,8 @@
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.getElementById('login-button');
+    loginLink.style.display = 'none';
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (event) => {
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await loginUser(email, password)
         });
     }
+
     
   });
 

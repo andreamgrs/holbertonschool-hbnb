@@ -16,11 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkAuthentication() {
     const token = getCookie('token');
     const addReviewSection = document.getElementById('add-review');
-
+    const loginLink = document.getElementById('login-button');
+      
     if (!token) {
         addReviewSection.style.display = 'none';
+        loginLink.style.display = 'block';
     } else {
         addReviewSection.style.display = 'block';
+        loginLink.style.display = 'none';
     }
     placeId = getPlaceIdFromURL();
     fetchPlaceDetails(token, placeId);

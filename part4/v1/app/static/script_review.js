@@ -65,10 +65,14 @@ function handleResponse(response) {
 
 function checkAuthentication() {
     const token = getCookie('token');
+    const loginLink = document.getElementById('login-button');
 
     if (!token) {
-        window.location.href = 'index.html';
-    } 
+        window.location.href = 'index';
+        loginLink.style.display = 'block';
+    } else {
+      loginLink.style.display = 'none';
+    }
     return token;
 }
 
