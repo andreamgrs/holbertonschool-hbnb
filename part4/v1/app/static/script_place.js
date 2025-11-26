@@ -27,6 +27,7 @@ function checkAuthentication() {
     }
     placeId = getPlaceIdFromURL();
     fetchPlaceDetails(token, placeId);
+    fetchReviews(token, placeId);
 }
 
 function getCookie(name) {
@@ -107,7 +108,7 @@ function displayPlaceDetails(place) {
 }
 
 /* LIST OF REVIEWS INSIDE EACH PLACE */
-async function fetchReviews(token) {
+async function fetchReviews(token, placeId) {
     // Make a GET request to fetch places data
     const response = await fetch('http://127.0.0.1:5000/api/v1/reviews', {
       method: 'GET',
@@ -120,28 +121,33 @@ async function fetchReviews(token) {
      if (response.ok) {
        //alert('Response Places OK: ' + response.statusText);
        const data = await response.json();
-       displayReviews(data)
+       displayReviews(data, placeId)
 
     } else {
         alert('Failed to get all reviews: ' + response.statusText);
     }
 }
 
-function displayPlaces(places) {
+function displayReviews(reviews, placeId) {
     // Clear the current content of the places list
     // Iterate over the places data
     // For each place, create a div element and set its content
     // Append the created element to the places list
-    const place_list = document.getElementById('places-list');
-    place_list.innerHTML=" "
-    places.forEach(place => {
-            console.log(places);
-            let place_html = '<div class="place-card">';
-            place_html += "<p>" + place.title + "</p>";
-            place_html += '<p class="place-price">' + "$" + place.price + "</p>";
-            place_html += '<button class="details-button"><a href="place?id=' + place.id +'" id="details-button">View Details</a></button>'
-            place_html += '</div>'
-            place_list.innerHTML += place_html;
-            console.log(place_list.innerHTML);
+    console.log(reviews)
+    console.log(placeId)
+    const review_list = document.getElementById('reviews-list');
+    review_list.innerHTML=" "
+    reviews.forEach(review => {
+      console.log(review)
+            if (review.place_id == placeId){
+              let review_html = '<div class="review-card">';
+              //review_html += "<p> OWNER" + review.user_id + "</p>";
+              review_html += "<p>" + review.text + "</p>";
+              review_html += "<p>" + review.rating + "</p>";
+              review_html += '</div>'
+              review_list.innerHTML += review_html;
+              console.log(review_list.innerHTML);
+            }
+            
         });
 }
