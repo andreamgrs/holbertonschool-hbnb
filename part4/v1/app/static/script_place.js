@@ -5,6 +5,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthentication();
+    const reviewButton = document.getElementById('review-button');
+    reviewButton.addEventListener('click', function() {
+      const place_id = getPlaceIdFromURL();
+      window.location.href = 'add_review?id=' + place_id;
+    });
   });
 
 

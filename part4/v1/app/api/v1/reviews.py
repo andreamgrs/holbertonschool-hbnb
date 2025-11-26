@@ -34,6 +34,7 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
         #THIS DOESNT MAKE SENSE NOT AN ADMI CAN DO REVIEW
         # Get current user_id by login and get the token
         current_user_id = get_jwt_identity()
+        review_data['user_id'] = current_user_id
         print(f"current user is: {current_user_id}")
         
         #Logic to verify that the owner of place_id is != from user_id from review

@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const reviewForm = document.getElementById('review-form');
+
     const token = checkAuthentication();
     const placeId = getPlaceIdFromURL();
     const rating_filter = document.getElementById('rating');
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(reviewText)
             // Make AJAX request to submit review
             console.log(rating_filter.value)
-            response = submitReview(token, placeId, reviewText, parseInt(rating_filter.value))
+            const response = await submitReview(token, placeId, reviewText, parseInt(rating_filter.value))
             // Handle the response
             console.log(response)
             handleResponse(response)
