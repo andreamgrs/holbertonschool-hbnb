@@ -129,7 +129,7 @@ async function fetchReviews(token, placeId) {
     }
 }
 
-function displayReviews(reviews) {
+async function displayReviews(reviews) {
     // Clear the current content of the places list
     // Iterate over the places data
     // For each place, create a div element and set its content
@@ -137,8 +137,8 @@ function displayReviews(reviews) {
     console.log(reviews)
     const review_list = document.getElementById('reviews-list');
     review_list.innerHTML=" Reviews "
-    reviews.forEach(review => {
-          const userName = getUsernameFromId(review.user_id)
+    for (const review of reviews) {
+          const userName = await getUsernameFromId(review.user_id)
           console.log(userName)
           let review_html = '<div class="review-card">';
           review_html += "<p><b>" + userName + "</b></p>";
@@ -147,7 +147,7 @@ function displayReviews(reviews) {
           review_html += '</div>'
           review_list.innerHTML += review_html;
           console.log(review_list.innerHTML);
-        });
+        };
 }
 
 /* Get owner of review by user id */

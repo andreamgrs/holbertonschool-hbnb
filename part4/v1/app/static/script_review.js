@@ -57,8 +57,12 @@ function handleResponse(response) {
     if (response.ok) {
         alert('Review submitted successfully!');
         // Clear the form
+        const reviewForm = document.getElementById('review-form');
+        reviewForm.reset();
     } else {
         alert('Failed to submit review');
+        const reviewForm = document.getElementById('review-form');
+        reviewForm.reset();
     }
 }
 
