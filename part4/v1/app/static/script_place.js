@@ -91,7 +91,8 @@ function displayPlaceDetails(place) {
     const place_details = document.getElementById('place-details');
     place_details.innerHTML=" ";
     let place_html = '<div class="place-card">';
-    place_html += "<p>" + place.title + "</p>";
+    place_html += "<p><b>" + place.title + "</b></p>";
+    place_html += "<p> Owner: " + place.owner.first_name + " " + place.owner.last_name + "</p>";
     place_html += "<p> Description: " + place.description + "</p>";
     place_html += "<p> Price per night $" + place.price + "</p>";
     place_html += "<p> Amenities: ";
@@ -110,7 +111,7 @@ function displayPlaceDetails(place) {
 /* LIST OF REVIEWS INSIDE EACH PLACE */
 async function fetchReviews(token, placeId) {
     // Make a GET request to fetch places data
-    const response = await fetch('http://127.0.0.1:5000/api/v1/reviews', {
+    const response = await fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`, {
       method: 'GET',
       headers: {
           'Authorization': `Bearer ${token}`
@@ -121,34 +122,48 @@ async function fetchReviews(token, placeId) {
      if (response.ok) {
        //alert('Response Places OK: ' + response.statusText);
        const data = await response.json();
-       displayReviews(data, placeId)
+       displayReviews(data)
 
     } else {
         alert('Failed to get all reviews: ' + response.statusText);
     }
 }
 
-function displayReviews(reviews, placeId) {
+function displayReviews(reviews) {
     // Clear the current content of the places list
     // Iterate over the places data
     // For each place, create a div element and set its content
     // Append the created element to the places list
     console.log(reviews)
-    console.log(placeId)
     const review_list = document.getElementById('reviews-list');
-    review_list.innerHTML=" "
+    review_list.innerHTML=" Reviews "
     reviews.forEach(review => {
-      console.log(review)
-            if (review.place_id == placeId){
-              let review_html = '<div class="review-card">';
-              review_html += "<p><b>Reviews</b></p>";
-              //review_html += "<p> OWNER" + review.user_id + "</p>";
-              review_html += "<p>" + review.text + "</p>";
-              review_html += "<p>" + review.rating + "</p>";
-              review_html += '</div>'
-              review_list.innerHTML += review_html;
-              console.log(review_list.innerHTML);
-            }
-            
+          const userName = getUsernameFromId(review.user_id)
+          console.log(userName)
+          let review_html = '<div class="review-card">';
+          review_html += "<p><b>" + userName + "</b></p>";
+          review_html += "<p>" + review.text + "</p>";
+          review_html += "<p>" + review.rating + "</p>";
+          review_html += '</div>'
+          review_list.innerHTML += review_html;
+          console.log(review_list.innerHTML);
         });
 }
+
+/* Get owner of review by user id */
+async function getUsernameFromId(userId) {
+    // Make a GET request to fetch places data
+    const response = await fetch(`http://127.0.0.1:5000/api/v1/users/${userId}`, {
+      method: 'GET'
+    });
+     if (response.ok) {
+      const data = await response.json();
+      console.log(data)
+      username = data.user.first_name + ' ' + data.user.last_name;
+      console.log(username)
+      return username
+     } else {
+        alert('Failed to get owner: ' + response.statusText);
+    }
+  
+ }

@@ -66,8 +66,7 @@ class ReviewList(Resource): #with resource we manage the methods GET POST PUT DE
             reviews_list.append({
                 'id': review.id,
                 'text': review.text,
-                'rating': review.rating,
-                'place_id': review.place.id
+                'rating': review.rating
             })
         return reviews_list, 200
 
