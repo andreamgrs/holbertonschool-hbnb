@@ -141,6 +141,7 @@ function displayReviews(reviews, placeId) {
       console.log(review)
             if (review.place_id == placeId){
               let review_html = '<div class="review-card">';
+              review_html += "<p><b>Reviews</b></p>";
               //review_html += "<p> OWNER" + review.user_id + "</p>";
               review_html += "<p>" + review.text + "</p>";
               review_html += "<p>" + review.rating + "</p>";
