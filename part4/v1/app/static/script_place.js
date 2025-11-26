@@ -61,7 +61,8 @@ function getPlaceIdFromURL() {
 async function fetchPlaceDetails(token, placeId) {
     // Make a GET request to fetch place details
     // Include the token in the Authorization header
-    // Handle the response and pass the data to displayPlaceDetails function
+    // Handle the response and pass the data to displayPlaceDetails
+    //  function
     // Make a GET request to fetch places data
     const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
       method: 'GET',
@@ -103,4 +104,44 @@ function displayPlaceDetails(place) {
     place_html += '</div>';
     place_details.innerHTML += place_html;
     console.log(place_details.innerHTML);
+}
+
+/* LIST OF REVIEWS INSIDE EACH PLACE */
+async function fetchReviews(token) {
+    // Make a GET request to fetch places data
+    const response = await fetch('http://127.0.0.1:5000/api/v1/reviews', {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`
+      }
+    });
+    // Include the token in the Authorization header
+    // Handle the response and pass the data to displayPlaces function
+     if (response.ok) {
+       //alert('Response Places OK: ' + response.statusText);
+       const data = await response.json();
+       displayReviews(data)
+
+    } else {
+        alert('Failed to get all reviews: ' + response.statusText);
+    }
+}
+
+function displayPlaces(places) {
+    // Clear the current content of the places list
+    // Iterate over the places data
+    // For each place, create a div element and set its content
+    // Append the created element to the places list
+    const place_list = document.getElementById('places-list');
+    place_list.innerHTML=" "
+    places.forEach(place => {
+            console.log(places);
+            let place_html = '<div class="place-card">';
+            place_html += "<p>" + place.title + "</p>";
+            place_html += '<p class="place-price">' + "$" + place.price + "</p>";
+            place_html += '<button class="details-button"><a href="place?id=' + place.id +'" id="details-button">View Details</a></button>'
+            place_html += '</div>'
+            place_list.innerHTML += place_html;
+            console.log(place_list.innerHTML);
+        });
 }

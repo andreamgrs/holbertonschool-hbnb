@@ -104,3 +104,4 @@ function getPlaceIdFromURL() {
   return placeId
 }
 
+
