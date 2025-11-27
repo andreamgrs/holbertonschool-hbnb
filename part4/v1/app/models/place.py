@@ -25,11 +25,15 @@ class Place(BaseModel):
     _price = db.Column(db.Float, nullable=False)
     _latitude = db.Column(db.Float, nullable=False)
     _longitude = db.Column(db.Float, nullable=False)
-    _owner = relationship('User', backref='place', lazy=True)
 
-    user_id = db.Column(db.String(60), ForeignKey('users.id'), nullable=False)
-    amenities = relationship('Amenity', secondary=place_amenity, lazy='subquery', backref=db.backref('place', lazy=True))
-    reviews = relationship('Review', backref='place', lazy=True)
+    owner_id = db.Column(db.String(36), ForeignKey('users.id'), nullable=False)
+    amenities = relationship('Amenity', 
+                             secondary=place_amenity, 
+                             lazy='subquery', 
+                             backref=db.backref('place', lazy=True))
+    reviews = relationship('Review',
+                           backref='place',
+                           lazy=True)
 
     # --- Methods ---
     def add_review(self, review):
