@@ -93,10 +93,10 @@ function displayPlaceDetails(place) {
   let place_html = '<div class="place-each-card">';
   place_html += `<p class="place-title"><b>${place.title}</b></p>`;
   place_html += `<img src="/static/images/${place.id}.jpg" class="place-image">`;
-  place_html += "<p> Owner: " + place.owner.first_name + " " + place.owner.last_name + "</p>";
-  place_html += "<p> Description: " + place.description + "</p>";
+  place_html += "<p><b> Owner: </b>" + place.owner.first_name + " " + place.owner.last_name + "</p>";
+  place_html += "<p><b> Description: </b> " + place.description + "</p>";
   place_html += "<p> Price per night $" + place.price + "</p>";
-  place_html += "<p> Amenities: ";
+  place_html += "<p><b> Amenities: </b>";
   console.log(place.amenities);
   place.amenities.forEach(amenity => {
     console.log(amenity);
@@ -137,7 +137,7 @@ async function displayReviews(reviews) {
   // Append the created element to the places list
   console.log(reviews)
   const review_list = document.getElementById('reviews-list');
-  review_list.innerHTML = " Reviews "
+  review_list.innerHTML = '<p><class="place-reviews-title"><b>Reviews</b></p>';
   for (const review of reviews) {
     const userName = await getUsernameFromId(review.user_id)
     console.log(userName)
@@ -152,7 +152,7 @@ async function displayReviews(reviews) {
     review_html += `<div class="star-rating">${stars}</div>`;
     /* end of star rating function */
     review_html += "<p><b>" + userName + "</b></p>";
-    review_html += "<p>" + review.text + "</p>";
+    review_html += `<p class="review-text">${review.text}</p>`;
 
     review_html += '</div>'
     review_list.innerHTML += review_html;
