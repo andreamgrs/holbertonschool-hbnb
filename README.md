@@ -40,14 +40,20 @@ In this phase we extend the backend of the application by introducing user authe
 - Refactor all CRUD operations to interact with a persistent database.
 - Database Design and Visualization using mermeid.js
 
-### 🚀 V4 – [Coming Soon]
+### 🚀 V4 - Simple Web Client
+In this phase, we build the front-end of your application using HTML5, CSS3, and JavaScript ES6, creating an interactive interface that connects with the back-end services developed earlier.
+
+- Design user-friendly pages (Login, List of Places, Place Details, and Add Review).
+- Implement secure client-side functionality with JWT-based authentication.
+- Fetch API/AJAX to retrieve and display data, apply filtering on the list of places, restrict access to leave a review for authenticated users only, and ensure reviews cannot be submitted for owners of places while practicing modern web development techniques and session management.
 
 ## 🛠 Technologies Used
 
-| Layer        | Tools & Languages             |
-|--------------|-------------------------------|
-| Backend      | Python, Flask                 |
-| Testing      | unittest, postman             |
+| Layer        | Tools & Languages                                                  |
+|--------------|--------------------------------------------------------------------|
+| Backend      | Python3, Flask, SQLAlchemy, SQLite, MySQL, JWT Authentication      |
+| Testing      | unittest, postman                                                  |
+| Frontend     | HTML5, CSS3, JavaScript ES6, Fetch API, Cookies for JWT storage    |
 
 
 ## 👥 Contributors
