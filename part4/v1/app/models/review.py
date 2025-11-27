@@ -1,25 +1,24 @@
-"""This is the review class"""
-from app.models.base import BaseModel # Import the class BaseModel from the package inside models 
-from app import db, bcrypt
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import validates, relationship
+"""
+This is the Review class
+"""
+from app.models.base import BaseModel
+from app import db
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Review(BaseModel):
-    """Class for review
-    """
-
     __tablename__ = 'reviews'
+
+    # --- Properties ---
     _text = db.Column(db.String(100), nullable=False)
     _rating = db.Column(db.Integer, nullable=False)
-
     place_id = db.Column(db.String(36), ForeignKey('places.id'), nullable=False)
     user_id = db.Column(db.String(36), ForeignKey('users.id'), nullable=False)
 
     
     
-    # --- hybrid property and getters and setters ---
-    #Text
+    # --- Getters and Setters ---
     @hybrid_property
     def text(self):
         return self._text
@@ -35,7 +34,6 @@ class Review(BaseModel):
             raise TypeError('Text must be a string and not an empty string')
         return value
     
-    #rating 
     @hybrid_property
     def rating(self):
         return self._rating
@@ -51,7 +49,6 @@ class Review(BaseModel):
         return value
 
 
-    #PLACE with getter and setter only
     @property
     def place(self):
         return self._place
@@ -63,7 +60,6 @@ class Review(BaseModel):
             raise TypeError('Place is not an instance of the Place class')
         self._place = value
 
-    #PLACE with getter and setter only
     @property
     def user(self):
         return self._user

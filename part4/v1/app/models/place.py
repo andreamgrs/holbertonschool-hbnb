@@ -1,12 +1,10 @@
 """
-This is the place class
+This is the Place class
 """
-from app import db, bcrypt
+from app import db
 from app.models.base import BaseModel
-from .amenity import Amenity
-from .review import Review
 from .user import User
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -18,50 +16,26 @@ place_amenity = db.Table('place_amenity',
 
 
 class Place(BaseModel):
+    # --- Properties ---
+    # Define places table and columns
     __tablename__ = 'places'
-
     _title = db.Column(db.String(100), nullable=False)
     _description = db.Column(db.String(500), nullable=False)
     _price = db.Column(db.Float, nullable=False)
     _latitude = db.Column(db.Float, nullable=False)
     _longitude = db.Column(db.Float, nullable=False)
-
     owner_id = db.Column(db.String(36), ForeignKey('users.id'), nullable=False)
+    
+    # Define relationships
+    # Place to Amenity: many to many
     amenities = relationship('Amenity', 
                              secondary=place_amenity, 
                              lazy='subquery', 
                              backref=db.backref('place', lazy=True))
+    # Place to Review: one to many
     reviews = relationship('Review',
                            backref='place',
                            lazy=True)
-
-    # --- Methods ---
-    def add_review(self, review):
-        """Add a review to the place."""
-        # check review is a Review instance
-        if not isinstance(review, Review):
-            raise TypeError('Review not an instance of the Review class')
-        # check if review already exists
-        if review in self.reviews:
-            raise ValueError('Review already exists')
-        self.reviews.append(review)
-
-    def add_amenity(self, amenity):
-        """Add an amenity to the place."""
-        # check amenity is an Amenity instance
-        if not isinstance(amenity, Amenity):
-            raise TypeError('Amenity not an instance of the Amenity class')
-        # check if amenity already exists
-        if amenity in self.amenities:
-            raise ValueError('Amenity already exists')
-        
-        self.amenities.append(amenity)
-    
-    def list_amenities(self):
-        """List all the amenities of a place"""
-        print(f"The {self._title} listing has the following amenities:")
-        for element in self.amenities:
-            print(element)
     
     # --- Getters and Setters ---
     @hybrid_property
@@ -94,7 +68,7 @@ class Place(BaseModel):
     def validate_description(self, key, value):
         if not isinstance(value, str):
             raise TypeError("description must be a string")
-        # airbnb descuptions are limited to 500 characters
+        # Airbnb descuptions are limited to 500 characters
         if len(value) > 500:
             raise ValueError("description must be less than 500 characters")
         return value
@@ -109,7 +83,7 @@ class Place(BaseModel):
 
     @validates("_price")
     def validate_price(self, key, value):
-        # accept int or float and coerce to float
+        # Accept int or float and coerce to float
         if not isinstance(value, (int, float)):
             raise TypeError("price must be a number")
         value = float(value)
@@ -164,3 +138,34 @@ class Place(BaseModel):
         if not isinstance(value, User):
             raise TypeError('Owner is not an instance of the User class')
         return value
+    
+    # --- Methods ---
+    def add_review(self, review):
+        """Add a review to the place."""
+        # Import within the function to prevent circular import
+        from .review import Review
+        # Check review is a Review instance
+        if not isinstance(review, Review):
+            raise TypeError('Review not an instance of the Review class')
+        # Check if review already exists
+        if review in self.reviews:
+            raise ValueError('Review already exists')
+        self.reviews.append(review)
+
+    def add_amenity(self, amenity):
+        """Add an amenity to the place."""
+        # Import within the function to prevent circular import
+        from .amenity import Amenity
+        # Check amenity is an Amenity instance
+        if not isinstance(amenity, Amenity):
+            raise TypeError('Amenity not an instance of the Amenity class')
+        # Check if amenity already exists
+        if amenity in self.amenities:
+            raise ValueError('Amenity already exists')
+        self.amenities.append(amenity)
+    
+    def list_amenities(self):
+        """List all the amenities of a place"""
+        print(f"The {self._title} listing has the following amenities:")
+        for element in self.amenities:
+            print(element)

@@ -1,11 +1,9 @@
 """
-This is the user class
+This is the User class
 """
-from app import db, bcrypt
-import uuid
+from app import db
 from .base import BaseModel
 import re
-from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -13,16 +11,16 @@ from sqlalchemy.ext.hybrid import hybrid_property
 class User(BaseModel):
     __tablename__ = 'users'
 
+    # --- Properties ---
     _first_name = db.Column(db.String(50), nullable=False)
     _last_name = db.Column(db.String(50), nullable=False)
     _email = db.Column(db.String(120), nullable=False, unique=True)
     _password = db.Column(db.String(128), nullable=False)
     _is_admin = db.Column(db.Boolean, default=False)
 
-
+    # --- Relationships ---
     places = relationship('Place', backref='owner', lazy=True)
     reviews = relationship('Review', backref='user', lazy=True)
-
 
     # --- Methods ---
     def hash_password(self, password):
@@ -46,13 +44,10 @@ class User(BaseModel):
     
     @validates("_first_name")
     def validate_first_name(self, key, value):
-        
         if not isinstance(value, str):
             raise TypeError('first name must be a string')
-       
         if 0 < len(value.strip()) <= 50:
             return value
-        
         else:
             raise ValueError('first name has max length of 50 chars')
         
@@ -66,13 +61,10 @@ class User(BaseModel):
 
     @validates("_last_name")
     def validate_last_name(self, key, value):
-
         if not isinstance(value, str):
             raise TypeError('last name must be a string')
-       
         if len(value.strip()) <= 50 and len(value.strip()) > 0:
             return value
-        
         else:
             raise ValueError('last name has max length of 50 chars')
         
@@ -115,6 +107,3 @@ class User(BaseModel):
             return value
         else:
             raise ValueError("is_admin must be true or false")
-
-
-
