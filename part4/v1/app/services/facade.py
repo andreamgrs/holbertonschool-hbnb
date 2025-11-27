@@ -193,10 +193,24 @@ class HBnBFacade:
     
     # UPDATE PLACE USING PLACEID
     def update_place(self, place_id, place_data):
+        print("in func")
         place = self.get_place(place_id)
-        place.title = place_data.get("title")
-        place.description = place_data.get("description")
-        place.price = place_data.get("price")
+        if "title" in place_data:
+            place.title = place_data.get("title")
+        if "description" in place_data:
+            place.description = place_data.get("description")
+        if "price" in place_data:
+            place.price = place_data.get("price")
+        if "amenities" in place_data:
+            amenities_id = place_data.get('amenities')
+            print(f"amenities_id are {amenities_id}")
+            for amenity_id in amenities_id:
+                print("for loop")
+                amenity = self.amenity_repo.get(amenity_id)
+                if not amenity:
+                    raise ValueError(f"Amenity with ID {amenity_id} not found")
+                place.add_amenity(amenity)
+            del place_data["amenities"]
         updated_place = self.place_repo.update(place_id, place_data)
         return updated_place
     
