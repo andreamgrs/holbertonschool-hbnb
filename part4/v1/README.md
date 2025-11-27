@@ -202,7 +202,7 @@ This request will return a JWT token. Use this token in the **Authorization: Bea
 ![Place Details](./images_readme/place_details.jpg)
 
 #### Add review form
-**Go with -> http://127.0.0.1:5000/api/v1/add_review?id=<place_id>**
+>Go with -> http://127.0.0.1:5000/api/v1/add_review?id=<place_id>
 
 ![Review form](./images_readme/review_form.jpg)
 
