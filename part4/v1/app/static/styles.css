@@ -60,6 +60,13 @@ header nav a {
     text-transform: lowercase;
 }
 
+/* style the two nav link */
+header nav * {
+    margin: 0 15px;
+}
+
+
+
 
 /* PRICE FILTER */
 
