@@ -90,8 +90,9 @@ function displayPlaceDetails(place) {
   // Append the created elements to the place details section
   const place_details = document.getElementById('place-details');
   place_details.innerHTML = " ";
-  let place_html = '<div class="place-card">';
-  place_html += "<p><b>" + place.title + "</b></p>";
+  let place_html = '<div class="place-each-card">';
+  place_html += `<p class="place-title"><b>${place.title}</b></p>`;
+  place_html += `<img src="/static/images/${place.id}.jpg" class="place-image">`;
   place_html += "<p> Owner: " + place.owner.first_name + " " + place.owner.last_name + "</p>";
   place_html += "<p> Description: " + place.description + "</p>";
   place_html += "<p> Price per night $" + place.price + "</p>";
