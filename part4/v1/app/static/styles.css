@@ -242,6 +242,7 @@ footer {
         0 0 10px rgba(255, 105, 180, 0.6),
         0 0 20px rgba(255, 105, 180, 0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 115%;
 }
 
 /* change review-card when hover */
