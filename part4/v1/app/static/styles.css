@@ -119,8 +119,9 @@ main {
     flex-direction: column;
     justify-content: space-between;
     background: linear-gradient(135deg, #ff9ad5, #ff4fa3);
-    border: 6px dashed #ffe3f4;
-    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
     text-align: center;
     box-shadow:
         0 0 15px rgba(255, 105, 180, 0.8),
@@ -187,11 +188,11 @@ footer {
     width: 80%;
     max-width: 800px;
     margin: 20px auto;
-    border-radius: 15px;
-    padding: 10px 30px 30px 30px;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
     ;
     background: linear-gradient(135deg, #ff9ad5, #ff4fa3);
-    border: 6px dashed #ffe3f4;
+    border: 1px solid #ddd;
     box-shadow:
         0 0 15px rgba(255, 105, 180, 0.8),
         0 0 25px rgba(255, 105, 180, 0.6);
@@ -224,10 +225,10 @@ footer {
 
 .review-card {
     background: linear-gradient(135deg, #ff85b3, #ff4f91);
-    border: 4px dashed #ffe3f4;
-    border-radius: 15px;
-    padding: 20px;
-    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px 0;
     text-align: center;
     color: #fff;
     box-shadow:
