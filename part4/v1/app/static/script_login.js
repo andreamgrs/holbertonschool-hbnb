@@ -1,43 +1,41 @@
-/* 
-  This is a SAMPLE FILE to get you started.
-  Please, follow the project instructions to complete the tasks.
-*/
-
- async function loginUser(email, password) {
-    const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
-    // Handle the response
-    if (response.ok) {
-      const data = await response.json();
-      document.cookie = `token=${data.access_token}; path=/`;
-      window.location.href = '../index'
-    } else {
-        alert('Login failed: ' + response.statusText);
-    }
-}
-
+// Wait for page to load
 document.addEventListener('DOMContentLoaded', () => {
-    const loginLink = document.getElementById('login-button');
-    loginLink.style.display = 'none';
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+  // Hide login link on the login page
+  const loginLink = document.getElementById('login-button');
+  loginLink.style.display = 'none';
+  
+  // Login when user clicks submit on the login form
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      await loginUser(email, password);
+    });
+  };    
+});
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            // Your code to handle form submission
-            console.log(email);
-            await loginUser(email, password)
-        });
-    }
-
-    
+async function loginUser(email, password) {
+  // API call to login
+  const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
   });
+  // Handle the response
+  if (response.ok) {
+    const data = await response.json();
+    // Add the access token to cookies
+    document.cookie = `token=${data.access_token}; path=/`;
+    // Redirect to index page
+    window.location.href = '../index';
+  } else {
+      alert('Login failed: ' + response.statusText);
+  };
+};
+
 
 
