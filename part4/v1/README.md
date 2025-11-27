@@ -187,27 +187,27 @@ This request will return a JWT token. Use this token in the **Authorization: Bea
 
 ### 📸 Application Screenshot
 #### Login Form
-**Go with -> http://127.0.0.1:5000/api/v1/auth/login**
+> Go with -> http://127.0.0.1:5000/api/v1/auth/login
 
 ![Login Form](./images_readme/login.jpg)
 
 #### List of places
-**Go with -> http://127.0.0.1:5000/api/v1/index**
+> Go with -> http://127.0.0.1:5000/api/v1/index
 
 ![List of places](./images_readme/list_places.jpg)
 
 #### Place Details
-**Go with -> http://127.0.0.1:5000/api/v1/place?id=<place_id>**
+> Go with -> http://127.0.0.1:5000/api/v1/place?id=<place_id>
 
 ![Place Details](./images_readme/place_details.jpg)
 
 #### Add review form
->Go with -> http://127.0.0.1:5000/api/v1/add_review?id=<place_id>
+> Go with -> http://127.0.0.1:5000/api/v1/add_review?id=<place_id>
 
 ![Review form](./images_readme/review_form.jpg)
 
 #### Place details with review form
-**Go with -> http://127.0.0.1:5000/api/v1/place?id=<place_id>**
+> Go with -> http://127.0.0.1:5000/api/v1/place?id=<place_id>
 
 ![Place Details with review form](./images_readme/place_reviews.jpg)
 
