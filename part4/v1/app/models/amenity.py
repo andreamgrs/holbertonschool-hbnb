@@ -16,8 +16,8 @@ class Amenity(BaseModel):
     # Define relationship to places
     places = relationship('Place',
                           secondary=place_amenity,
-                          lazy='subquery',
-                          backref=db.backref('amenity', lazy=True))
+                          back_populates='amenities',
+                          lazy=True)
 
     # --- Getters and Setters ---
     @hybrid_property

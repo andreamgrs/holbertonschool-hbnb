@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, decode_token
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from ...services import facade
 from flask import request
 
@@ -21,23 +21,25 @@ update_place_model = api.model('PlaceUpdate', {
     'description': fields.String(required=False, description='Description of the place'),
     'price': fields.Float(required=False, description='Price per night'),
     'amenities': fields.List(fields.String, required=False, description="List of amenities ID's")
-\
 })
 
-
-# CREATE PLACE
+# Path is '/api/v1/places/'
 @api.route('/')
 class PlaceList(Resource):
+
+    # CREATE PLACE
     @api.expect(place_model, validate=True)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     @jwt_required()
     def post(self):
         """Register a new place"""
+        # Set the owner of the place to the current user
         current_user = get_jwt_identity()
         payload_data = api.payload #contains the JSON body the user sent
         payload_data["owner_id"] = current_user
-        print(f"current user in api is {current_user}")
+
+        # Create new place via facade
         try:
             new_place = facade.create_place(payload_data)
         except Exception as e:
@@ -47,7 +49,6 @@ class PlaceList(Resource):
                 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,
                 'owner_id': new_place.owner.id}, 201
     
-
     # GET ALL PLACES
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
@@ -63,9 +64,11 @@ class PlaceList(Resource):
                 'longitude': place.longitude})
         return places_list, 200
 
-# GET SINGLE PLACE BY ID
+# Path is '/api/v1/places/<place_id>'
 @api.route('/<place_id>')
 class PlaceResource(Resource):
+
+    # GET SINGLE PLACE BY ID
     @api.response(200, 'Place details retrieved successfully')
     @api.response(404, 'Place not found')
     def get(self, place_id):
@@ -74,11 +77,11 @@ class PlaceResource(Resource):
         if not place:
             return {'error': f"Place with id '{place_id}' not found"}, 404
         
+        # Get amenities 
         ammenity_list = []
         for amenity in place.amenities:
             amenity_dict = {"id": amenity.id, "name": amenity.name}
             ammenity_list.append(amenity_dict)
-
 
         return {'id': place.id,
                 'title': place.title,
@@ -86,7 +89,6 @@ class PlaceResource(Resource):
                 'price': place.price,
                 'latitude': place.latitude,
                 'longitude': place.longitude,
-    
                 'owner': {
                     'id': place.owner.id,
                     'first_name': place.owner.first_name,
@@ -111,10 +113,9 @@ class PlaceResource(Resource):
         if not place:
             return {'error': f"Place with id '{place_id}' not found"}, 404
 
-        # Get dictionary of the jwt payload
+        # Get dictionary of the jwt payload for current user
         current_user_dict = get_jwt()
-
-        # Set is_admin default to False if it does not exist
+        # Extract is_admin flag and owner_id from jwt payload
         is_admin = current_user_dict.get('is_admin', False)
         owner_id = current_user_dict.get('sub')
 
@@ -136,24 +137,23 @@ class PlaceResource(Resource):
                     }
                 }, 200
     
+    # DELETE PLACE BY ID
     @api.response(200, 'Place successfully deleted')
     @api.response(404, 'Place not found')
     @api.response(403, 'Admin privileges required')
     @jwt_required()
     def delete(self, place_id):
-        """Delete a place's information"""
+        """Delete a place """
         place = facade.get_place(place_id)
         if not place:
             return {'error': f"Place with id '{place_id}' not found"}, 404
 
         # Get dictionary of the jwt payload
         current_user_dict = get_jwt()
-
-        # Set is_admin default to False if not exists
+        # Extract is_admin flag and owner_id from jwt payload
         is_admin = current_user_dict.get('is_admin', False)
         user_id = current_user_dict.get('sub')
-        '''if not is_admin and place.owner.id != user_id:'''
-        if not is_admin and place.user_id != user_id:
+        if not is_admin and place.owner_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:

@@ -1,7 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from ...services import facade
-from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('amenities', description='Amenity operations')
 
@@ -10,9 +8,11 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
-# GET ALL AMENITIES
+# Path is '/api/v1/amentities/'
 @api.route('/')
 class AmenityList(Resource):
+    
+    # GET ALL AMENITIES - PUBLIC
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
@@ -27,9 +27,11 @@ class AmenityList(Resource):
 
         return amenities_list, 200
 
-# GET SINGLE AMENITY USING ID
+# Path is '/api/v1/amentities/<amenity_id>'
 @api.route('/<amenity_id>')
 class AmenityResource(Resource):
+
+    # GET SINGLE AMENITY USING ID
     @api.response(200, 'Amenity details retrieved successfully')
     @api.response(404, 'Amenity not found')
     def get(self, amenity_id):
