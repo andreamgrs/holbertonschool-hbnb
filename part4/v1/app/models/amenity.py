@@ -3,7 +3,6 @@ This is a amenity class
 """
 from app import db
 from .base import BaseModel
-from .place import place_amenity
 import re
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import validates, relationship
@@ -15,10 +14,6 @@ class Amenity(BaseModel):
     __tablename__ = 'amenities'
 
     _name  = db.Column(db.String(50), nullable=False)
-    places = relationship('Place',
-                          secondary=place_amenity,
-                          lazy='subquery',
-                          backref=db.backref('amenity', lazy=True))
 
 
     # --- Getters and Setters ---
