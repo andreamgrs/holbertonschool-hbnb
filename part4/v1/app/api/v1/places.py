@@ -114,11 +114,11 @@ class PlaceResource(Resource):
         # Get dictionary of the jwt payload
         current_user_dict = get_jwt()
 
-        # Set is_admin default to False if not exists
+        # Set is_admin default to False if it does not exist
         is_admin = current_user_dict.get('is_admin', False)
-        user_id = current_user_dict.get('sub')
-        '''if not is_admin and place.owner.id != user_id:'''
-        if not is_admin and place.user_id != user_id:
+        owner_id = current_user_dict.get('sub')
+
+        if not is_admin and place.owner_id != owner_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:

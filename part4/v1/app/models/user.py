@@ -20,7 +20,7 @@ class User(BaseModel):
     _is_admin = db.Column(db.Boolean, default=False)
 
 
-    places = relationship('Place', backref='user', lazy=True)
+    places = relationship('Place', backref='owner', lazy=True)
     reviews = relationship('Review', backref='user', lazy=True)
 
 
