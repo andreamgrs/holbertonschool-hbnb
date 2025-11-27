@@ -103,16 +103,32 @@ header nav a {
 
 /* PLACE CARD FILTER */
 
+/* make main section center in the middle no matter browser or screen size */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 /* show all place card in the middle  */
 #places-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    align-items: stretch;
 }
 
 /* make sure each place card take up space  */
 .place-card {
+    flex: 1 1 200px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background: #ffb6c1;
     border: 3px dashed #ff69b4;
     border-radius: 15px;
