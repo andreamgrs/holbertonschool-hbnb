@@ -84,7 +84,7 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
   const price_list = document.querySelectorAll('.place-price');
   // Get the selected max price from the price filter
   const max_price = event.target.value;
-  
+
   // Iterate through the place cards
   let counter = 0 // Counter for price list
   for (const place_card of place_list.children) {
@@ -94,7 +94,7 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
     place_price = place_price.substring(1);
     // Display place card if price filter is All or place price is less than max price
     if ((max_price == "All") || (parseInt(place_price) <= parseInt(max_price))) {
-      place_card.style.display = "block";
+      place_card.style.display = "flex";
     } else {
       place_card.style.display = "none";
     }
