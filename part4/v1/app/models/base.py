@@ -1,20 +1,23 @@
+"""
+This is the Base class
+"""
 import uuid
 from datetime import datetime, timezone
 from app import db
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import validates, relationship
-from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class BaseModel(db.Model):
 
     __abstract__ = True  # This ensures SQLAlchemy does not create a table for BaseModel
 
+    # --- Properties ---
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), 
+                           onupdate=datetime.now(timezone.utc))
 
 
+    # --- Methods ---
     def save(self):
         """Update the updated_at timestamp whenever the object is modified"""
         self.updated_at = datetime.now()

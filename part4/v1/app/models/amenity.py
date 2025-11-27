@@ -1,20 +1,23 @@
 """
-This is a amenity class
+This is the Amenity class
 """
 from app import db
 from .base import BaseModel
-import re
-from sqlalchemy import Column, Integer, String, ForeignKey
+from .place import place_amenity
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
-
 
 
 class Amenity(BaseModel):
     __tablename__ = 'amenities'
 
+    # --- Properties ---
     _name  = db.Column(db.String(50), nullable=False)
-
+    # Define relationship to places
+    places = relationship('Place',
+                          secondary=place_amenity,
+                          lazy='subquery',
+                          backref=db.backref('amenity', lazy=True))
 
     # --- Getters and Setters ---
     @hybrid_property
@@ -28,12 +31,11 @@ class Amenity(BaseModel):
 
     @validates("_name")
     def validate_name(self, key, value):
-
         if not isinstance(value, str):
             raise TypeError('Amenity name must be a string')
-        
-        if 0 < len(value.strip()) <= 50: # check name is <= 50 chars only after strip spaces
-            return value # originally want to store only the name that's stripped of spaces in between but removed this to be aligned with feedback and users model file
+        # Check name is <= 50 chars only after strip spaces
+        if 0 < len(value.strip()) <= 50:
+            return value
         else:
             raise ValueError("Invalid name length!")
 
