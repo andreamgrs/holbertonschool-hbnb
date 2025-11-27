@@ -2,29 +2,22 @@
 
 ## Part 3 Enhanced Backend with Authentication and Database Integration
 
-In this Part 3 of the HBnB Project we focus on transforming the backend into a secure, persistent, and production-ready system. Where we implement user authentication, enforce access control, and migrate from in-memory storage to a robust database architecture using SQLAlchemy and SQLite with MySQL prepared for deployment.
+n this phase, we focus on the front-end development of your application using HTML5, CSS3, and JavaScript ES6. The goal was to design and implement an interactive user interface that connects seamlessly with the back-end services developed in earlier parts of the project.
 
 ### 🧱 Project Summary
-- Add password hashing to User model with bcrypt2
-- Secure API with JWT authentication (Flask-JWT-Extended)
-- Implement role-based access control (is_admin)
-- Replace in-memory storage with SQLite using SQLAlchemy
-- Map models (User, Place, Review, Amenity) to database tables
-- Configure MySQL for production use
-- Visualize schema with mermaid.js diagrams
+- Develop a user-friendly interface following provided design specifications.
+- Implement client-side functionality to interact with the back-end API.
+- Ensure secure and efficient data handling using JavaScript.
+- Apply modern web development practices to create a dynamic web application.
 
-#### 🔐 Access Control Overview
+### 🛠️ Tasks Breakdow
 
-Only authenticated users can perform actions tied to their ownership:
-- Create, update, and delete their own places
-- Create and update reviews, with checks to prevent reviewing their own places or submitting duplicates
-- Modify their user profile (excluding email and password)
+- **Design**: Complete HTML/CSS, build pages (Login, Places, Place Details, Add Review).
+- **Login**: Implement API login, store JWT in cookies.
+- **List of Places**: Fetch & display places, add country filter, redirect unauthenticated users.
+- **Place Details**: Show details by ID, allow reviews if logged in.
+- **Add Review**: Form for reviews, restrict to authenticated users.
 
-Admin users have elevated privileges:
-- Create new users
-- Modify any user’s data, including email and password (with unique email validation)
-- Add and update amenities
-- Bypass ownership restrictions on places and reviews
 
 #### Project Structure
 
@@ -60,6 +53,20 @@ v1/
 |   |-- services
 |   |   |-- __init__.py
 |   |   `-- facade.py
+|   |-- static
+|   |   |-- script_index.js
+|   |   |-- script_login.js
+|   |   |-- script_place.js
+|   |   |-- script_review.js
+|   |   |-- styles.css
+|   |   `-- images
+|   |-- templates
+|   |   |-- add_review.html
+|   |   |-- footer.html
+|   |   |-- header.html
+|   |   |-- index.html
+|   |   |-- login.html
+|   |   `-- place.html
 |   `-- tests
 |       |-- __init__.py
 |       |-- api_unittest_amenity.py
@@ -79,10 +86,22 @@ v1/
 |-- entity_relationship_diagram.svg
 |-- requirements.txt
 |-- run.py
-`-- sql
-      |-- create_database.sql
-      `-- test_operations.sql
+|-- seed_admin_amenities.sql
+|-- sql
+|     |-- create_database.sql
+|     `-- test_operations.sql
+| -- instance
+      `-- development.db
 ```
+### Requirements
+
+- Python 3.x
+- Flask
+- Flask-RESTX
+- Flask-JWT-Extended
+- Flask-Bcrypt
+- SQLAlchemy
+- SQLite (for development) / MySQL (for production)
 
 ### 🛠️ Installation and running
 #### Clone the repository and make sure to have python3 installed
@@ -103,6 +122,15 @@ pip install -r requirements.txt
 python3 -m flask --app run shell
 >>> from app import db
 >>> db.create_all()
+>>> exit()
+```
+
+##### Populate tables with initial data
+To perform the tests, you must be logged in as an admin user. This step seeds the admin_user data to enable testing for these tasks.
+```bash
+apt update then
+apt install sqlite3-y then
+sqlite3 instance/development.db < seed_admin_amenities.sql
 ```
 
 #### Run the application inside v1
@@ -115,108 +143,26 @@ The API will now be running at:
 ```bash
 http://127.0.0.1:5000/api/v1/
 ```
+### For Testing Our webpage
+This guide explains how to test the web client and interact with the back-end API.
 
-#### Create first admin user
-When the system has no users yet, the system lets you create the first user without an admin token. However, after this, in order to test creating another user, creating an amenity, or modify a user, etc, we need an admin autorisation token (aka login as an admin). 
-
-For this reason, the first user must be an admin. You must set is_admin = TRUE when creating the first user. 
-
-**For example:**
-
-POST /api/v1/users/ endpoint
+#### 🔑 Authentication
+- To access features like adding reviews, you must be logged in as a user.
+- Login via the API endpoint:
 ```bash
-{
-   "first_name": "Tom",
-    "last_name": "Doe",
-    "email": "tom@example.com",
-    "password": "your_password1",
-    "is_admin": true
-}
+http://127.0.0.1:5000/api/v1/auth/login
 ```
+- If you are not logged in, the Review button will not appear.
 
-#### Get authorisation token for admin user:
-Log in using the admin details to generate an authorisation token. This token will be required to perform subsequent admin only actions.
+#### 🌍 Navigating the Webpage
+- Browse through the list of places.
+- Click on a place to view its details.
+- If authenticated, you will see the option to add a review.
+- You can only review places that you do not own.
 
-**For example:**
-
-POST /api/v1/auth/login endpoint
-```bash
-{
-   "email": "tom@example.com",
-   "password": "your_password1"
-}
-```
-
-### 🚀 Swagger documentation
-Once you run the application, you can access the swagger documentation. 
-
-Eg: http://127.0.0.1:5000/api/v1/
-
-**IMPORTANT:** Test API endpoints using CURLS/POSTMAN 
-
-### API Endpoints
-
-#### Admin
-
-      1. POST /api/v1/users/  - Admin can register new users
-      2. PUT /api/v1/users/{user_id}  - Admin can update user information
-      3. POST /api/v1/amenities/ - Admin can create amenities
-      4. PUT /api/v1/amenities/{amenity_id} - Admin can update amenity
-
-#### Login
-
-      1. POST /api/v1/auth/login - Any user can login with email and password
-      2. GET /api/v1/auth/protected - A protected endpoint that requires JWT token
-
-#### Users
-
-      1. GET /api/v1/users/  - Get all existing users
-      2. GET /api/v1/users/{user_id}  - Get user details
-
-#### Places
-
-      1. POST /api/v1/places/  - Create a new place
-      2. GET /api/v1/places/   - Get all places
-      3. GET /api/v1/places/{place_id} - Get place details
-      4. PUT /api/v1/places/{place_id}  - Update place information
-      5. DELETE /api/v1/places/{place_id} - Delete a place
-
-#### Amenities
-
-      1. GET /api/v1/amenities/ - Get all amenities
-      2. GET /api/v1/amenities/{amenity_id} - Get amenity details
-      3. DELETE /api/v1/amenities/{amenity_id} - Admin can delete any amenity
-
-#### Reviews
-
-      1. POST /api/v1/reviews/ - Create review
-      2. GET /api/v1/reviews/ - Get all reviews
-      3. GET /api/v1/reviews/{review_id} - Get review details
-      4. PUT /api/v1/reviews/{review_id} - Update review
-      5. DELETE /api/v1/reviews/{review_id} - Delete review
-
-### Endpoint Examples
-#### Create a place:
-You need authorization token from the owner of the place to create a place. Admin can bypass this restriction.
-
-POST to /api/v1/places/ endpoint
-
-**Request Body**
-```bash
-curl -X POST "http://localhost:5000/api/v1/places/" -H "Authorization: Bearer <user/admin_token>" -H "Content-Type: application/json" -d '{
-   "title": "Cozy Apartment",
-    "description": "A nice place to stay",
-    "price": 100.0,
-    "latitude": 37.7749,
-    "longitude": -122.4194,
-    "owner_id": "<user_id>",
-    "amenities": []
-}'
-```
-#### Create a new user in order to get a review (the owner of the place cannot make a review):
-POST to /api/v1/users/ endpoint
-
-**Request Body**
+#### 👤 Creating New Users
+New users must be created via cURL or a POST request to the API.
+**Example* Create a User**
 ```bash
 curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Authorization: Bearer <admin_token>" -H "Content-Type: application/json" -d '{
    "first_name": "Ally",
@@ -225,93 +171,41 @@ curl -X POST "http://127.0.0.1:5000/api/v1/users/" -H "Authorization: Bearer <ad
     "password": "your_password1",
     "is_admin": false
 }'
-
 ```
-#### Get token from new user:
-POST to /api/v1/auth/login endpoint
-
-**Request Body**
+#### 🔐 Getting the Admin Token
+To create users, you need an Authorization Token from the seeded admin account.
+**Example: Get admin token fro creating new users**
 ```bash
-curl -X POST "http://localhost:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
-   "email": "ally@example.com",
-    "password": "your_password1"
+curl -X POST "http://localhost:5000/api/v1/auth/login" \
+-H "Content-Type: application/json" \
+-d '{
+   "email": "admin@hbnb.io",
+   "password": "admin1234"
 }'
 ```
-#### Create a new review:
-POST to /api/v1/reviews/ endpoint
+This request will return a JWT token. Use this token in the **Authorization: Bearer <admin_token>** header when creating new users.
 
-**Request Body**
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/reviews/" -H "Authorization: Bearer <new_user_token>" -H "Content-Type: application/json" -d '{
-  "text": "Great",
-    "rating": 5,
-    "user_id": "<user_id>",
-    "place_id": "<place_id>"
-}'
-```
-#### Update review BY ID:
+### 📸 Application Screenshot
+#### Login Form
+Endpoint -> http://127.0.0.1:5000/api/v1/auth/login
+![Login Form](./images_readme/login.jpg)
 
-PUT to /api/v1/reviews/<review_id> endpoint
+#### List of places
+Endpoint -> 
+![List of places](./images_readme/list_places.jpg)
 
-**Request Body**
-```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>" -H "Content-Type: application/json" -d '{
-  "text": "Not bad",
-    "rating": 2
-}'
-```
-#### Get review
-GET /api/v1/reviews/ endpoint
-```bash
-curl -X GET "http://127.0.0.1:5000/api/v1/reviews/"
-```
+#### Place Details
+Endpoint -> 
+![Place Details](./images_readme/place_details.jpg)
 
-#### Delete review
-DELETE /api/v1/reviews/<review_id> endpoint
-```bash
-curl -X DELETE "http://127.0.0.1:5000/api/v1/reviews/<review_id>" -H "Authorization: Bearer <new_user_token/admin_token>"
-```
+#### Add review form
+Endpoint -> 
+![Review form](./images_readme/review_form.jpg)
 
-### ⚙️ SQL Scripts for Table Generation and Initial Data
+#### Place details with review form
+Endpoint -> 
+![Place Details with review form](./images_readme/place_reviews.jpg)
 
-In order to run the scripts first:
-
-Install MySQL on Ubuntu
-```bash
-sudo apt update
-sudo apt install mysql-server
-```
-Start the SQL server
-```bash
-service mysql start
-```
-Run scripts
-From the v1/sql folder
-```bash
-cat create_database.sql | mysql -uroot -p
-cat test_operations.sql | mysql -uroot -p
-```
-Connect to your MySQL server, use query show databases to see the database hbnb_task10
-```bash
-sudo mysql
-Welcome to the MySQL monitor...
-mysql> show databases;
-```
-### 📝 Generate Database Diagrams
-We have created Entity-Relationship (ER) diagrams to visually represent the structure of the database schema for the HBnB project using Mermaid.js.
-
-- USER entity has a one-to-many relationship with PLACE, meaning each user (admin) can create multiple places, but each place is owned by a single user. 
-- PLACE and AMENITY entities are connected through a many-to-many relationship, implemented via the PLACE_AMENITY join table. Each place can have multiple amenities, and each amenity is associated with multiple places.
-- USER has one-to-many relationship with REVIEW, a user can write multiple reviews. 
-- PLACE has one-to-many relationship with REVIEW, each place can receive multiple reviews. 
-
-This setup enables users to review different places, and places to accumulate feedback from various users.
-
-For bookings or reservations:
-- USER has a one-to-many relationship with BOOKING, an user can make multiple bookings.
-- PLACE has a one-to-many relationship with BOOKING, allowing each place to be booked multiple times by different users.
-
-You can view our diagram using the file entity_relationship_diagram.svg
 
 ## 👥 Contributors
 - Thannie Phan
