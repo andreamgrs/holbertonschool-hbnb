@@ -24,8 +24,11 @@ class Login(Resource):
         user = facade.get_user_by_email(credentials['email'])
         
         # Check if the user exists and the password is correct
-        if not user or not user.verify_password(credentials['password']):
-            return {'error': 'Invalid credentials'}, 401
+        if not user:
+            return {'error': 'User not found'}, 401
+        
+        if not user.verify_password(credentials['password']):
+            return {'error': 'Incorrect password'}, 401
 
         #  Create a JWT token with the user's id and is_admin flag
         access_token = create_access_token(

@@ -40,15 +40,22 @@ async function submitReview(token, placeId, reviewText, rating) {
   return response;
 }
 
-function handleResponse(response) {
+async function handleResponse(response) {
   if (response.ok) {
-    alert('Review submitted successfully!'); 
-  } else {
-    alert('Failed to submit review');
-  }
-    // Clear the form
-    const reviewForm = document.getElementById('review-form');
+    alert('Review submitted successfully!');
     reviewForm.reset();
+  } else {
+    let errorMessage = 'Failed to submit review';
+    try {
+      const data = await response.json();
+      if (data.error) {
+        errorMessage = data.error;
+      }
+    } catch (err) {
+    }
+    alert(errorMessage);
+    reviewForm.reset();
+  }
 }
 
 function checkAuthentication() {

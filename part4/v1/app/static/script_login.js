@@ -33,7 +33,15 @@ async function loginUser(email, password) {
     // Redirect to index page
     window.location.href = '../index';
   } else {
-      alert('Login failed: ' + response.statusText);
+      let errorMessage = 'Login failed';
+      try {
+        const data = await response.json();
+        if (data.error) {
+          errorMessage = data.error;
+        }
+      } catch (err) {
+      }
+      alert(errorMessage);
   };
 };
 
