@@ -13,9 +13,11 @@ user_model = api.model('User', {
     'email': fields.String(required=True, description='User email address')
 })
 
-# GET ALL USER 
+# Path is '/api/v1/users/'
 @api.route('/')
 class UserList(Resource):
+
+    # GET ALL USER 
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve all users"""
@@ -30,9 +32,11 @@ class UserList(Resource):
             })
         return users_list, 200
     
-# GET SINGLE USER BY ID
+# Path is '/api/v1/user/<user_id>'
 @api.route('/<user_id>')
 class UserResource(Resource):
+
+    # GET SINGLE USER BY ID
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid request')

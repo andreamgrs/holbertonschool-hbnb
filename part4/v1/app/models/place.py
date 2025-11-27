@@ -31,11 +31,11 @@ class Place(BaseModel):
     amenities = relationship('Amenity', 
                              secondary=place_amenity, 
                              lazy='subquery', 
-                             backref=db.backref('place', lazy=True))
-    # Place to Review: one to many
+                             back_populates='places')    # Place to Review: one to many
     reviews = relationship('Review',
                            backref='place',
-                           lazy=True)
+                           lazy=True,
+                           cascade='all, delete-orphan')
     
     # --- Getters and Setters ---
     @hybrid_property
