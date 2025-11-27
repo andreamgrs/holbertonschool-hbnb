@@ -222,16 +222,22 @@ footer {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* for each review card */
+/* for the review text */
+.review-text {
+    font-size: 1.2em;
+    color: #ffe3f4;
+    line-height: 1.4;
+    margin: 5px 0 0 0;
+}
+
 .review-card {
-    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
-    /* pink gradient */
+    background: linear-gradient(135deg, #ff85b3, #ff4f91);
     border: 4px dashed #ffe3f4;
-    /* matches place card border style */
     border-radius: 15px;
     padding: 20px;
     margin: 15px 0;
     text-align: center;
+    color: #fff;
     box-shadow:
         0 0 10px rgba(255, 105, 180, 0.6),
         0 0 20px rgba(255, 105, 180, 0.4);
@@ -244,12 +250,4 @@ footer {
     box-shadow:
         0 0 15px rgba(255, 105, 180, 0.8),
         0 0 25px rgba(255, 105, 180, 0.6);
-}
-
-/* for the review text */
-.review-text {
-    font-size: 1.2em;
-    color: #ffe3f4;
-    line-height: 1.4;
-    margin: 5px 0 0 0;
 }
