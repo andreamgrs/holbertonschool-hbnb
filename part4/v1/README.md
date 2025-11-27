@@ -1,6 +1,6 @@
 # 🏠 HBnB Project 
 
-## Part 3 Enhanced Backend with Authentication and Database Integration
+## Part 4 – Simple Web Client
 
 n this phase, we focus on the front-end development of your application using HTML5, CSS3, and JavaScript ES6. The goal was to design and implement an interactive user interface that connects seamlessly with the back-end services developed in earlier parts of the project.
 
