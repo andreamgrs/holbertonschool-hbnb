@@ -60,6 +60,13 @@ header nav a {
     text-transform: lowercase;
 }
 
+/* style the two nav link */
+header nav * {
+    margin: 0 15px;
+}
+
+
+
 
 /* PRICE FILTER */
 
@@ -190,7 +197,6 @@ footer {
     margin: 20px auto;
     border-radius: 10px;
     padding: 10px 10px 10px 10px;
-    ;
     background: linear-gradient(135deg, #ff9ad5, #ff4fa3);
     border: 1px solid #ddd;
     box-shadow:
@@ -235,6 +241,7 @@ footer {
         0 0 10px rgba(255, 105, 180, 0.6),
         0 0 20px rgba(255, 105, 180, 0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
 }
 
 /* change review-card when hover */
@@ -245,14 +252,16 @@ footer {
         0 0 25px rgba(255, 105, 180, 0.6);
 }
 
+/* adjust review button */
 #review-button {
+    display: block;
+    margin: 5px auto;
+    padding: 10px 20px;
     color: #800080;
     font-weight: bold;
-    padding: 10px 20px;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
     font-family: 'Comic Sans MS', cursive, sans-serif;
-
 }
 
 /* FOR REVIEW PAGE */
